@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>THUỐC SƠ SINH - Tra Cứu Liều NICU</title>
+  <title>THUỐC SƠ SINH - Tra Cứu Liều Chuẩn NICU</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
@@ -11,32 +11,42 @@
 
   <!-- HEADER -->
   <header class="bg-gradient-to-r from-teal-700 via-blue-800 to-indigo-900 p-4 shadow-xl sticky top-0 z-50 border-b border-teal-600/30">
-    <div class="max-w-5xl mx-auto flex justify-between items-center">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
         <span class="text-yellow-400 text-2xl">🍼</span>
         <h1 class="text-xl font-extrabold text-white tracking-wide">THUỐC SƠ SINH</h1>
       </div>
-      <span class="text-xs bg-teal-900/80 px-3 py-1 rounded-full text-teal-200 border border-teal-400/40 font-semibold">NICU Clinical Datasets v8.0</span>
+      <span class="text-xs bg-teal-900/80 px-3 py-1 rounded-full text-teal-200 border border-teal-400/40 font-semibold">NICU Full Clinical Datasets (54 Thuốc)</span>
     </div>
   </header>
 
   <!-- MAIN CONTAINER -->
-  <main class="max-w-5xl mx-auto w-full p-4 flex-1 space-y-6">
+  <main class="max-w-6xl mx-auto w-full p-4 flex-1 space-y-6">
 
     <!-- TRA CỨU DANH MỤC THUỐC SƠ SINH -->
     <section class="bg-slate-900/90 border border-slate-700 rounded-2xl p-5 shadow-2xl">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
         <h2 class="text-lg font-bold text-teal-400 flex items-center gap-2">
-          📚 Tra Cứu Toàn Bộ Danh Mục THUỐC SƠ SINH Chuẩn Y Khoa
+          📚 Tra Cứu Danh Mục THUỐC SƠ SINH Chuẩn Y Khoa (Theo BS.CKII. Lê Nguyễn Nhật Trung)
         </h2>
-        <div class="w-full md:w-64">
+        <div class="w-full md:w-72">
           <input type="text" x-model="searchQuery" placeholder="Tìm tên thuốc, chỉ định..." 
                  class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white focus:outline-none focus:border-teal-400">
         </div>
       </div>
 
+      <!-- BỘ LỌC NHÓM THUỐC -->
+      <div class="flex flex-wrap gap-2 mb-4 pb-3 border-b border-slate-800">
+        <template x-for="cat in categories" :key="cat">
+          <button @click="selectedCategory = cat"
+                  :class="selectedCategory === cat ? 'bg-teal-600 text-white font-bold border-teal-500 shadow' : 'bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800'"
+                  class="px-3 py-1 rounded-lg text-xs border transition" x-text="cat">
+          </button>
+        </template>
+      </div>
+
       <!-- DANH SÁCH THUỐC -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[700px] overflow-y-auto pr-1">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[750px] overflow-y-auto pr-1">
         <template x-for="(drug, key) in filteredDrugs" :key="key">
           <div class="bg-slate-950/80 border border-slate-800 hover:border-teal-500/50 rounded-xl p-4 space-y-3 transition shadow-md">
             
@@ -44,7 +54,7 @@
             <div class="flex justify-between items-start border-b border-slate-800 pb-2">
               <div>
                 <h3 class="text-base font-extrabold text-teal-300" x-text="drug.name"></h3>
-                <p class="text-xs text-slate-400" x-text="'Hàm lượng: ' + drug.concentration"></p>
+                <p class="text-xs text-slate-400" x-text="'Hàm lượng / Chế phẩm: ' + drug.concentration"></p>
               </div>
               <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-teal-950 text-teal-300 border border-teal-800" x-text="drug.category"></span>
             </div>
@@ -58,15 +68,15 @@
             <!-- CÁC THÔNG TIN CHI TIẾT THEO CẤU TRÚC GỐC -->
             <div class="text-xs space-y-2">
               <div class="flex gap-2">
-                <span class="font-bold text-slate-400 min-w-[80px]">Đường dùng:</span>
+                <span class="font-bold text-slate-400 min-w-[85px]">Đường dùng:</span>
                 <span class="text-emerald-300 font-semibold" x-text="drug.route"></span>
               </div>
               <div class="flex gap-2">
-                <span class="font-bold text-slate-400 min-w-[80px]">Liều tối đa:</span>
+                <span class="font-bold text-slate-400 min-w-[85px]">Liều tối đa:</span>
                 <span class="text-red-300 font-semibold" x-text="drug.maxDose"></span>
               </div>
               <div class="flex gap-2">
-                <span class="font-bold text-slate-400 min-w-[80px]">Cách pha:</span>
+                <span class="font-bold text-slate-400 min-w-[85px]">Cách pha:</span>
                 <span class="text-slate-200" x-text="drug.mixing"></span>
               </div>
               <div class="bg-amber-950/30 border border-amber-500/20 p-2 rounded text-amber-200">
@@ -86,620 +96,628 @@
 
   <!-- FOOTER -->
   <footer class="bg-slate-950 p-4 border-t border-slate-800 text-center text-xs text-slate-500">
-    THUỐC SƠ SINH - NICU Toolkit & Reference System
+    THUỐC SƠ SINH - NICU Full Datasets & Reference System
   </footer>
 
-  <!-- SCRIPT -->
+  <!-- SCRIPT CHỨA ĐẦY ĐỦ 54 THUỐC CHUẨN TỪ TÀI LIỆU GỐC -->
   <script>
     function drugApp() {
       return {
         searchQuery: '',
+        selectedCategory: 'Tất cả',
+        categories: ['Tất cả', 'Kháng sinh', 'Kháng nấm', 'Kháng virus', 'Giảm đau & Hạ sốt', 'Vận mạch & Tim mạch', 'Hô hấp & Thần kinh', 'Nội tiết', 'Khác'],
+
         drugs: {
           acyclovir: {
-            name: "Acyclovir TM[cite: 3]",
+            name: "Acyclovir",
             concentration: "25mg/ml (Lọ)",
             category: "Kháng virus",
-            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 20 mg/kg/liều mỗi 12 giờ[cite: 3]\n  - 15 - 28 ngày: 20 mg/kg/liều mỗi 8 giờ[cite: 3]\n• CN 1-2 kg:\n  - ≤ 7 ngày: 20 mg/kg/liều mỗi 12 giờ[cite: 3]\n  - 8 - 28 ngày: 20 mg/kg/liều mỗi 8 giờ[cite: 3]\n• CN > 2 kg: 20 mg/kg/liều mỗi 8 giờ[cite: 3]\n• Chỉnh liều suy thận theo SCr[cite: 3].",
-            maxDose: "60 mg/kg/ngày[cite: 3]",
-            route: "Truyền tĩnh mạch (TM)[cite: 3]",
-            mixing: "Pha với NaCl 0,9% hoặc Glucose 5%, nồng độ tối thiểu 7 mg/mL truyền 60 phút[cite: 3].",
-            note: "Liệu trình VMN/NT lan rộng: 21 ngày; Da niêm: 14 ngày; Thủy đậu: 5-10 ngày[cite: 3].",
-            indication: "Nhiễm Herpes simplex virus (VMN, tổn thương da niêm), Thủy đậu[cite: 3]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 20 mg/kg/liều mỗi 12 giờ\n  - 15 - 28 ngày: 20 mg/kg/liều mỗi 8 giờ\n• CN 1 - 2 kg:\n  - ≤ 7 ngày: 20 mg/kg/liều mỗi 12 giờ\n  - 8 - 28 ngày: 20 mg/kg/liều mỗi 8 giờ\n• CN > 2 kg: 20 mg/kg/liều mỗi 8 giờ\n• Điều chỉnh khi suy thận:\n  - SCr 0,8 - 1,1 mg/dl: 20 mg/kg/12 giờ\n  - SCr 1,2 - 1,5 mg/dl: 20 mg/kg/24 giờ\n  - SCr > 1,5 mg/dl: 10 mg/kg/24 giờ",
+            maxDose: "Không quy định liều tối đa tuyệt đối; dùng theo liều mg/kg chuẩn",
+            route: "Tiêm tĩnh mạch (TM / TTM)",
+            mixing: "Pha với NaCl 0,9% hoặc Glucose 5%, nồng độ tối thiểu 7 mg/mL. Truyền trong 60 phút.",
+            note: "Theo dõi Creatinin máu. Liệu trình: Herpes simplex (VMN/NT lan rộng) 21 ngày; Tổn thương da/niêm mạc 14 ngày; Thủy đậu 5 - 10 ngày (hoặc thêm ≥ 48 giờ sau khi tổn thương cuối cùng xuất hiện).",
+            indication: "Nhiễm Herpes simplex virus (viêm màng não, nhiễm trùng lan rộng, tổn thương da niêm mạc), Thủy đậu."
           },
           amikacin: {
-            name: "Amikacin[cite: 4]",
+            name: "Amikacin",
             concentration: "250mg/2ml",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 15 mg/kg mỗi 48h; 15-28 ngày: 15 mg/kg mỗi 24-48h[cite: 4].\n• CN 1-2 kg: ≤ 7 ngày: 15 mg/kg mỗi 48h; 8-28 ngày: 15 mg/kg mỗi 24-48h[cite: 4].\n• CN > 2 kg: ≤ 7 ngày: 15 mg/kg mỗi 24h; 8-28 ngày: 15 mg/kg mỗi 12-24h[cite: 4].\n• VMN: ≤ 7 ngày & ≥ 2 kg: 15-20 mg/kg/ngày chia 2; > 7 ngày & ≥ 2 kg: 30 mg/kg/ngày chia 3[cite: 4].",
-            maxDose: "30 mg/kg/ngày[cite: 4]",
-            route: "Tiêm bắp (TB), Truyền tĩnh mạch (TTM)[cite: 4]",
-            mixing: "Pha loãng với NaCl 0,9% hoặc Glucose 5%[cite: 4].",
-            note: "Dãn liều khi suy thận theo GFR[cite: 4].",
-            indication: "Nhiễm trùng huyết sơ sinh, Viêm màng não do trực khuẩn Gram âm[cite: 4]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 15 mg/kg/liều mỗi 48 giờ\n  - 15 - 28 ngày: 15 mg/kg/liều mỗi 24 - 48 giờ\n• CN 1 - 2 kg:\n  - ≤ 7 ngày: 15 mg/kg/liều mỗi 48 giờ\n  - 8 - 28 ngày: 15 mg/kg/liều mỗi 24 - 48 giờ\n• CN > 2 kg:\n  - ≤ 7 ngày: 15 mg/kg/liều mỗi 24 giờ\n  - 8 - 28 ngày: 15 mg/kg/liều mỗi 12 - 24 giờ\n• VMN:\n  - ≤ 7 ngày & ≥ 2 kg: 15 - 20 mg/kg/ngày chia 2 lần\n  - > 7 ngày & ≥ 2 kg: 30 mg/kg/ngày chia 3 lần (trẻ < 2 kg dùng liều thấp hơn & khoảng cách dài hơn)",
+            maxDose: "30 mg/kg/ngày (trong điều trị Viêm màng não)",
+            route: "Tiêm / Truyền tĩnh mạch (TM / TTM)",
+            mixing: "Pha loãng với dịch truyền thích hợp (NaCl 0,9% hoặc Dextrose 5%).",
+            note: "Dãn liều khi suy thận dựa trên liều chuẩn 5 - 7,5 mg/kg/8 giờ:\n  - GFR > 50 ml/phút/1.73m²: Không chỉnh liều\n  - GFR 30 - 50: liều mỗi 12 - 18 giờ\n  - GFR 10 - 29: liều mỗi 18 - 24 giờ\n  - GFR < 10: liều mỗi 48 - 72 giờ\n  - CRRT (thay thế thận liên tục): 7,5 mg/kg/12 giờ (theo dõi Creatinin).",
+            indication: "Nhiễm khuẩn nặng do vi khuẩn gram âm hiếu khí, viêm màng não (VMN)."
           },
           amphotericin_b: {
-            name: "Amphotericin B[cite: 4]",
+            name: "Amphotericin B",
             concentration: "Lọ 50 mg",
             category: "Kháng nấm",
-            doseDetails: "• TTM: 1 mg/kg/liều, 1 cữ/ngày[cite: 4].\n• Diễn tiến nhanh hay trở nặng: 1,5 mg/kg/ngày (dùng ngắn hạn)[cite: 4].\n• Khởi đầu: 0,5 mg/kg/liều[cite: 4].",
-            maxDose: "1,5 mg/kg/ngày[cite: 4]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 4]",
-            mixing: "Pha với Glucose 5% nồng độ 0,1 mg/ml, TTM 2-6 giờ (thường 4 giờ). Không pha NaCl 0,9%[cite: 4].",
-            note: "Không cần giảm liều khi suy thận. Nếu suy thận do thuốc, giảm 50% liều[cite: 4].",
-            indication: "Nhiễm nấm hệ thống nặng[cite: 4]."
+            doseDetails: "• Khởi đầu: 0,5 mg/kg/liều (nhiều chuyên gia đề nghị khởi đầu liều mục tiêu 1 mg/kg theo Red Book AAP).\n• Duy trì hàng ngày: 1 - 1,5 mg/kg/ngày x 1 lần.\n• Diễn tiến nhanh / nặng: 1,5 mg/kg/ngày (dùng ngắn hạn).",
+            maxDose: "1,5 mg/kg/ngày",
+            route: "Truyền tĩnh mạch (TTM)",
+            mixing: "Chai dạng bột 50 mg, pha với 10 mL Glucose 5% ra dung dịch 5 mg/mL. Sau đó pha tiếp với Glucose 5% đạt nồng độ 0,1 mg/mL. TUYỆT ĐỐI KHÔNG pha với NaCl 0,9%. Truyền TTM trong 2 - 6 giờ (thường là 4 giờ).",
+            note: "Không cần giảm liều khi suy thận. Nếu suy thận DO Amphotericin B gây ra: giảm 50% liều (cho tất cả các mức GFR).",
+            indication: "Nhiễm nấm toàn thân nặng, nhiễm nấm xâm nhập."
           },
           ampicillin: {
-            name: "Ampicillin[cite: 5]",
+            name: "Ampicillin",
             concentration: "Lọ 500mg, 1g",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 50 mg/kg/12h (gấp đôi nếu NTH do GBS); 15-28 ngày: 50 mg/kg/8h[cite: 5].\n• CN 1-2 kg: ≤ 7 ngày: 50 mg/kg/12h (gấp đôi do GBS); 8-28 ngày: 50 mg/kg/8h[cite: 5].\n• CN > 2 kg: ≤ 7 ngày: 50 mg/kg/8h (gấp đôi do GBS); 8-28 ngày: 50 mg/kg/6h[cite: 5].\n• VMN: ≤ 7 ngày: 50-100 mg/kg/8h; > 7 ngày: 50-75 mg/kg/6h[cite: 5].",
-            maxDose: "300 mg/kg/ngày (VMN)[cite: 5]",
-            route: "Tiêm tĩnh mạch (TM), Tiêm bắp (TB)[cite: 5]",
-            mixing: "Truyền trong ít nhất 60 phút. Không pha với dung môi chứa Glucose[cite: 5].",
-            note: "GFR 10-50 không đổi; GFR < 10 khoảng cách liều mỗi 12 giờ, không giảm liều[cite: 5].",
-            indication: "Nhiễm trùng huyết do GBS, Viêm màng não[cite: 5]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 50 mg/kg/12 giờ (gấp đôi liều nếu NTH do GBS)\n  - 15 - 28 ngày: 50 mg/kg/8 giờ\n• CN 1 - 2 kg:\n  - ≤ 7 ngày: 50 mg/kg/12 giờ (gấp đôi liều nếu NTH do GBS)\n  - 8 - 28 ngày: 50 mg/kg/8 giờ\n• CN > 2 kg:\n  - ≤ 7 ngày: 50 mg/kg/8 giờ (gấp đôi liều nếu NTH do GBS)\n  - 8 - 28 ngày: 50 mg/kg/6 giờ\n• VMN:\n  - ≤ 7 ngày: 50 - 100 mg/kg/8 giờ\n  - > 7 ngày: 50 - 75 mg/kg/6 giờ",
+            maxDose: "300 - 400 mg/kg/ngày (trong điều trị Viêm màng não / nhiễm GBS)",
+            route: "Tiêm tĩnh mạch (TM / TTM), Tiêm bắp (TB)",
+            mixing: "Pha tiêm TM/TTM. KHÔNG pha thuốc với dung môi chứa Glucose. Truyền trong ít nhất 60 phút.",
+            note: "GFR 10 - 50: không thay đổi. GFR < 10: dãn khoảng cách liều mỗi 12 giờ, không giảm liều.",
+            indication: "Nhiễm trùng huyết sơ sinh (NTH), Viêm màng não (VMN), nhiễm Streptococcus nhóm B (GBS), Listeria monocytogenes."
           },
           caspofungin: {
-            name: "Caspofungin[cite: 5]",
+            name: "Caspofungin",
             concentration: "Lọ tiêm truyền",
             category: "Kháng nấm",
-            doseDetails: "• Sinh non nhũ nhi < 3 tháng: 25 mg/m² da/ngày hoặc 2 mg/kg/24 giờ[cite: 5].\n• Trẻ em ≥ 3 tháng: 70 mg/m² da/24 giờ ngày đầu, từ ngày thứ 2 liều 50 mg/m² da/24 giờ[cite: 5].",
-            maxDose: "70 mg/m² da/ngày[cite: 5]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 5]",
-            mixing: "Truyền trong ít nhất 60 phút. Không pha với dung môi Glucose[cite: 5].",
-            note: "Giảm 30% liều hàng ngày khi suy gan trung bình, nặng[cite: 5].",
-            indication: "Điều trị nấm Aspergillus xâm nhập, kháng trị[cite: 5]."
+            doseDetails: "• Sinh non & Nhũ nhi < 3 tháng: 25 mg/m² diện tích cơ thể/ngày HOẶC 2 mg/kg/24 giờ.\n• Trẻ em ≥ 3 tháng: Ngày đầu 70 mg/m²/24 giờ; từ ngày thứ 2 duy trì 50 mg/m²/24 giờ (có thể tăng 70 mg/m²/24 giờ nếu đáp ứng chưa đủ).\n• Thời gian điều trị: Tiếp tục ít nhất 14 ngày kể từ ngày cấy mẫu âm tính lần cuối.",
+            maxDose: "70 mg/m²/ngày",
+            route: "Truyền tĩnh mạch (TTM)",
+            mixing: "Pha loãng với dung dịch NaCl 0,9% hoặc Ringer Lactate theo hướng dẫn nhà sản xuất.",
+            note: "Không thay đổi liều khi suy thận. Giảm 30% liều hàng ngày khi suy gan trung bình hoặc nặng.",
+            indication: "Điều trị nhiễm nấm Aspergillus xâm nhập kháng trị với các thuốc kháng nấm thông thường, nhiễm Candida xâm nhập."
           },
           cefepime: {
-            name: "Cefepime[cite: 6]",
+            name: "Cefepime",
             concentration: "Lọ 1g",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: 0-14 ngày: 50 mg/kg/12h; ≥ 14 ngày: 50 mg/kg/8h[cite: 6].\n• CN 1-2 kg: 0-7 ngày: 50 mg/kg/12h; ≥ 8 ngày: 50 mg/kg/8h[cite: 6].\n• CN > 2 kg: 50 mg/kg/8h[cite: 6].",
-            maxDose: "200 mg/kg/ngày[cite: 6]",
-            route: "Truyền tĩnh mạch / TM[cite: 6]",
-            mixing: "Pha dung dịch tiêm truyền chuẩn.",
-            note: "GFR 10-50: liều không đổi, khoảng cách liều 24 giờ; GFR < 10: giảm 50% liều, khoảng cách liều 24 giờ[cite: 6].",
-            indication: "Nhiễm trùng huyết nặng, viêm màng não[cite: 6]."
+            doseDetails: "• Liều NTH nặng hoặc Viêm màng não (VMN):\n  - CN < 1 kg: 0 - 14 ngày: 50 mg/kg/12 giờ; ≥ 14 ngày: 50 mg/kg/8 giờ\n  - CN 1 - 2 kg: 0 - 7 ngày: 50 mg/kg/12 giờ; ≥ 8 ngày: 50 mg/kg/8 giờ\n  - CN > 2 kg: 50 mg/kg/8 giờ",
+            maxDose: "150 mg/kg/ngày",
+            route: "Tiêm / Truyền tĩnh mạch (TM / TTM)",
+            mixing: "Pha loãng trong NaCl 0,9% hoặc Glucose 5%.",
+            note: "Chỉnh liều suy thận:\n  - GFR 10 - 50: liều không thay đổi, dãn khoảng cách mỗi 24 giờ.\n  - GFR < 10: giảm 50% liều, khoảng cách mỗi 24 giờ.",
+            indication: "Nhiễm trùng huyết nặng, viêm màng não, nhiễm trùng vi khuẩn Gram âm kháng thuốc."
           },
           cefotaxime: {
-            name: "Cefotaxime[cite: 6]",
+            name: "Cefotaxime",
             concentration: "Lọ 1g",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 50 mg/kg/12h; 15-28 ngày: 50 mg/kg/8-12h[cite: 6].\n• CN 1-2 kg: ≤ 7 ngày: 50 mg/kg/12h; 8-28 ngày: 50 mg/kg/8-12h[cite: 6].\n• CN > 2 kg: ≤ 7 ngày: 50 mg/kg/12h; 8-28 ngày: 50 mg/kg/6-8h[cite: 6].\n• VMN: 100-200 mg/kg/ngày chia mỗi 6-12 giờ[cite: 6].",
-            maxDose: "200 mg/kg/ngày[cite: 6]",
-            route: "TM, Tiêm bắp, TTM[cite: 6]",
-            mixing: "Pha với NaCl 0,9% hoặc Glucose 5%[cite: 6].",
-            note: "Điều chỉnh dãn liều theo GFR[cite: 6].",
-            indication: "Nhiễm trùng nặng, viêm màng não sơ sinh[cite: 6]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 50 mg/kg/12 giờ\n  - 15 - 28 ngày: 50 mg/kg/8 - 12 giờ\n• CN 1 - 2 kg:\n  - ≤ 7 ngày: 50 mg/kg/12 giờ\n  - 8 - 28 ngày: 50 mg/kg/8 - 12 giờ\n• CN > 2 kg:\n  - ≤ 7 ngày: 50 mg/kg/12 giờ\n  - 8 - 28 ngày: 50 mg/kg/6 - 8 giờ\n• VMN:\n  - ≤ 7 ngày & ≥ 2 kg: 100 - 150 mg/kg/ngày chia mỗi 8 - 12 giờ\n  - > 7 ngày & ≥ 2 kg: 150 - 200 mg/kg/ngày chia mỗi 6 - 8 giờ (Trẻ < 2 kg dùng liều thấp hơn)",
+            maxDose: "200 mg/kg/ngày",
+            route: "Tiêm tĩnh mạch (TM / TTM)",
+            mixing: "Pha tiêm TM hoặc truyền TTM với NaCl 0,9% / Glucose 5%.",
+            note: "Chỉnh liều suy thận (dựa trên liều 100 - 200 mg/kg/ngày):\n  - GFR 30 - 50: 35 - 70 mg/kg mỗi 8 - 12 giờ\n  - GFR 10 - 29: 35 - 70 mg/kg mỗi 12 giờ\n  - GFR < 10: 35 - 70 mg/kg mỗi 12 giờ\n  - CRRT: 35 - 70 mg/kg mỗi 12 giờ.",
+            indication: "Nhiễm trùng huyết sơ sinh, viêm màng não vi khuẩn, nhiễm trùng vi khuẩn Gram âm."
           },
           ceftazidime: {
-            name: "Ceftazidime[cite: 6]",
+            name: "Ceftazidime",
             concentration: "Lọ 1g",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 50 mg/kg/12h; 15-28 ngày: 50 mg/kg/8-12h[cite: 6].\n• CN 1-2 kg: ≤ 7 ngày: 50 mg/kg/12h; 8-28 ngày: 50 mg/kg/8-12h[cite: 6].\n• CN > 2 kg: ≤ 7 ngày: 50 mg/kg/12h; 8-28 ngày: 50 mg/kg/8h[cite: 6].\n• VMN: ≤ 7 ngày: 100-150 mg/kg/ngày; > 7 ngày: 150 mg/kg/ngày[cite: 6].",
-            maxDose: "200 mg/kg/ngày[cite: 6]",
-            route: "TM, Tiêm bắp[cite: 6]",
-            mixing: "Pha dung dịch tiêm truyền.",
-            note: "Dãn liều trong suy thận dựa trên liều 50 mg/kg/8h[cite: 6].",
-            indication: "Nhiễm trùng nặng, viêm màng não[cite: 6]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 50 mg/kg/12 giờ\n  - 15 - 28 ngày: 50 mg/kg/8 - 12 giờ\n• CN 1 - 2 kg:\n  - ≤ 7 ngày: 50 mg/kg/12 giờ\n  - 8 - 28 ngày: 50 mg/kg/8 - 12 giờ\n• CN > 2 kg:\n  - ≤ 7 ngày: 50 mg/kg/12 giờ\n  - 8 - 28 ngày: 50 mg/kg/8 giờ\n• VMN:\n  - ≤ 7 ngày: 100 - 150 mg/kg/ngày mỗi 8 - 12 giờ\n  - > 7 ngày: 150 mg/kg/ngày mỗi 8 giờ",
+            maxDose: "150 mg/kg/ngày",
+            route: "Tiêm tĩnh mạch (TM / TTM)",
+            mixing: "Pha tiêm TM hoặc truyền TTM.",
+            note: "Chỉnh liều suy thận (dựa trên liều chuẩn 50 mg/kg/8 giờ):\n  - GFR 30 - 50: 50 mg/kg/12 giờ\n  - GFR 10 - 29: 50 mg/kg/24 giờ\n  - GFR < 10: 50 mg/kg/48 giờ\n  - CRRT: 90 mg/kg/12 giờ.",
+            indication: "Nhiễm trùng Pseudomonas aeruginosa, nhiễm trùng huyết nặng, viêm màng não."
           },
           ciprofloxacin: {
-            name: "Ciprofloxacin[cite: 7]",
-            concentration: "Dung dịch tiêm truyền",
+            name: "Ciprofloxacin",
+            concentration: "Dung dịch truyền",
             category: "Kháng sinh",
-            doseDetails: "• Sinh non 32-37 tuần: 10 mg/kg/12 giờ[cite: 7].\n• Đủ tháng: 15 mg/kg/12 giờ[cite: 7].",
-            maxDose: "30 mg/kg/ngày[cite: 7]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 7]",
-            mixing: "Pha dung dịch tiêm truyền.",
-            note: "Không bao giờ là thuốc đầu tay cho sơ sinh, cân nhắc lợi ích/nguy cơ. GFR 10-29 cách liều 18h, GFR < 10 cách liều 24h[cite: 7].",
-            indication: "Nhiễm trùng kháng thuốc Gram âm nặng[cite: 7]."
+            doseDetails: "• Sinh non 32 - 37 tuần: 10 mg/kg/12 giờ\n• Trẻ đủ tháng: 15 mg/kg/12 giờ",
+            maxDose: "30 mg/kg/ngày",
+            route: "Truyền tĩnh mạch (TTM) / Uống",
+            mixing: "Dung dịch truyền sẵn hoặc pha loãng.",
+            note: "Không bao giờ là lựa chọn đầu tay cho sơ sinh. Cần cân nhắc kỹ giữa lợi ích và nguy cơ tổn thương sụn khớp.\n• Chỉnh liều suy thận:\n  - GFR ≥ 30: Không thay đổi\n  - GFR 10 - 29: dãn liều mỗi 18 giờ\n  - GFR < 10: dãn liều mỗi 24 giờ.",
+            indication: "Nhiễm trùng vi khuẩn Gram âm đa kháng thuốc khi không có giải pháp thay thế an toàn hơn."
           },
           clindamycin: {
-            name: "Clindamycin[cite: 7]",
+            name: "Clindamycin",
             concentration: "Dung dịch tiêm",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 5 mg/kg/12h; 15-28 ngày: 5 mg/kg/8h[cite: 7].\n• CN 1-2 kg: ≤ 7 ngày: 5 mg/kg/12h; 8-28 ngày: 5 mg/kg/8h[cite: 7].\n• CN > 2 kg: ≤ 7 ngày: 5 mg/kg/8h; 8-28 ngày: 5 mg/kg/6h[cite: 7].",
-            maxDose: "40 mg/kg/ngày[cite: 7]",
-            route: "TM, Tiêm bắp[cite: 7]",
-            mixing: "Pha dung dịch tiêm.",
-            note: "Không đổi liều khi suy thận. Cân nhắc khi tổn thương gan nặng[cite: 7].",
-            indication: "Nhiễm khuẩn kỵ khí, Gram dương[cite: 7]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 5 mg/kg/12 giờ\n  - 15 - 28 ngày: 5 mg/kg/8 giờ\n• CN 1 - 2 kg:\n  - ≤ 7 ngày: 5 mg/kg/12 giờ\n  - 8 - 28 ngày: 5 mg/kg/8 giờ\n• CN > 2 kg:\n  - ≤ 7 ngày: 5 mg/kg/8 giờ\n  - 8 - 28 ngày: 5 mg/kg/6 giờ",
+            maxDose: "20 mg/kg/ngày",
+            route: "Tiêm / Truyền tĩnh mạch (TM / TTM), Uống",
+            mixing: "Pha loãng truyền TM trong ít nhất 10 - 60 phút.",
+            note: "Không thay đổi liều khi suy thận. Cân nhắc và thận trọng khi bệnh nhi có tổn thương gan nặng.",
+            indication: "Nhiễm trùng vi khuẩn kỵ khí, vi khuẩn Gram dương (Tụ cầu, Liên cầu), viêm ruột hoại tử."
           },
           colistimethate: {
-            name: "Colistimethate[cite: 7]",
+            name: "Colistimethate (Colistin)",
             concentration: "Lọ 1.000.000 UI (33,33 mg Colistin)",
             category: "Kháng sinh",
-            doseDetails: "• 75.000 - 150.000 UI/kg/ngày chia mỗi 6-12 giờ (tương đương Colistin 2,5 - 5 mg/kg/ngày)[cite: 7].\n• Viêm phổi bệnh viện (khí dung): 4 mg/kg mỗi 12 giờ[cite: 7].",
-            maxDose: "150.000 UI/kg/ngày[cite: 7]",
-            route: "TTM, Khí dung[cite: 7]",
-            mixing: "Dung môi pha NaCl 0,9%, 5 mL[cite: 7].",
-            note: "Chỉnh liều theo GFR[cite: 7].",
-            indication: "Viêm phổi bệnh viện kết hợp thở máy, vi khuẩn đa kháng[cite: 7]."
+            doseDetails: "• Liều toàn thân: 75.000 UI - 150.000 UI/kg/ngày chia mỗi 6 - 12 giờ (tương đương 2,5 mg - 5 mg Colistin cơ bản/kg/ngày).\n• Khí dung (Viêm phổi bệnh viện kết hợp thở máy): 4 mg/kg mỗi 12 giờ.",
+            maxDose: "150.000 UI/kg/ngày (hoặc 5 mg/kg/ngày Colistin cơ bản)",
+            route: "Truyền tĩnh mạch (TTM), Khí dung",
+            mixing: "Lọ 1.000.000 UI (tương đương 33,33 mg Colistin). Pha với 5 mL dung môi NaCl 0,9%.",
+            note: "FDA chấp thuận cho mọi lứa tuổi. Chỉnh liều suy thận theo GFR:\n  - GFR 50 - 79: 75.000 - 120.000 UI/kg/ngày chia mỗi 12 giờ\n  - GFR 30 - 49: 75.000 UI/kg/ngày chia mỗi 12 giờ\n  - GFR 10 - 29: 45.000 UI/kg mỗi 36 giờ.",
+            indication: "Nhiễm trùng Gram âm đa kháng nặng (Acinetobacter baumannii, Pseudomonas aeruginosa, Klebsiella pneumoniae), viêm phổi thở máy."
           },
           fluconazole: {
-            name: "Fluconazole[cite: 7]",
+            name: "Fluconazole",
             concentration: "Dung dịch truyền 2mg/ml",
             category: "Kháng nấm",
-            doseDetails: "• Dự phòng (TT < 30 tuần): TSS < 7 ngày: 3 mg/kg hàng ngày hoặc 6 mg/kg 2 lần/tuần; TSS 7-42 ngày: 3-6 mg/kg mỗi 72h; TSS > 42 ngày: 6 mg/kg mỗi 48h; TT 30-40 tuần: 6 mg/kg mỗi 48h[cite: 7].\n• Điều trị: 12 mg/kg/liều 1 lần/ngày x 21 ngày[cite: 7].",
-            maxDose: "12 mg/kg/ngày[cite: 7]",
-            route: "TTM, Uống[cite: 7]",
-            mixing: "Dung dịch pha sẵn truyền tĩnh mạch.",
-            note: "GFR 10-50: 50% liều; GFR < 10: 50% liều mỗi 48 giờ[cite: 7].",
-            indication: "Dự phòng và điều trị nhiễm nấm Candida toàn thân[cite: 7]."
+            doseDetails: "• DỰ PHÒNG:\n  - Chỉ định: Tuổi thai < 30 tuần & CN < 1.000 g tại khoa có tỷ lệ nhiễm nấm cao. Khởi đầu sớm lúc 48-72 giờ tuổi, kéo dài 4-6 tuần.\n  - TSS < 7 ngày: IV 3 mg/kg/ngày HOẶC 6 mg/kg/liều x 2 lần/tuần.\n  - TSS 7 - 42 ngày: 3 mg/kg/lần/ngày HOẶC 6 mg/kg mỗi 72 giờ.\n  - TSS > 42 ngày (hoặc TT 30-40 tuần): 6 mg/kg mỗi 48 giờ.\n  - Khi tổn thương thận cấp: SCr ≥ 1,3 mg/dl dùng 6 mg/kg x 1 lần/tuần; SCr < 1 mg/dl dùng liều bình thường.\n• ĐIỀU TRỊ:\n  - 12 mg/kg/liều x 1 lần/ngày x 21 ngày (hoặc thêm ít nhất 2 tuần sau khi cấy máu âm tính).\n  - Suy thận cấp: GFR > 50 (giữ nguyên); GFR 10-50 (dùng 50% liều, khoảng cách bình thường); GFR < 10 (dùng 50% liều, mỗi 48 giờ).",
+            maxDose: "12 mg/kg/ngày",
+            route: "Truyền tĩnh mạch (TTM), Uống (liều uống tương đương liều TM)",
+            mixing: "Dung dịch tiêm truyền 2 mg/mL.",
+            note: "Sử dụng phòng ngừa nên bắt đầu sớm (48-72h tuổi) và kéo dài đến khi ngưng catheter tĩnh mạch trung tâm.",
+            indication: "Dự phòng và điều trị nhiễm nấm Candida xâm nhập, nhiễm nấm toàn thân ở trẻ sơ sinh nguy cơ cao."
           },
           ganciclovir: {
-            name: "Ganciclovir[cite: 8]",
+            name: "Ganciclovir",
             concentration: "Lọ tiêm truyền",
             category: "Kháng virus",
-            doseDetails: "• CMV bẩm sinh: 6 mg/kg/liều mỗi 12 giờ, kéo dài 6 tuần[cite: 8].",
-            maxDose: "12 mg/kg/ngày[cite: 8]",
-            route: "Truyền tĩnh mạch trong 1 giờ[cite: 8]",
-            mixing: "Pha dung dịch tiêm truyền.",
-            note: "Giảm 50% liều khi bạch cầu hạt < 500/mm³[cite: 8].",
-            indication: "CMV bẩm sinh có triệu chứng hoặc bệnh thần kinh trung ương[cite: 8]."
+            doseDetails: "• CMV bẩm sinh (có triệu chứng hoặc bệnh hệ thần kinh trung ương): 6 mg/kg/liều mỗi 12 giờ, kéo dài 6 tuần.\n• Trẻ có HIV (+): liệu trình có thể kéo dài hơn.",
+            maxDose: "12 mg/kg/ngày",
+            route: "Truyền tĩnh mạch (TTM)",
+            mixing: "Pha loãng truyền TM trong 1 giờ.",
+            note: "Giảm 50% liều khi BC hạt (ANC) < 500/mm³. Cần theo dõi công thức máu và chức năng thận.",
+            indication: "Nhiễm Cytomegalovirus (CMV) bẩm sinh có triệu chứng hoặc tổn thương thần kinh trung ương."
           },
           gentamicin: {
-            name: "Gentamicin[cite: 8]",
+            name: "Gentamicin",
             concentration: "Dung dịch tiêm",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 5 mg/kg mỗi 48h; 15-28 ngày: 5 mg/kg mỗi 36h[cite: 8].\n• CN 1-2 kg: ≤ 7 ngày: 5 mg/kg mỗi 48h; 8-28 ngày: 5 mg/kg mỗi 36h[cite: 8].\n• CN > 2 kg: ≤ 7 ngày: 4 mg/kg mỗi 24h; 8-28 ngày: 4-5 mg/kg mỗi 24h[cite: 8].",
-            maxDose: "5 mg/kg/liều[cite: 8]",
-            route: "TM, Tiêm bắp[cite: 8]",
-            mixing: "Pha dung dịch tiêm.",
-            note: "Xem xét cho 1 liều và kiểm tra nồng độ thuốc khi tiểu < 1 ml/kg/giờ hoặc creatinine > 1,3 mg/dL[cite: 8].",
-            indication: "Nhiễm trùng huyết sơ sinh[cite: 8]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 5 mg/kg/liều mỗi 48 giờ\n  - 15 - 28 ngày: 5 mg/kg/liều mỗi 36 giờ\n• CN 1 - 2 kg:\n  - ≤ 7 ngày: 5 mg/kg/liều mỗi 48 giờ\n  - 8 - 28 ngày: 5 mg/kg/liều mỗi 36 giờ\n• CN > 2 kg:\n  - ≤ 7 ngày: 4 mg/kg/liều mỗi 24 giờ\n  - 8 - 28 ngày: 4 - 5 mg/kg/liều mỗi 24 giờ",
+            maxDose: "5 mg/kg/liều",
+            route: "Tiêm tĩnh mạch (TM), Truyền tĩnh mạch (TTM), Tiêm bắp (TB)",
+            mixing: "Pha loãng với NaCl 0,9% hoặc Dextrose 5%, truyền trong 30 - 60 phút.",
+            note: "Khi suy thận (tiểu < 1 mL/kg/giờ hoặc SCr > 1,3 mg/dL): cho 1 liều ban đầu và kiểm tra nồng độ thuốc trong huyết thanh thay vì dùng liều thường quy.",
+            indication: "Nhiễm trùng huyết sơ sinh, nghi ngờ nhiễm khuẩn Gram âm phối hợp với Ampicillin."
           },
           imipenem: {
-            name: "Imipenem/Cilastatin[cite: 8]",
+            name: "Imipenem / Cilastatin",
             concentration: "Lọ pha tiêm",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 20 mg/kg mỗi 12h; 15-28 ngày: 25 mg/kg mỗi 12h[cite: 8].\n• CN 1-2 kg: ≤ 7 ngày: 20 mg/kg mỗi 12h; 8-28 ngày: 25 mg/kg mỗi 12h[cite: 8].\n• CN > 2 kg: ≤ 7 ngày: 25 mg/kg mỗi 12h; 8-28 ngày: 25 mg/kg mỗi 8h[cite: 8].\n• Nhũ nhi NTH nặng: 15-25 mg/kg mỗi 6 giờ[cite: 8].",
-            maxDose: "100 mg/kg/ngày[cite: 8]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 8]",
-            mixing: "Thuốc pha với NaCl 0,9%, nồng độ 5 mg/mL truyền 60 phút[cite: 8].",
-            note: "Chỉnh liều theo GFR[cite: 8].",
-            indication: "Nhiễm trùng nặng do vi khuẩn nhạy cảm[cite: 8]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 20 mg/kg/liều mỗi 12 giờ\n  - 15 - 28 ngày: 25 mg/kg/liều mỗi 12 giờ\n• CN 1 - 2 kg:\n  - ≤ 7 ngày: 20 mg/kg/liều mỗi 12 giờ\n  - 8 - 28 ngày: 25 mg/kg/liều mỗi 12 giờ\n• CN > 2 kg:\n  - ≤ 7 ngày: 25 mg/kg/liều mỗi 12 giờ\n  - 8 - 28 ngày: 25 mg/kg/liều mỗi 8 giờ\n• Nhũ nhi NTH nặng: 15 - 25 mg/kg mỗi 6 giờ",
+            maxDose: "100 mg/kg/ngày",
+            route: "Truyền tĩnh mạch (TTM)",
+            mixing: "Liều tính theo Imipenem. Pha với NaCl 0,9% đạt nồng độ 5 mg/mL, truyền trong 60 phút.",
+            note: "Chỉnh liều suy thận (dựa trên liều chuẩn 15 - 25 mg/kg/6 giờ):\n  - GFR 30 - 50: 7,5 - 12,5 mg/kg mỗi 8 giờ\n  - GFR 10 - 29: 7,5 - 12,5 mg/kg mỗi 12 giờ\n  - GFR < 10: 7,5 - 12,5 mg/kg mỗi 24 giờ.",
+            indication: "Nhiễm trùng huyết nặng, nhiễm khuẩn vi khuẩn đa kháng mắc phải tại bệnh viện."
           },
           linezolid: {
-            name: "Linezolid[cite: 9]",
+            name: "Linezolid (Zyvox)",
             concentration: "Dung dịch TM / Uống",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 10 mg/kg mỗi 12h; 15-28 ngày: 10 mg/kg mỗi 8h[cite: 9].\n• CN 1-2 kg: ≤ 7 ngày: 10 mg/kg mỗi 12h; 8-28 ngày: 10 mg/kg mỗi 8h[cite: 9].\n• CN > 2 kg: 10 mg/kg mỗi 8h[cite: 9].\n• Nhũ nhi: 10 mg/kg mỗi 8 giờ[cite: 9].",
-            maxDose: "600 mg/liều[cite: 9]",
-            route: "TTM, Uống[cite: 9]",
-            mixing: "TTM 30-120 phút[cite: 9].",
-            note: "Không thay đổi liều khi suy thận. Thuốc hấp thu tốt qua đường tiêu hóa[cite: 9].",
-            indication: "Nhiễm khuẩn Gram dương kháng thuốc[cite: 9]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 10 mg/kg/liều mỗi 12 giờ\n  - 15 - 28 ngày: 10 mg/kg/liều mỗi 8 giờ\n• CN 1 - 2 kg:\n  - ≤ 7 ngày: 10 mg/kg/liều mỗi 12 giờ\n  - 8 - 28 ngày: 10 mg/kg/liều mỗi 8 giờ\n• CN > 2 kg: 10 mg/kg/liều mỗi 8 giờ\n• Nhũ nhi: 10 mg/kg mỗi 8 giờ",
+            maxDose: "30 mg/kg/ngày",
+            route: "Truyền tĩnh mạch (TTM), Uống (hấp thu qua đường tiêu hóa rất tốt, liều uống = liều TM)",
+            mixing: "Dung dịch 600 mg/300 mL hoặc 200 mg/100 mL. TTM trong 30 - 120 phút. KHÔNG pha thêm dung môi khác.",
+            note: "Không thay đổi liều khi suy thận.",
+            indication: "Nhiễm trùng vi khuẩn Gram dương kháng thuốc (MRSA, VRE), viêm phổi nặng, nhiễm trùng da mô mềm."
           },
           levofloxacin: {
-            name: "Levofloxacin[cite: 9]",
+            name: "Levofloxacin",
             concentration: "Dung dịch truyền",
             category: "Kháng sinh",
-            doseDetails: "• 8 - 10 mg/kg/liều mỗi 12 giờ[cite: 9].",
-            maxDose: "20 mg/kg/ngày[cite: 9]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 9]",
-            mixing: "Pha dung dịch tiêm truyền.",
-            note: "Trẻ < 6 tháng chưa được nghiên cứu kỹ, cân nhắc lợi ích/nguy cơ. Chỉnh liều theo GFR[cite: 9].",
-            indication: "Nhiễm khuẩn nặng Gram âm kháng thuốc[cite: 9]."
+            doseDetails: "8 - 10 mg/kg/liều mỗi 12 giờ.",
+            maxDose: "20 mg/kg/ngày",
+            route: "Truyền tĩnh mạch (TTM), Uống",
+            mixing: "Chế phẩm 250 mg/50 mL, 500 mg/100 mL.",
+            note: "Chưa được nghiên cứu đầy đủ ở trẻ < 6 tháng. Không bao giờ là chỉ định đầu tay, chỉ dùng khi cân nhắc lợi ích vượt trội rủi ro.\n• Chỉnh liều suy thận (dựa trên liều chuẩn 8 - 10 mg/kg/12h):\n  - GFR ≥ 30: Giữ nguyên\n  - GFR 10 - 29: 5 - 10 mg/kg/24 giờ\n  - GFR < 10: 5 - 10 mg/kg/48 giờ.",
+            indication: "Nhiễm trùng vi khuẩn Gram âm đa kháng nghiêm trọng khi không có lựa chọn khác."
           },
           meropenem: {
-            name: "Meropenem[cite: 9]",
+            name: "Meropenem",
             concentration: "Lọ 500mg, 1g",
             category: "Kháng sinh",
-            doseDetails: "• CN ≤ 2 kg: ≤ 14 ngày: 20 mg/kg mỗi 12h; 15-28 ngày: 25 mg/kg mỗi 8h; 29-60 ngày: 30 mg/kg mỗi 8h[cite: 9].\n• CN > 2 kg: ≤ 14 ngày: 20 mg/kg mỗi 8h; 15-60 ngày: 30 mg/kg mỗi 8h[cite: 9].\n• VMN: 40 mg/kg mỗi 8 giờ[cite: 9].",
-            maxDose: "120 mg/kg/ngày[cite: 9]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 9]",
-            mixing: "Pha với NaCl 0,9%, nồng độ 1-20 mg/mL, truyền 30 phút[cite: 9].",
-            note: "NTH nặng hoặc kháng thuốc trung bình MIC 4-8 mcg/ml dùng liều 40 mg/kg/8h[cite: 9].",
-            indication: "Nhiễm trùng huyết nặng, viêm màng não mủ, vi khuẩn đa kháng[cite: 9]."
+            doseDetails: "• CN ≤ 2 kg:\n  - ≤ 14 ngày: 20 mg/kg mỗi 12 giờ\n  - 15 - 28 ngày: 25 mg/kg mỗi 8 giờ\n  - 29 - 60 ngày: 30 mg/kg mỗi 8 giờ\n• CN > 2 kg:\n  - ≤ 14 ngày: 20 mg/kg mỗi 8 giờ\n  - 15 - 60 ngày: 30 mg/kg mỗi 8 giờ\n• VMN: 40 mg/kg mỗi 8 giờ\n• NTH nặng (vi trùng kháng thuốc trung bình MIC 4-8 mcg/ml): 40 mg/kg mỗi 8 giờ.",
+            maxDose: "120 mg/kg/ngày",
+            route: "Truyền tĩnh mạch (TTM)",
+            mixing: "Pha thuốc với NaCl 0,9% đạt nồng độ 1 - 20 mg/mL, truyền trong 30 phút.",
+            note: "Chỉnh liều suy thận (dựa trên liều chuẩn 20 - 40 mg/kg/8h):\n  - GFR 30 - 50: 20 - 40 mg/kg mỗi 12 giờ\n  - GFR 10 - 29: 10 - 20 mg/kg mỗi 12 giờ\n  - GFR < 10: 10 - 20 mg/kg mỗi 24 giờ\n  - CRRT: 20 - 40 mg/kg mỗi 12 giờ.",
+            indication: "Nhiễm trùng huyết nặng, viêm màng não vi khuẩn, nhiễm trùng do vi khuẩn Gram âm đa kháng Gram (-)."
           },
           metronidazole: {
-            name: "Metronidazole[cite: 10]",
+            name: "Metronidazole",
             concentration: "Dung dịch tiêm truyền",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 15 mg/kg liều đầu sau đó 7,5 mg/kg mỗi 48h; 15-28 ngày: 15 mg/kg mỗi 24h[cite: 10].\n• CN 1-2 kg: ≤ 7 ngày: 15 mg/kg liều đầu sau đó 7,5 mg/kg mỗi 24-48h; 8-28 ngày: 15 mg/kg mỗi 24h[cite: 10].\n• CN > 2 kg: ≤ 7 ngày: 15 mg/kg mỗi 24h; 8-28 ngày: 15 mg/kg mỗi 12h[cite: 10].\n• Nhũ nhi: 7,5 - 15 mg/kg mỗi 8 giờ[cite: 10].",
-            maxDose: "40 mg/kg/ngày[cite: 10]",
-            route: "Truyền tĩnh mạch (TM)[cite: 10]",
-            mixing: "Pha dung dịch tiêm truyền.",
-            note: "GFR ≥ 10 không chỉnh; GFR < 10 giảm 50% liều[cite: 10].",
-            indication: "Nhiễm khuẩn kỵ khí[cite: 10]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 15 mg/kg liều đầu, sau đó 7,5 mg/kg mỗi 48 giờ\n  - 15 - 28 ngày: 15 mg/kg liều mỗi 24 giờ\n• CN 1 - 2 kg:\n  - ≤ 7 ngày: 15 mg/kg liều đầu, sau đó 7,5 mg/kg mỗi 24 - 48 giờ\n  - 8 - 28 ngày: 15 mg/kg liều mỗi 24 giờ\n• CN > 2 kg:\n  - ≤ 7 ngày: 15 mg/kg liều mỗi 24 giờ\n  - 8 - 28 ngày: 15 mg/kg liều mỗi 12 giờ\n• Nhũ nhi: 7,5 - 15 mg/kg/liều mỗi 8 giờ",
+            maxDose: "30 mg/kg/ngày",
+            route: "Truyền tĩnh mạch (TTM), Uống",
+            mixing: "Dung dịch truyền sẵn 5 mg/mL.",
+            note: "Chỉnh liều suy thận:\n  - GFR ≥ 10: Không chỉnh\n  - GFR < 10: Giảm 50% liều.",
+            indication: "Nhiễm khuẩn kỵ khí, viêm ruột hoại tử (NEC), áp xe ổ bụng."
           },
           oxacillin: {
-            name: "Oxacillin[cite: 10]",
+            name: "Oxacillin",
             concentration: "Lọ tiêm truyền",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 25 mg/kg mỗi 12h; 15-28 ngày: 25 mg/kg mỗi 8h[cite: 10].\n• CN 1-2 kg: ≤ 7 ngày: 25 mg/kg mỗi 12h; 8-28 ngày: 25 mg/kg mỗi 8h[cite: 10].\n• CN > 2 kg: ≤ 7 ngày: 25 mg/kg mỗi 8h; 8-28 ngày: 25 mg/kg mỗi 6h[cite: 10].\n• VMN: ≤ 7 ngày: 75 mg/kg/ngày chia 8-12h; > 7 ngày: 150-200 mg/kg/ngày chia 6-8h[cite: 10].",
-            maxDose: "200 mg/kg/ngày[cite: 10]",
-            route: "TM, Tiêm bắp[cite: 10]",
-            mixing: "Pha dung dịch tiêm.",
-            note: "Không thay đổi liều khi suy thận[cite: 10].",
-            indication: "Nhiễm trùng do tụ cầu[cite: 10]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 25 mg/kg/liều mỗi 12 giờ\n  - 15 - 28 ngày: 25 mg/kg/liều mỗi 8 giờ\n• CN 1 - 2 kg:\n  - ≤ 7 ngày: 25 mg/kg/liều mỗi 12 giờ\n  - 8 - 28 ngày: 25 mg/kg/liều mỗi 8 giờ\n• CN > 2 kg:\n  - ≤ 7 ngày: 25 mg/kg/liều mỗi 8 giờ\n  - 8 - 28 ngày: 25 mg/kg/liều mỗi 6 giờ\n• VMN:\n  - ≤ 7 ngày: 75 mg/kg/ngày chia mỗi 8 - 12 giờ\n  - > 7 ngày: 150 - 200 mg/kg/ngày chia mỗi 6 - 8 giờ",
+            maxDose: "200 mg/kg/ngày",
+            route: "Tiêm tĩnh mạch (TM / TTM), Tiêm bắp (TB)",
+            mixing: "Pha loãng tiêm TM chậm hoặc truyền TTM.",
+            note: "Không thay đổi liều khi suy thận.",
+            indication: "Nhiễm trùng do Tụ cầu nhạy cảm Methicillin (MSSA), nhiễm trùng da mô mềm, xương khớp, viêm màng não do Tụ cầu."
           },
           penicillin_g: {
-            name: "Penicillin G[cite: 11]",
+            name: "Penicillin G",
             concentration: "Lọ bột pha tiêm",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 25.000 - 50.000 UI/kg mỗi 12h; 15-28 ngày: mỗi 8h[cite: 11].\n• VMN do GBS: ≤ 7 ngày: 250.000 - 450.000 UI/kg/ngày chia 8h; > 7 ngày: 450.000 - 500.000 UI/kg/ngày chia 6h[cite: 11].\n• Giang mai bẩm sinh: 50.000 UI/kg mỗi 12-8h x 10 ngày[cite: 11].",
-            maxDose: "500.000 UI/kg/ngày[cite: 11]",
-            route: "TM, Tiêm bắp[cite: 11]",
-            mixing: "Pha dung dịch tiêm.",
-            note: "GFR 10-50: 75% liều bình thường; GFR < 10: giảm 50% liều[cite: 11].",
-            indication: "Viêm màng não, giang mai bẩm sinh, nhiễm liên cầu[cite: 11]."
+            doseDetails: "• CN < 1 kg (TM, TB):\n  - ≤ 14 ngày: 25.000 - 50.000 UI/kg/liều mỗi 12 giờ\n  - 15 - 28 ngày: 25.000 - 50.000 UI/kg/liều mỗi 8 giờ\n• CN ≥ 1 kg (TM, TB):\n  - ≤ 7 ngày: 25.000 - 50.000 UI/kg/liều mỗi 12 giờ\n  - 8 - 28 ngày: 25.000 - 50.000 UI/kg/liều mỗi 8 giờ\n• VMN do GBS (TM):\n  - ≤ 7 ngày: 250.000 - 450.000 UI/kg/ngày chia mỗi 8 giờ\n  - 8 - 28 ngày: 450.000 - 500.000 UI/kg/ngày chia mỗi 6 giờ\n• VMN do tác nhân khác (TM):\n  - ≤ 7 ngày: 150.000 UI/kg/ngày chia mỗi 8 - 12 giờ\n  - 8 - 28 ngày: 200.000 UI/kg/ngày chia mỗi 6 - 8 giờ\n• Giang mai bẩm sinh:\n  - ≤ 7 ngày: 50.000 UI/kg mỗi 12 giờ x 10 ngày\n  - 8 - 28 ngày: 50.000 UI/kg mỗi 8 giờ x 10 ngày",
+            maxDose: "500.000 UI/kg/ngày (trong điều trị Viêm màng não do GBS)",
+            route: "Tiêm tĩnh mạch (TM), Tiêm bắp (TB)",
+            mixing: "Pha loãng với Nước cất tiêm hoặc NaCl 0,9%.",
+            note: "Chỉnh liều suy thận:\n  - GFR 10 - 50: dùng 75% liều bình thường\n  - GFR < 10: giảm 50% liều.",
+            indication: "Giang mai bẩm sinh, nhiễm Liên cầu khuẩn nhóm B (GBS), viêm màng não do Pneumococcus / Meningococcus."
           },
           bactrim: {
-            name: "Sulfamethoxazole & Trimethoprim (Bactrim)[cite: 11]",
+            name: "Sulfamethoxazole & Trimethoprim (Bactrim)",
             concentration: "80mg + 16mg/mL",
             category: "Kháng sinh",
-            doseDetails: "• Trẻ em & nhũ nhi ≥ 2 tháng:\n  - NTH: 6-12 mg TMP/kg/ngày chia mỗi 12 giờ[cite: 11].\n  - VMN: 10-20 mg TMP/kg/ngày mỗi 6-12 giờ[cite: 11].",
-            maxDose: "20 mg TMP/kg/ngày[cite: 11]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 11]",
-            mixing: "Pha với Dextrose 5%, TTM trong 60 - 90 phút[cite: 11].",
-            note: "GFR > 30 không đổi; GFR 15-30: 50% liều; GFR < 15: không khuyến cáo[cite: 11].",
-            indication: "Nhiễm trùng tiểu, viêm phổi[cite: 11]."
+            doseDetails: "• Trẻ em & Nhũ nhi ≥ 2 tháng:\n  - NTH: 6 - 12 mg TMP/kg/ngày chia mỗi 12 giờ\n  - VMN: 10 - 20 mg TMP/kg/ngày chia mỗi 6 - 12 giờ",
+            maxDose: "20 mg TMP/kg/ngày",
+            route: "Truyền tĩnh mạch (TTM), Uống",
+            mixing: "Sản phẩm chứa Sulfamethoxazole 80 mg + Trimethoprim 16 mg/mL (5mL, 10mL, 30mL). Pha với Dextrose 5%, TTM trong 60 - 90 phút.",
+            note: "Chỉnh liều suy thận:\n  - GFR > 30: Không thay đổi\n  - GFR 15 - 30: 50% liều khuyến cáo\n  - GFR < 15: Không khuyến cáo dùng\n• Suy gan: Nhà sản xuất không có khuyến cáo chỉnh liều.",
+            indication: "Nhiễm Pneumocystis jirovecii (PCP), nhiễm trùng vi khuẩn Gram âm nhạy cảm."
           },
           ticarcillin: {
-            name: "Ticarcillin & Clavulanate potassium[cite: 12]",
+            name: "Ticarcillin & Clavulanate potassium",
             concentration: "Lọ 3g + 0.1g",
             category: "Kháng sinh",
-            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 75 mg/kg mỗi 12h; 15-28 ngày: 75 mg/kg mỗi 8h[cite: 12].\n• CN ≥ 1 kg: ≤ 7 ngày: 75 mg/kg mỗi 12h; 8-28 ngày: 75 mg/kg mỗi 8h[cite: 12].",
-            maxDose: "300 mg/kg/ngày[cite: 12]",
-            route: "TTM / TM[cite: 12]",
-            mixing: "Pha dung dịch tiêm truyền.",
-            note: "GFR 10-29: 50-75 mg/kg mỗi 8h; GFR < 10: 50-75 mg/kg mỗi 12h[cite: 12].",
-            indication: "Nhiễm trùng nặng do vi khuẩn sinh beta-lactamase[cite: 12]."
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 75 mg/kg/liều mỗi 12 giờ\n  - 15 - 28 ngày: 75 mg/kg/liều mỗi 8 giờ\n• CN ≥ 1 kg:\n  - ≤ 7 ngày: 75 mg/kg/liều mỗi 12 giờ\n  - 8 - 28 ngày: 75 mg/kg/liều mỗi 8 giờ",
+            maxDose: "300 mg/kg/ngày",
+            route: "Tiêm tĩnh mạch (TM / TTM)",
+            mixing: "Chế phẩm Ticarcillin disodium 3 g + Clavulanic acid 0.1 g. Pha loãng tiêm/truyền.",
+            note: "Liều tính dựa trên hàm lượng Ticarcillin.\n• Chỉnh liều suy thận:\n  - GFR 10 - 29: 50 - 75 mg/kg mỗi 8 giờ\n  - GFR < 10: 50 - 75 mg/kg mỗi 12 giờ\n  - GFR < 10 kèm tổn thương gan: 50 - 75 mg/kg mỗi 24 giờ.",
+            indication: "Nhiễm trùng huyết do Pseudomonas aeruginosa và vi khuẩn Gram âm tiết Beta-lactamase."
           },
           valganciclovir: {
-            name: "Valganciclovir[cite: 12]",
+            name: "Valganciclovir",
             concentration: "Dung dịch uống / Viên",
             category: "Kháng virus",
-            doseDetails: "• CMV bẩm sinh (Tuổi thai ≥ 32 tuần & ≥ 1.800 g): 16 mg/kg/liều uống mỗi 12 giờ trong 6 tháng[cite: 12].",
-            maxDose: "900 mg/liều[cite: 12]",
-            route: "Uống[cite: 12]",
-            mixing: "Dạng dung dịch uống theo hướng dẫn.",
-            note: "Hiệu chỉnh liều dựa trên chức năng thận và SCr ở trẻ sơ sinh[cite: 12].",
-            indication: "Điều trị CMV bẩm sinh có triệu chứng giai đoạn sơ sinh[cite: 12]."
+            doseDetails: "• CMV bẩm sinh có triệu chứng (giai đoạn sơ sinh, tuổi thai ≥ 32 tuần & cân nặng ≥ 1.800 g): 16 mg/kg/liều UỐNG mỗi 12 giờ, kéo dài trong 6 tháng.",
+            maxDose: "32 mg/kg/ngày",
+            route: "Uống (Oral)",
+            mixing: "Dạng dung dịch uống hoặc viên nén (nghiền/pha suspension).",
+            note: "Theo dõi sát công thức máu (nguy cơ ức chế tủy xương gây giảm bạch cầu trung tính) và chức năng thận.",
+            indication: "Điều trị nhiễm Cytomegalovirus (CMV) bẩm sinh có triệu chứng ở trẻ sơ sinh."
           },
-          vancomycin_ss: {
-            name: "Vancomycin (Sơ sinh)[cite: 12]",
+          vancomycin: {
+            name: "Vancomycin",
             concentration: "Lọ 500mg",
             category: "Kháng sinh",
-            doseDetails: "• < 1,2 kg: 15 mg/kg/24h (TTM 60 phút)[cite: 12].\n• < 7 ngày (1,2-2kg): 10-15 mg/kg mỗi 12-18h; (>2kg): mỗi 8-12h[cite: 12].\n• ≥ 7 ngày (1,2-2kg): 10-15 mg/kg mỗi 8-12h; (>2kg): mỗi 6-8h[cite: 12].\n• VMN: 35-45 mg/kg/ngày chia 6-8h[cite: 12].",
-            maxDose: "60 mg/kg/ngày[cite: 12]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 12]",
-            mixing: "Pha với NaCl 0,9% hoặc Glucose 5%, truyền tối thiểu 60 phút[cite: 12].",
-            note: "Hiệu chỉnh liều theo nồng độ đỉnh/đáy hoặc creatinin máu[cite: 8, 12].",
-            indication: "Nhiễm trùng nặng do Gram dương kháng thuốc (MRSA)[cite: 12]."
+            doseDetails: "• Liều theo Tuổi thai & Creatinin máu:\n  * Tuổi thai > 28 tuần:\n    - SCr < 0,7 mg/dl: 15 mg/kg mỗi 12 giờ\n    - SCr 0,7 - 0,9 mg/dl: 20 mg/kg mỗi 24 giờ\n    - SCr 1,0 - 1,2 mg/dl: 15 mg/kg mỗi 24 giờ\n    - SCr 1,3 - 1,6 mg/dl: 10 mg/kg mỗi 24 giờ\n    - SCr > 1,6 mg/dl: 15 mg/kg mỗi 48 giờ\n  * Tuổi thai ≤ 28 tuần:\n    - SCr < 0,5 mg/dl: 15 mg/kg mỗi 12 giờ\n    - SCr 0,5 - 0,7 mg/dl: 20 mg/kg mỗi 24 giờ\n    - SCr 0,8 - 1,0 mg/dl: 15 mg/kg mỗi 24 giờ\n    - SCr 1,1 - 1,4 mg/dl: 10 mg/kg mỗi 24 giờ\n    - SCr > 1,4 mg/dl: 15 mg/kg mỗi 48 giờ\n• Liều theo cân nặng / tuổi sau sinh:\n  - CN < 1,2 kg: 15 mg/kg/24h, TTM/60 phút\n  - CN 1,2 - 2 kg: < 7 ngày: 10-15 mg/kg/12-18h; ≥ 7 ngày: 10-15 mg/kg/8-12h\n  - CN > 2 kg: < 7 ngày: 10-15 mg/kg/8-12h; ≥ 7 ngày: 10-15 mg/kg/6-8h\n• > 28 ngày hoặc NTH nặng: 45 - 60 mg/kg/ngày chia mỗi 6 - 8 giờ\n• VMN:\n  - ≤ 7 ngày & ≥ 2 kg: 20 - 30 mg/kg/ngày chia mỗi 8 - 12 giờ\n  - > 7 ngày & ≥ 2 kg: 35 - 45 mg/kg/ngày chia mỗi 6 - 8 giờ\n  - > 28 ngày: 45 - 60 mg/kg/ngày chia mỗi 6 - 8 giờ (Trẻ < 2 kg liều thấp hơn)",
+            maxDose: "60 mg/kg/ngày",
+            route: "Truyền tĩnh mạch (TTM)",
+            mixing: "Pha loãng nồng độ không quá 5 mg/mL trong Dextrose 5% hoặc NaCl 0,9%. Truyền TTM chậm trong ít nhất 60 phút.",
+            note: "Theo dõi nồng độ Vancomycin đáy (trough level) và chức năng thận để tránh độc tính trên thận và thính giác (Hội chứng Red Man nếu truyền nhanh).",
+            indication: "Nhiễm trùng vi khuẩn Gram dương kháng Methicillin (MRSA), Tụ cầu da (CoNS), viêm màng não, nhiễm trùng catheter."
           },
           acetaminophen: {
-            name: "Acetaminophen[cite: 13]",
+            name: "Acetaminophen (Paracetamol)",
             concentration: "Dung dịch uống / Truyền",
             category: "Giảm đau & Hạ sốt",
-            doseDetails: "• 28 - 32 tuần: 10 mg/kg mỗi 12 giờ[cite: 13].\n• 33 - 36 tuần: 10 mg/kg mỗi 8 giờ[cite: 13].\n• ≥ 37 tuần: 10 mg/kg mỗi 6 giờ[cite: 13].",
-            maxDose: "60 mg/kg/ngày[cite: 13]",
-            route: "Uống, Truyền tĩnh mạch[cite: 13]",
-            mixing: "Dạng dung dịch sẵn có.",
-            note: "Thận trọng khi sử dụng kéo dài trên trẻ suy gan.",
-            indication: "Hạ sốt, giảm đau[cite: 13]."
+            doseDetails: "• 28 - 32 tuần tuổi thai: 10 mg/kg mỗi 12 giờ\n• 33 - 36 tuần tuổi thai: 10 mg/kg mỗi 8 giờ\n• ≥ 37 tuần tuổi thai: 10 mg/kg mỗi 6 giờ",
+            maxDose: "40 mg/kg/ngày",
+            route: "Tiêm tĩnh mạch (TM / TTM), Uống, Đặt hậu môn",
+            mixing: "Dung dịch truyền sẵn 10 mg/mL.",
+            note: "Chỉnh liều theo GFR khi suy thận. Thận trọng ở trẻ có tổn thương gan.",
+            indication: "Hạ sốt, giảm đau nhẹ đến trung bình, đóng ống động mạch (PDA) ở trẻ sinh non."
           },
           adenosine: {
-            name: "Adenosine (ATP)[cite: 13]",
+            name: "Adenosine (ATP)",
             concentration: "6mg/2ml",
             category: "Vận mạch & Tim mạch",
-            doseDetails: "• Nhịp nhanh kịch phát trên thất:\n  - IV nhanh khởi đầu: 0,1 mg/kg; tăng mỗi 0,1 mg/kg đến tối đa 0,3 mg/kg[cite: 13].\n  - TTM liên tục: 0,05 - 0,1 mcg/kg/phút (duy trì 0,01 - 0,4 mcg/kg/phút)[cite: 13].",
-            maxDose: "0,3 mg/kg/liều bolus[cite: 13]",
-            route: "IV nhanh, TTM[cite: 13]",
-            mixing: "Tiêm tĩnh mạch nhanh theo đường ngoại biên lớn.",
-            note: "Ngưng thở ngắn có thể xảy ra, theo dõi sát trên monitor ECG.",
-            indication: "Cắt cơn nhịp nhanh kịch phát trên thất ở sơ sinh[cite: 13]."
+            doseDetails: "• Tiêm tĩnh mạch nhanh (IV push):\n  - Liều khởi đầu: 0,1 mg/kg.\n  - Nếu không hiệu quả trong 1 - 2 phút: tăng mỗi 0,1 mg/kg mỗi 1 - 2 phút cho đến khi có hiệu quả.",
+            maxDose: "Liều đơn tối đa: 0,3 mg/kg.",
+            route: "Tiêm tĩnh mạch nhanh (IV push / Bolus) gần vị trí trung tâm",
+            mixing: "Dùng trực tiếp không pha loãng, tiêm nhanh trong 1 - 2 giây và xả nhanh bằng 3 - 5 mL NaCl 0,9%.",
+            note: "Phải có sẵn phương tiện hồi sức tim phổi và theo dõi ECG liên tục.",
+            indication: "Cắt cơn nhịp nhanh kịch phát trên thất (SVT) ở trẻ sơ sinh."
           },
           alprostadil: {
-            name: "Alprostadil[cite: 13]",
+            name: "Alprostadil (PGE1)",
             concentration: "Dung dịch truyền",
             category: "Vận mạch & Tim mạch",
-            doseDetails: "• Truyền tĩnh mạch liên tục liều sơ sinh theo phác đồ tim bẩm sinh phụ thuộc ống động mạch[cite: 13].",
-            maxDose: "Theo đáp ứng lâm sàng[cite: 13]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 13]",
-            mixing: "Pha dung dịch truyền tĩnh mạch.",
-            note: "Ngưng thở gặp ở 10-20% sơ sinh (nhất là CNLS < 2 kg và trong những giờ đầu truyền thuốc)[cite: 13].",
-            indication: "Duy trì ống động mạch trong tim bẩm sinh phụ thuộc ống động mạch[cite: 13]."
+            doseDetails: "• Khởi đầu TTM liên tục: 0,05 - 0,1 mcg/kg/phút.\n• Khi đã đạt đáp ứng tốt: giảm dần đến liều tối thiểu đạt hiệu quả.\n• Nếu không đáp ứng: tăng liều dần.\n• Liều duy trì: 0,01 - 0,4 mcg/kg/phút.",
+            maxDose: "0,4 mcg/kg/phút",
+            route: "Truyền tĩnh mạch liên tục (TTM)",
+            mixing: "Pha loãng với Glucose 5% hoặc NaCl 0,9%.",
+            note: "LƯU Ý CẶP BÁO ĐỘNG: Cơn ngưng thở gặp ở 10 - 20% trẻ sơ sinh tim bẩm sinh điều trị Alprostadil (hay gặp nhất ở trẻ có CNLS < 2 kg và xuất hiện trong những giờ đầu truyền thuốc). Cần chuẩn bị sẵn sàng nội khí quản.",
+            indication: "Duy trì sự mở của ống động mạch ở trẻ sơ sinh bị tim bẩm sinh phụ thuộc ống động mạch."
           },
           amiodarone: {
-            name: "Amiodarone (Cordarone)[cite: 13]",
+            name: "Amiodarone (Cordarone)",
             concentration: "150mg/3ml",
             category: "Vận mạch & Tim mạch",
-            doseDetails: "• Uống: 10 - 20 mg/kg/ngày chia mỗi 12 giờ trong 7-10 ngày, sau đó giảm liều 5-10 mg/kg/ngày duy trì thấp nhất 2,5 mg/kg/ngày[cite: 13].",
-            maxDose: "20 mg/kg/ngày[cite: 13]",
-            route: "Uống[cite: 13]",
-            mixing: "Dạng viên/dung dịch uống.",
-            note: "Theo dõi chức năng tuyến giáp, gan và điện tâm đồ.",
-            indication: "Rối loạn nhịp nặng[cite: 13]."
+            doseDetails: "• Uống: 10 - 20 mg/kg/ngày chia mỗi 12 giờ trong 7 - 10 ngày. Sau đó giảm xuống 5 - 10 mg/kg/ngày (dùng 1 lần/ngày) và tiếp tục trong 2 - 6 tháng.\n• Mục tiêu: Duy trì liều thấp nhất (2,5 mg/kg/ngày) mà không tái diễn rối loạn nhịp.",
+            maxDose: "20 mg/kg/ngày",
+            route: "Uống (Oral), Truyền tĩnh mạch (khi cấp cứu)",
+            mixing: "Pha loãng với Glucose 5% khi tiêm truyền tĩnh mạch.",
+            note: "Theo dõi sát nhịp tim, ECG, chức năng tuyến giáp và gan.",
+            indication: "Điều trị rối loạn nhịp tim phức tạp, nhịp nhanh kịch phát trên thất kháng trị ở sơ sinh."
           },
           aspirin: {
-            name: "Aspirin[cite: 14]",
+            name: "Aspirin",
             concentration: "Viên uống",
             category: "Khác",
-            doseDetails: "• Dự phòng thuyên tắc sau can thiệp stent ống động mạch: 1 - 5 mg/kg/liều 1 lần trong ngày[cite: 14].",
-            maxDose: "5 mg/kg/ngày[cite: 14]",
-            route: "Uống[cite: 14]",
-            mixing: "Nghiền tán mịn pha nước cho trẻ uống.",
-            note: "Theo dõi nguy cơ xuất huyết tiêu hóa.",
-            indication: "Dự phòng thuyên tắc sau can thiệp stent ống động mạch[cite: 14]."
+            doseDetails: "1 - 5 mg/kg/liều x 1 lần/ngày.",
+            maxDose: "5 mg/kg/ngày",
+            route: "Uống (Oral)",
+            mixing: "Nghiền viên và hòa tan trong lượng nước nhỏ.",
+            note: "Theo dõi nguy cơ chảy máu và kích ứng dạ dày.",
+            indication: "Dự phòng thuyên tắc mạch sau can thiệp stent ống động mạch."
           },
           caffein_citrate: {
-            name: "Caffein citrate[cite: 14]",
+            name: "Caffein citrate",
             concentration: "20mg/ml",
             category: "Hô hấp & Thần kinh",
-            doseDetails: "• Tấn công: 20 mg/kg (10 mg/kg caffein cơ bản) TM 30 phút hoặc uống[cite: 14].\n• Duy trì: 5 - 10 mg/kg mỗi ngày (TMC hoặc uống) sau 24 giờ[cite: 14].",
-            maxDose: "20 mg/kg/liều tấn công[cite: 14]",
-            route: "TMC, Uống, TTM[cite: 14]",
-            mixing: "Dung dịch sẵn có.",
-            note: "Theo dõi sát nhịp tim và tình trạng kích thích thần kinh.",
-            indication: "Dự phòng và điều trị cơn ngưng thở ở trẻ sinh non[cite: 14]."
+            doseDetails: "• Liều tấn công: 20 mg/kg (tương đương 10 mg/kg Caffein cơ bản), TM trong 30 phút hoặc Uống.\n• Liều duy trì: 5 - 10 mg/kg (TM hoặc Uống) mỗi ngày, bắt đầu 24 giờ sau liều tấn công.",
+            maxDose: "20 mg/kg (liều tấn công)",
+            route: "Truyền tĩnh mạch (TTM 30 phút), Uống",
+            mixing: "Dung dịch tiêm/uống 20 mg/mL (tương đương 10 mg/mL caffein base).",
+            note: "Theo dõi tần số tim (nguy cơ nhịp nhanh > 180 lần/phút), dấu hiệu kích thích, dung nạp đường tiêu hóa.",
+            indication: "Cơn ngưng thở ở trẻ sinh non (Apnea of Prematurity)."
           },
           captopril: {
-            name: "Captopril[cite: 14]",
+            name: "Captopril",
             concentration: "Viên uống",
             category: "Vận mạch & Tim mạch",
-            doseDetails: "• Sơ sinh < 7 ngày & sinh non: khởi đầu 0,01 mg/kg/liều mỗi 8-12 giờ[cite: 14].\n• Sơ sinh > 7 ngày: 0,05 - 0,1 mg/kg/liều mỗi 8-24 giờ, chỉnh đến 0,5 mg/kg[cite: 14].\n• Nhũ nhi: 0,3 - 2,5 mg/kg/ngày chia mỗi 8-12 giờ[cite: 14].",
-            maxDose: "2,5 mg/kg/ngày[cite: 14]",
-            route: "Uống[cite: 14]",
-            mixing: "Pha chế dung dịch uống từ viên nén.",
-            note: "GFR 10-50: cho 75% liều; GFR < 10: cho 50% liều[cite: 14].",
-            indication: "Tăng huyết áp, suy tim[cite: 14]."
+            doseDetails: "• Sơ sinh < 7 ngày & Sinh non: Khởi đầu 0,01 mg/kg/liều mỗi 8 - 12 giờ.\n• Sơ sinh > 7 ngày: Khởi đầu 0,05 - 0,1 mg/kg/liều mỗi 8 - 24 giờ. Chỉnh liều dần đến 0,5 mg/kg/liều mỗi 6 - 24 giờ.\n• Nhũ nhi: 0,3 - 2,5 mg/kg/ngày chia mỗi 8 - 12 giờ.",
+            maxDose: "2,5 mg/kg/ngày",
+            route: "Uống (Oral)",
+            mixing: "Pha thành dạng dung dịch lỏng cho sơ sinh.",
+            note: "Chỉnh liều suy thận (dựa theo liều nhũ nhi 0,1 - 0,5 mg/kg mỗi 6 - 8h):\n  - GFR 10 - 50: cho 75% liều\n  - GFR < 10: cho 50% liều.\nTheo dõi huyết áp, Kali máu và chức năng thận.",
+            indication: "Điều trị tăng huyết áp, suy tim sung huyết ở sơ sinh."
           },
           clopidogrel: {
-            name: "Clopidogrel[cite: 14]",
+            name: "Clopidogrel",
             concentration: "Viên uống",
             category: "Khác",
-            doseDetails: "• Dự phòng thuyên tắc sau can thiệp stent ống động mạch: 0,2 mg/kg/liều 1 lần trong ngày[cite: 14].",
-            maxDose: "0,2 mg/kg/ngày[cite: 14]",
-            route: "Uống[cite: 14]",
-            mixing: "Dạng uống.",
-            note: "Theo dõi các dấu hiệu xuất huyết.",
-            indication: "Dự phòng thuyên tắc sau can thiệp stent ống động mạch[cite: 14]."
+            doseDetails: "0,2 mg/kg/liều x 1 lần/ngày.",
+            maxDose: "0,2 mg/kg/ngày",
+            route: "Uống (Oral)",
+            mixing: "Nghiền nhỏ viên phân liều phù hợp.",
+            note: "Theo dõi cẩn thận các dấu hiệu xuất huyết.",
+            indication: "Dự phòng thuyên tắc mạch sau can thiệp stent ống động mạch."
           },
           dexamethasone: {
-            name: "Dexamethasone[cite: 14]",
+            name: "Dexamethasone",
             concentration: "4mg/ml",
             category: "Khác",
-            doseDetails: "• Khi rút NKQ hay phù nề đường thở: TM 0,25 - 0,5 mg/kg/liều cho 1-3 liều trước rút NKQ[cite: 14].",
-            maxDose: "1,5 mg/kg/ngày[cite: 14]",
-            route: "Tiêm mạch (TM)[cite: 14]",
-            mixing: "Dung dịch tiêm.",
-            note: "Theo dõi đường huyết và huyết áp.",
-            indication: "Phù nề đường thở, rút nội khí quản[cite: 14]."
+            doseDetails: "• Khi rút nội khí quản hay phù nề đường thở: TM 0,25 - 0,5 mg/kg/liều, cho 1 - 3 liều trước khi rút NKQ.",
+            maxDose: "1,5 mg/kg/ngày",
+            route: "Tiêm tĩnh mạch (TM), Uống",
+            mixing: "Dung dịch tiêm 4 mg/mL.",
+            note: "Thận trọng nguy cơ tăng huyết áp, tăng đường huyết, thủng ruột khi dùng kèm NSAID.",
+            indication: "Dự phòng và điều trị phù nề đường thở / khó thở khi rút nội khí quản."
           },
           enoxaparin: {
-            name: "Enoxaparin (Lovenox)[cite: 15]",
+            name: "Enoxaparin (Lovenox)",
             concentration: "Bơm tiêm pha sẵn",
             category: "Khác",
-            doseDetails: "• Điều trị: Trẻ < 2 tháng: 1,5 mg/kg TDD mỗi 12 giờ (mục tiêu anti-Xa 0,5-1 đơn vị/mL)[cite: 15].\n• Phòng ngừa: Trẻ < 2 tháng: 0,75 mg/kg TDD mỗi 12 giờ (mục tiêu anti-Xa 0,1-0,4 đơn vị/mL)[cite: 15].",
-            maxDose: "3 mg/kg/liều[cite: 15]",
-            route: "Tiêm dưới da (TDD)[cite: 15]",
-            mixing: "Dạng bơm tiêm pha sẵn.",
-            note: "Theo dõi xét nghiệm anti-Xa để điều chỉnh liều[cite: 15].",
-            indication: "Điều trị và dự phòng thuyên tắc mạch do huyết khối[cite: 15]."
+            doseDetails: "• Điều trị huyết khối:\n  - Trẻ < 2 tháng: 1,5 mg/kg TDD mỗi 12 giờ.\n  - Duy trì: điều chỉnh liều để đạt mục tiêu anti-Xa 0,5 - 1 đơn vị/mL. (Trẻ sinh non có thể cần liều cao 2 mg/kg mỗi 12 giờ, giới hạn 0,8 - 3 mg/kg/12h).\n• Phòng ngừa huyết khối:\n  - Trẻ < 2 tháng: 0,75 mg/kg TDD mỗi 12 giờ.\n  - Duy trì: chỉnh liều đạt anti-Xa 0,1 - 0,4 đơn vị/mL.",
+            maxDose: "3 mg/kg/12 giờ",
+            route: "Tiêm dưới da (TDD)",
+            mixing: "Bơm tiêm đóng sẵn thuốc.",
+            note: "Theo dõi nồng độ Anti-Xa để điều chỉnh liều. Theo dõi chảy máu.",
+            indication: "Điều trị và dự phòng thuyên tắc mạch do huyết khối ở sơ sinh."
           },
           fentanyl: {
-            name: "Fentanyl[cite: 15]",
+            name: "Fentanyl",
             concentration: "0,1mg/2ml",
             category: "Hô hấp & Thần kinh",
-            doseDetails: "• Liều ngắt quãng (TMC): Khởi đầu 1 - 2 mcg/kg/liều; lặp lại mỗi 2-4 giờ[cite: 15].\n• TTM liên tục: Khởi đầu 1 - 2 mcg/kg, sau đó 0,5 - 1 mcg/kg/giờ (thường dùng 1-3 mcg/kg/giờ)[cite: 15].",
-            maxDose: "3 mcg/kg/giờ truyền liên tục[cite: 15]",
-            route: "TMC, TTM[cite: 15]",
-            mixing: "Pha dung dịch truyền.",
-            note: "Theo dõi sát tình trạng hô hấp và huyết áp.",
-            indication: "Giảm đau, an thần khi thở máy[cite: 15]."
-          },
-          furosemide: {
-            name: "Furosemide[cite: 15]",
-            concentration: "10mg/ml",
-            category: "Vận mạch & Tim mạch",
-            doseDetails: "• Uống: 1 - 4 mg/kg/liều 1-2 lần/ngày[cite: 15].\n• TM, Tiêm bắp: 1 - 2 mg/kg/liều mỗi 12-24 giờ[cite: 15].",
-            maxDose: "2 mg/kg/liều[cite: 15]",
-            route: "Uống, TM, Tiêm bắp[cite: 15]",
-            mixing: "Dung dịch uống/tiêm.",
-            note: "Theo dõi ion đồ và chức năng thận.",
-            indication: "Lợi tiểu, phù phổi cấp, quá tải thể tích[cite: 15]."
+            doseDetails: "• Liều ngắt quãng (bơm TM chậm): Khởi đầu 1 - 2 mcg/kg/liều; lặp lại mỗi 2 - 4 giờ.\n• Liều TTM liên tục: Khởi đầu bơm TM chậm 1 - 2 mcg/kg, sau đó TTM 0,5 - 1 mcg/kg/giờ. Chỉnh tăng dần, liều thường dùng 1 - 3 mcg/kg/giờ.",
+            maxDose: "3 - 5 mcg/kg/giờ (khi truyền liên tục)",
+            route: "Tiêm tĩnh mạch chậm (TM), Truyền tĩnh mạch (TTM)",
+            mixing: "Pha loãng với Glucose 5% hoặc NaCl 0,9%. Tiêm TM phải bơm chậm.",
+            note: "Tiêm TM nhanh có thể gây cứng thành ngực (Rigid chest syndrome) làm trẻ không thông khí được.",
+            indication: "Giảm đau, an thần cho trẻ thở máy, thực hiện thủ thuật xâm lấn."
           },
           fludrocortisone: {
-            name: "Fludrocortisone (Florinef)[cite: 15]",
+            name: "Fludrocortisone (Florinef)",
             concentration: "Viên uống",
             category: "Nội tiết",
-            doseDetails: "• Tăng sinh thượng thận bẩm sinh (mất muối): 0,05 - 0,1 mg/ngày (50 - 100 mcg/ngày)[cite: 15].",
-            maxDose: "0,1 mg/ngày[cite: 15]",
-            route: "Uống[cite: 15]",
-            mixing: "Dạng uống.",
-            note: "Theo dõi huyết áp và điện giải đồ (Natri, Kali).",
-            indication: "Tăng sinh thượng thận bẩm sinh thể mất muối[cite: 15]."
+            doseDetails: "0,05 - 0,1 mg/ngày (50 - 100 mcg/ngày).",
+            maxDose: "0,1 mg/ngày",
+            route: "Uống (Oral)",
+            mixing: "Viên nén nghiền phân liều.",
+            note: "Theo dõi điện giải đồ (Na+, K+) và huyết áp.",
+            indication: "Điều trị tăng sinh thượng thận bẩm sinh thể mất muối (CAH)."
+          },
+          furosemide: {
+            name: "Furosemide",
+            concentration: "10mg/ml",
+            category: "Vận mạch & Tim mạch",
+            doseDetails: "• Uống: 1 - 4 mg/kg/liều, 1 - 2 lần/ngày.\n• TM, TB: 1 - 2 mg/kg/liều mỗi 12 - 24 giờ.",
+            maxDose: "4 mg/kg/ngày",
+            route: "Tiêm tĩnh mạch (TM), Tiêm bắp (TB), Uống",
+            mixing: "Dung dịch tiêm 10 mg/mL.",
+            note: "Theo dõi điện giải (hạ K+, Na+, Cl-), giảm thể tích tuần hoàn, đái dắt, độc tính trên tai khi dùng liều cao.",
+            indication: "Lợi tiểu điều trị phù, suy tim sung huyết, quá tải dịch, bệnh phổi mạn tính (BPD)."
           },
           heparin: {
-            name: "Heparin[cite: 16]",
+            name: "Heparin",
             concentration: "Dung dịch tiêm",
             category: "Khác",
-            doseDetails: "• Điều trị huyết khối: Tấn công 75 U/kg TTM 10 phút, sau đó duy trì 28 U/kg/giờ (aPTT 60-85 giây)[cite: 16].\n• Duy trì catheter TM TW: 0,5 - 1 U/mL dịch[cite: 16].\n• Phòng ngừa thuyên tắc stent: 10 U/kg/giờ trong 24 giờ[cite: 16].",
-            maxDose: "Theo aPTT mục tiêu[cite: 16]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 16]",
-            mixing: "Pha dung dịch truyền.",
-            note: "Theo dõi xét nghiệm aPTT hoặc anti-Xa định kỳ[cite: 16].",
-            indication: "Điều trị huyết khối, duy trì catheter, phòng ngừa thuyên tắc[cite: 16]."
+            doseDetails: "• Điều trị huyết khối: Tấn công 75 U/kg TTM trong 10 phút, sau đó duy trì 28 U/kg/giờ (mục tiêu aPTT 60 - 85 giây, tương đương anti-Xa 0,3 - 0,7).\n• Duy trì catheter TMTW: 0,5 - 1 U/mL dịch truyền.\n• Phòng ngừa thuyên tắc stent ống động mạch: 10 U/kg/giờ trong 24 giờ, sau đó chuyển sang chống đông uống.",
+            maxDose: "Tùy thuộc kết quả aPTT / Anti-Xa.",
+            route: "Tiêm / Truyền tĩnh mạch (TM / TTM)",
+            mixing: "Pha loãng trong dịch truyền NaCl 0,9% hoặc Dextrose 5%.",
+            note: "Theo dõi sát aPTT, Anti-Xa, tiểu cầu (nguy cơ giảm tiểu cầu do Heparin - HIT) và các dấu hiệu xuất huyết.",
+            indication: "Điều trị và phòng ngừa huyết khối tĩnh mạch/động mạch, duy trì thông thoáng catheter tĩnh mạch trung tâm."
           },
           hydrochlorothiazide: {
-            name: "Hydrochlorothiazide[cite: 16]",
+            name: "Hydrochlorothiazide",
             concentration: "Viên uống",
             category: "Vận mạch & Tim mạch",
-            doseDetails: "• Lợi tiểu nhẹ đến trung bình: 1 - 4 mg/kg/ngày chia 2 lần[cite: 16].",
-            maxDose: "4 mg/kg/ngày[cite: 16]",
-            route: "Uống[cite: 16]",
-            mixing: "Dạng uống.",
-            note: "Theo dõi kali máu và điện giải.",
-            indication: "Lợi tiểu điều trị suy tim sơ sinh[cite: 16]."
+            doseDetails: "1 - 4 mg/kg/ngày chia 2 lần.",
+            maxDose: "4 mg/kg/ngày",
+            route: "Uống (Oral)",
+            mixing: "Dung dịch uống hoặc viên nghiền.",
+            note: "Theo dõi điện giải máu (hạ Kali, hạ Natri).",
+            indication: "Lợi tiểu nhẹ đến trung bình, phối hợp điều trị loãng xương/bệnh phổi mạn."
           },
           hydrocortisone: {
-            name: "Hydrocortisone[cite: 16]",
+            name: "Hydrocortisone",
             concentration: "Dung dịch tiêm / Uống",
             category: "Nội tiết",
-            doseDetails: "• Suy thượng thận cấp: 2-3 mg/kg/liều TM, sau đó 1-5 mg/kg/liều mỗi 6 giờ[cite: 16].\n• TSTTB uống: 10-20 mg/m²/ngày chia 3 lần[cite: 16].\n• Hạ đường huyết sơ sinh: TM/uống 5-10 mg/kg/ngày chia 8-12 giờ hoặc 1-2 mg/kg mỗi 6 giờ[cite: 16].",
-            maxDose: "100 mg/m²/ngày (khi stress nặng)[cite: 16]",
-            route: "TM, Uống[cite: 16]",
-            mixing: "Dung dịch tiêm / Uống.",
-            note: "Hiệu chỉnh liều theo mức độ stress sinh lý[cite: 16].",
-            indication: "Suy thượng thận cấp, tăng sinh thượng thận bẩm sinh, hạ đường huyết sơ sinh kháng trị[cite: 16]."
+            doseDetails: "• Suy thượng thận cấp: 2 - 3 mg/kg/liều TM, sau đó 1 - 5 mg/kg/liều mỗi 6 giờ.\n• Tăng sinh thượng thận bẩm sinh: Uống 10 - 20 mg/m² da/ngày chia 3 lần.\n• Liều khi stress (24-48h):\n  - Nhẹ đến trung bình: 20 - 50 mg/m²/ngày chia 3 lần.\n  - Nặng / phẫu thuật: 100 mg/m²/ngày chia 4 lần.\n• Hạ đường huyết sơ sinh (kháng trị khi truyền glucose > 12-15 mg/kg/phút): TM, Uống 5 - 10 mg/kg/ngày chia mỗi 8-12h HOẶC 1 - 2 mg/kg/liều mỗi 6h.\n• Sốc kháng trị: TM 3 mg/kg/ngày chia mỗi 8 giờ x 5 ngày.",
+            maxDose: "100 mg/m²/ngày (liều stress nặng)",
+            route: "Tiêm tĩnh mạch (TM), Uống",
+            mixing: "Pha loãng lọ Hydrocortisone dung dịch tiêm.",
+            note: "Cần đánh giá nồng độ Cortisol máu trước khi chỉ định điều trị hạ đường huyết.",
+            indication: "Suy thượng thận cấp, tăng sinh thượng thận bẩm sinh, hạ đường huyết sơ sinh dai dẳng, sốc nhiễm trùng kháng catecholamin."
           },
           insulin: {
-            name: "Insulin, Regular[cite: 17]",
+            name: "Insulin, Regular",
             concentration: "0,5 UI/mL (15 UI trong 29,85 mL NaCl 0,9%)",
             category: "Nội tiết",
-            doseDetails: "• Bolus: 0,05 - 0,1 UI/kg/lần TTM/15'[cite: 17].\n• Truyền liên tục: Khởi đầu 0,05 UI/kg/giờ, tối đa 0,2 UI/kg/giờ[cite: 17].",
-            maxDose: "0,2 UI/kg/giờ[cite: 17]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 17]",
-            mixing: "15 UI trong 29,85 mL NaCl 0,9%. Đuổi dịch dây truyền trước khi dùng[cite: 17].",
-            note: "Kiểm tra đường huyết (dextrostix) mỗi 30 phút - 1 giờ[cite: 17].",
-            indication: "Tăng đường huyết sơ sinh khi tốc độ glucose > 12-15 mg/kg/phút[cite: 17]."
+            doseDetails: "• Chỉ định khi đã giảm tốc độ glucose xuống 4 - 6 mg/kg/phút mà ĐH > 250 mg/dL (mục tiêu ĐH 100 - 200 mg/dL).\n• Truyền insulin nhanh (bolus): 0,05 - 0,1 UI/kg/lần TTM/15 phút. Kiểm tra ĐH sau 30 phút - 1 giờ.\n• Truyền insulin liên tục: Khởi đầu 0,05 UI/kg/giờ (tối đa 0,2 UI/kg/giờ).\n  - Tốc độ truyền (mL/h) = [Liều (UI/kg/h) x CN (kg)] / Nồng độ (UI/mL).\n  - Kiểm tra ĐH mỗi 30 - 60 phút. Nếu > 180 mg/dL, tăng 0,01 UI/kg/giờ.",
+            maxDose: "0,2 UI/kg/giờ",
+            route: "Truyền tĩnh mạch (TTM liên tục / Bolus)",
+            mixing: "Pha 15 UI Regular Insulin (0,15 mL) vào 29,85 mL Natri chloride 0,9% để đạt nồng độ 0,5 UI/mL. Trước khi truyền, phải xả đuổi dịch trong dây truyền bằng dung dịch insulin này với ít nhất 2 lần thể tích dây.",
+            note: "Nếu xảy ra HẠ ĐƯỜNG HUYẾT: ngưng truyền Insulin ngay và chỉ định Glucose 10% 2 mL/kg tiêm tĩnh mạch.",
+            indication: "Tăng đường huyết nặng ở trẻ sơ sinh cực nhẹ cân / điều trị tăng Kali máu nặng."
           },
           levothyroxine: {
-            name: "Levothyroxine[cite: 18]",
+            name: "Levothyroxine",
             concentration: "Viên uống",
             category: "Nội tiết",
-            doseDetails: "• 10 - 15 mcg/kg uống 1 lần hàng ngày[cite: 18]. Trẻ đủ tháng 50 mcg/ngày, trẻ suy tim khởi đầu 25 mcg/ngày[cite: 18].",
-            maxDose: "15 mcg/kg/ngày[cite: 18]",
-            route: "Uống[cite: 18]",
-            mixing: "Dạng uống.",
-            note: "Mục tiêu sau 2 tuần điều trị: FT4 > 10 mcg/dL[cite: 18].",
-            indication: "Điều trị suy giáp bẩm sinh[cite: 18]."
+            doseDetails: "• 10 - 15 mcg/kg UỐNG 1 lần hàng ngày.\n• Trẻ đủ tháng: 50 mcg x 1 lần/ngày.\n• Trẻ suy tim: Khởi đầu liều thấp hơn 25 mcg/ngày.\n• Bắt đầu liều cao khi suy giáp nặng (FT4 < 5 mcg/dL).",
+            maxDose: "50 mcg/ngày",
+            route: "Uống (Oral)",
+            mixing: "Nghiền viên pha với ít nước cất hoặc sữa mẹ (không pha với sữa công thức chứa đậu nành hoặc sắt).",
+            note: "Mục tiêu sau 2 tuần điều trị đạt FT4 > 10 mcg/dL. Theo dõi FT4 và TSH định kỳ.",
+            indication: "Suy giáp bẩm sinh ở trẻ sơ sinh."
           },
           midazolam: {
-            name: "Midazolam[cite: 18]",
+            name: "Midazolam",
             concentration: "5mg/ml, 15mg/3ml",
             category: "Hô hấp & Thần kinh",
-            doseDetails: "• Truyền liên tục: ≤ 32 tuần: khởi đầu 0,03 mg/kg/giờ; > 32 tuần: 0,06 mg/kg/giờ[cite: 18].\n• Động kinh: Tấn công 0,06 - 0,15 mg/kg TM, sau đó TTM 0,06 - 0,4 mg/kg/giờ[cite: 18].\n• Nhỏ mũi: 0,2 - 0,3 mg/kg/liều[cite: 18].",
-            maxDose: "0,4 mg/kg/giờ[cite: 18]",
-            route: "TM, TTM, Nhỏ mũi[cite: 18]",
-            mixing: "Pha với NaCl 0,9% hoặc Glucose 5%.",
-            note: "Tránh tiêm nhanh dưới 2 phút gây tụt huyết áp nghiêm trọng và ngưng thở, nhất là khi dùng chung Fentanyl[cite: 18].",
-            indication: "An thần thở máy, cắt cơn động kinh sơ sinh[cite: 18]."
+            doseDetails: "• Truyền liên tục (An thần):\n  - ≤ 32 tuần: khởi đầu 0,03 mg/kg/giờ\n  - > 32 tuần: khởi đầu 0,06 mg/kg/giờ\n• Động kinh: Khởi đầu 0,06 - 0,15 mg/kg/liều TM, sau đó TTM 0,06 - 0,4 mg/kg/giờ.\n• Nhỏ mũi: 0,2 - 0,3 mg/kg/liều, có thể lặp lại mỗi 5 - 15 phút.",
+            maxDose: "0,4 mg/kg/giờ",
+            route: "Truyền tĩnh mạch (TTM), Tiêm tĩnh mạch chậm, Nhỏ mũi",
+            mixing: "Pha loãng với Glucose 5% hoặc NaCl 0,9%.",
+            note: "LƯU Ý CẶP BÁO ĐỘNG: KHÔNG TIÊM TM NHANH ở trẻ sơ sinh. Tiêm TM nhanh (< 2 phút) liên quan đến giảm huyết áp nghiêm trọng, nhất là khi dùng chung với Fentanyl. Có thể gây co giật do tiêm nhanh.",
+            indication: "An thần, cắt cơn co giật / trạng thái động kinh ở sơ sinh."
           },
           milrinone: {
-            name: "Milrinone[cite: 18]",
+            name: "Milrinone",
             concentration: "Dung dịch truyền",
             category: "Vận mạch & Tim mạch",
-            doseDetails: "• Tấn công 50 mcg/kg truyền trong 15 phút, sau đó TTM liên tục 0,5 mcg/kg/phút (giới hạn 0,25 - 0,75 mcg/kg/phút)[cite: 18].",
-            maxDose: "0,75 mcg/kg/phút[cite: 18]",
-            route: "Truyền tĩnh mạch (TTM)[cite: 18]",
-            mixing: "Pha dung dịch truyền tĩnh mạch.",
-            note: "Theo dõi sát huyết áp và nhịp tim của trẻ.",
-            indication: "Suy tim, tăng áp phổi sơ sinh[cite: 18]."
+            doseDetails: "• Liều tấn công: 50 mcg/kg truyền trong 15 phút.\n• Liều duy trì TTM liên tục: 0,5 mcg/kg/phút (giới hạn 0,25 - 0,75 mcg/kg/phút), chỉnh liều theo hiệu quả.",
+            maxDose: "0,75 mcg/kg/phút",
+            route: "Truyền tĩnh mạch liên tục (TTM)",
+            mixing: "Pha loãng trong Glucose 5% hoặc NaCl 0,9%.",
+            note: "Theo dõi huyết áp (nguy cơ hạ huyết áp), tần số tim và tiểu cầu.",
+            indication: "Suy tim cấp, hội chứng cung lượng tim thấp sau phẫu thuật tim, cao áp phổi sơ sinh."
           },
           morphine: {
-            name: "Morphine[cite: 19]",
+            name: "Morphine",
             concentration: "10mg/ml",
             category: "Hô hấp & Thần kinh",
-            doseDetails: "• Giảm đau (TB, TM, dưới da): Khởi đầu 0,05 - 0,1 mg/kg/liều mỗi 4-6 giờ[cite: 19].\n• TTM liên tục: Khởi đầu 0,01 mg/kg/giờ (10 mcg/kg/giờ); tối đa 0,03 mg/kg/giờ[cite: 19].\n• Đặt NKQ: 0,05 - 0,1 mg/kg trước thủ thuật 5 phút[cite: 19].",
-            maxDose: "TTM 0,03 mg/kg/giờ[cite: 19]",
-            route: "TB, TM, Dưới da, TTM[cite: 19]",
-            mixing: "Pha với NaCl 0,9% hoặc Glucose 5%.",
-            note: "Theo dõi sát ức chế hô hấp; luôn chuẩn bị sẵn Naloxone giải độc[cite: 19].",
-            indication: "Giảm đau, an thần khi thở máy hoặc thủ thuật[cite: 19]."
+            doseDetails: "• Giảm đau ngắt quãng (TB, TM, TDD): Khởi đầu 0,05 - 0,1 mg/kg/liều mỗi 4 - 6 giờ. Tối đa 0,1 mg/kg/liều.\n• Giảm đau TTM liên tục: Khởi đầu 0,01 mg/kg/giờ (10 mcg/kg/giờ); tối đa 0,03 mg/kg/giờ (30 mcg/kg/giờ).\n• Đặt NKQ không cấp cứu: TB, TM 0,05 - 0,1 mg/kg, cho ít nhất 5 phút trước thủ thuật.",
+            maxDose: "0,1 mg/kg/liều (ngắt quãng); 0,03 mg/kg/giờ (liên tục)",
+            route: "Tiêm tĩnh mạch (TM ưa thích), Tiêm bắp (TB), Tiêm dưới da (TDD), Truyền tĩnh mạch (TTM)",
+            mixing: "Pha loãng tiêm chậm.",
+            note: "Theo dõi hô hấp (nguy cơ ức chế hô hấp, ngưng thở), huyết áp và dung nạp ruột.",
+            indication: "Giảm đau vừa đến nặng, an thần trong thủ thuật xâm lấn hoặc trẻ thở máy."
           },
           naloxone: {
-            name: "Naloxone[cite: 19]",
+            name: "Naloxone",
             concentration: "0,4mg/ml",
             category: "Khác",
-            doseDetails: "• Điều trị ngộ độc Morphin hoặc thuốc gây nghiện: 0,1 mg/kg TM, có thể nhắc lại mỗi 3-5 phút[cite: 19].",
-            maxDose: "Theo đáp ứng lâm sàng[cite: 19]",
-            route: "Tiêm mạch (TM)[cite: 19]",
-            mixing: "Dung dịch tiêm.",
-            note: "Thuốc giải độc đặc hiệu cho opioid.",
-            indication: "Điều trị ngộ độc Morphin hoặc thuốc gây nghiện[cite: 19]."
+            doseDetails: "0,1 mg/kg TM, có thể nhắc lại mỗi 3 - 5 phút.",
+            maxDose: "0,1 mg/kg/liều",
+            route: "Tiêm tĩnh mạch (TM), Tiêm bắp (TB)",
+            mixing: "Dung dịch tiêm 0,4 mg/mL.",
+            note: "Theo dõi tái phát ức chế hô hấp do thời gian bán thải của Naloxone ngắn hơn Morphine.",
+            indication: "Điều trị ngộ độc Morphine hoặc các thuốc gây nghiện opiate ở trẻ sơ sinh."
           },
           octreotide: {
-            name: "Octreotide (Sandostatin)[cite: 19]",
+            name: "Octreotide (Sandostatin)",
             concentration: "Dung dịch tiêm",
             category: "Nội tiết",
-            doseDetails: "• Tràn dịch dưỡng trấp: TTM 0,3 - 10 mcg/kg/giờ kéo dài 2-3 tuần[cite: 19].\n• Hạ đường huyết kéo dài do cường insulin: TTM 0,08 - 0,4 mcg/kg/giờ (tối đa 1,67 mcg/kg/giờ); TDD 2-10 mcg/kg/ngày chia 6-8 giờ (tối đa 40 mcg/kg/ngày)[cite: 19].",
-            maxDose: "TTM 1,67 mcg/kg/giờ / TDD 40 mcg/kg/ngày[cite: 19]",
-            route: "TTM, TDD[cite: 19]",
-            mixing: "Pha dung dịch tiêm truyền.",
-            note: "Theo dõi sát đường huyết và đáp ứng lâm sàng.",
-            indication: "Tràn dịch dưỡng trấp màng phổi, hạ đường huyết kéo dài do cường insulin[cite: 19]."
+            doseDetails: "• Tràn dịch dưỡng trấp màng phổi: TTM liên tục 0,3 - 10 mcg/kg/giờ, điều chỉnh theo đáp ứng (thường kéo dài 2 - 3 tuần).\n• Hạ đường huyết kéo dài do cường Insulin (khi Diazoxide thất bại):\n  - TTM liên tục: 0,08 - 0,4 mcg/kg/giờ, tối đa 1,67 mcg/kg/giờ.\n  - TDD: 2 - 10 mcg/kg/ngày chia mỗi 6 - 8 giờ, tối đa 40 mcg/kg/ngày.",
+            maxDose: "1,67 mcg/kg/giờ (TTM) hoặc 40 mcg/kg/ngày (TDD)",
+            route: "Truyền tĩnh mạch liên tục (TTM), Tiêm dưới da (TDD)",
+            mixing: "Pha loãng trong NaCl 0,9% hoặc Glucose 5%.",
+            note: "Theo dõi đường huyết, chức năng tuyến giáp và nguy cơ viêm ruột hoại tử.",
+            indication: "Tràn dịch dưỡng trấp màng phổi, hạ đường huyết kéo dài do cường insulin kháng trị."
           },
           sat_uong: {
-            name: "Sắt uống[cite: 19]",
+            name: "Sắt (Sắt nguyên tố)",
             concentration: "Siro / Giọt uống",
             category: "Khác",
-            doseDetails: "• Sinh non: 2 - 4 mg sắt nguyên tố/kg/ngày bắt đầu trước 1 tháng tuổi hoặc sau 2 tuần, tiếp tục đến 12 tháng[cite: 19].",
-            maxDose: "4 mg/kg/ngày[cite: 19]",
-            route: "Uống[cite: 19]",
-            mixing: "Dạng siro hoặc giọt uống.",
-            note: "Theo dõi dung nạp đường tiêu hóa.",
-            indication: "Phòng ngừa thiếu máu thiếu sắt ở trẻ sinh non[cite: 19]."
+            doseDetails: "• Sinh non: 2 - 4 mg sắt nguyên tố/kg/ngày, bắt đầu trước 1 tháng tuổi hoặc sau 2 tuần khi dinh dưỡng đường miệng đủ, tiếp tục đến 12 tháng tuổi.",
+            maxDose: "4 mg sắt nguyên tố/kg/ngày",
+            route: "Uống (Oral)",
+            mixing: "Dung dịch giọt uống.",
+            note: "Nên uống giữa các cữ sữa để tăng hấp thu (hoặc cùng vitamin C). Thận trọng tác dụng phụ trên đường tiêu hóa.",
+            indication: "Dự phòng và điều trị thiếu máu thiếu sắt ở trẻ sinh non, nhẹ cân."
           },
           sildenafil: {
-            name: "Sildenafil[cite: 20]",
+            name: "Sildenafil",
             concentration: "Dung dịch uống / Viên",
             category: "Vận mạch & Tim mạch",
-            doseDetails: "• Cao áp phổi tồn tại (sơ sinh): 0,3 - 1 mg/kg/liều mỗi 6-12 giờ. Thường dùng 0,5 - 3 mg/kg/liều mỗi 6-12 giờ[cite: 20].",
-            maxDose: "3 mg/kg/liều[cite: 20]",
-            route: "Uống[cite: 20]",
-            mixing: "Dạng uống.",
-            note: "Theo dõi huyết áp hệ thống.",
-            indication: "Cao áp phổi tồn tại sơ sinh[cite: 20]."
+            doseDetails: "0,3 - 1 mg/kg/liều mỗi 6 - 12 giờ. Thường dùng: 0,5 - 3 mg/kg/liều mỗi 6 - 12 giờ.",
+            maxDose: "3 mg/kg/liều",
+            route: "Uống (Oral)",
+            mixing: "Pha hỗn dịch uống từ viên nén.",
+            note: "Theo dõi huyết áp động mạch toàn thân (nguy cơ hạ huyết áp).",
+            indication: "Điều trị cao áp phổi tồn tại ở trẻ sơ sinh (PPHN)."
           },
           spironolactone: {
-            name: "Spironolactone[cite: 20]",
+            name: "Spironolactone",
             concentration: "Viên uống",
             category: "Vận mạch & Tim mạch",
-            doseDetails: "• Uống: 1 - 3 mg/kg/ngày mỗi 12-24 giờ[cite: 20].",
-            maxDose: "3 mg/kg/ngày[cite: 20]",
-            route: "Uống[cite: 20]",
-            mixing: "Dạng uống.",
-            note: "GFR < 10: tránh dùng. Theo dõi sát kali máu.",
-            indication: "Lợi tiểu giữ kali, hỗ trợ điều trị suy tim[cite: 20]."
+            doseDetails: "Uống: 1 - 3 mg/kg/ngày chia mỗi 12 - 24 giờ.",
+            maxDose: "3 mg/kg/ngày",
+            route: "Uống (Oral)",
+            mixing: "Hỗn dịch uống.",
+            note: "Tránh dùng khi GFR < 10 ml/phút. Theo dõi Kali máu (nguy cơ tăng Kali máu).",
+            indication: "Lợi tiểu tiết kiệm Kali, điều trị suy tim sung huyết, bệnh phổi mạn tính."
           },
           vit_d3: {
-            name: "Vitamin D3 (Cholecalciferol)[cite: 20]",
+            name: "Vitamin D3 (Cholecalciferol)",
             concentration: "Dạng giọt uống",
             category: "Khác",
-            doseDetails: "• Sinh non: 400 - 800 đơn vị/ngày[cite: 20].\n• Trẻ bú mẹ toàn phần/một phần: 400 đơn vị/ngày từ vài ngày tuổi[cite: 20].\n• Điều trị thiếu vitamin D và/hoặc còi xương: 1.000 đơn vị/ngày[cite: 20].",
-            maxDose: "1.000 đơn vị/ngày (điều trị)[cite: 20]",
-            route: "Uống[cite: 20]",
+            doseDetails: "• Sinh non: 400 - 800 đơn vị/ngày UỐNG khi bắt đầu dung nạp sữa.\n• Trẻ bú mẹ toàn phần/một phần: 400 đơn vị/ngày, bắt đầu từ vài ngày tuổi đầu tiên đến khi uống đủ ≥ 1.000 mL sữa công thức/ngày.\n• Sữa công thức < 1.000 mL/ngày: 400 đơn vị/ngày.\n• Điều trị thiếu Vitamin D / Còi xương: 1.000 đơn vị/ngày (kèm bổ sung Ca và P).",
+            maxDose: "1.000 đơn vị/ngày",
+            route: "Uống (Oral)",
             mixing: "Dạng giọt uống.",
-            note: "Điều trị còi xương cần bổ sung kèm canxi và phospho[cite: 20].",
-            indication: "Phòng ngừa và điều trị thiếu vitamin D, còi xương[cite: 20]."
+            note: "Bổ sung định kỳ hàng ngày cho trẻ sơ sinh.",
+            indication: "Dự phòng và điều trị thiếu Vitamin D, còi xương ở trẻ sơ sinh và sinh non."
           },
           vit_e: {
-            name: "Vitamin E[cite: 20]",
+            name: "Vitamin E",
             concentration: "Dạng uống",
             category: "Khác",
-            doseDetails: "• Sinh non, nhẹ cân: 6 - 12 đơn vị/kg/ngày[cite: 20].\n• Thiếu hụt vitamin E: 25 - 50 đơn vị/ngày[cite: 20].",
-            maxDose: "50 đơn vị/ngày[cite: 20]",
-            route: "Uống[cite: 20]",
-            mixing: "Dạng uống.",
-            note: "Theo dõi các chỉ số huyết học.",
-            indication: "Phòng ngừa và điều trị thiếu hụt vitamin E[cite: 20]."
+            doseDetails: "• Sinh non, nhẹ cân: 6 - 12 đơn vị/kg/ngày.\n• Thiếu hụt Vitamin E: 25 - 50 đơn vị/ngày.",
+            maxDose: "50 đơn vị/ngày",
+            route: "Uống (Oral)",
+            mixing: "Dạng giọt uống.",
+            note: "Bổ sung cho trẻ sinh non để phòng ngừa bệnh lý võng mạc và thiếu máu tán huyết.",
+            indication: "Dự phòng và điều trị thiếu hụt Vitamin E ở trẻ sinh non, nhẹ cân."
           },
           vit_k1: {
-            name: "Vitamin K1[cite: 20]",
+            name: "Vitamin K1 (Phytomenadione)",
             concentration: "10mg/ml",
             category: "Khác",
-            doseDetails: "• Phòng ngừa (Tiêm bắp):\n  - < 1 kg: 0,3 - 0,5 mg[cite: 20].\n  - ≥ 1 kg: 0,5 - 1 mg[cite: 20].\n  - Sơ sinh đủ tháng: 0,5 - 1 mg[cite: 20].\n• Điều trị (Tiêm bắp): 1 - 2 mg/ngày[cite: 20].",
-            maxDose: "2 mg/ngày[cite: 20]",
-            route: "Tiêm bắp (TB)[cite: 20]",
-            mixing: "Dung dịch tiêm sẵn có.",
-            note: "Phòng ngừa xuất huyết não màng não do thiếu vitamin K ở trẻ sơ sinh.",
-            indication: "Phòng và điều trị xuất huyết do thiếu vitamin K[cite: 20]."
+            doseDetails: "• PHÒNG NGỪA (Tiêm bắp):\n  - Trẻ < 1 kg: 0,3 - 0,5 mg/kg\n  - Trẻ ≥ 1 kg: 0,5 - 1 mg\n  - Sơ sinh đủ tháng: 0,5 - 1 mg\n• ĐIỀU TRỊ (Tiêm bắp):\n  - 1 - 2 mg/ngày.",
+            maxDose: "2 mg/ngày",
+            route: "Tiêm bắp (TB)",
+            mixing: "Ống tiêm 1 mg/mL hoặc 10 mg/mL.",
+            note: "Tiêm bắp ngay sau sinh cho tất cả trẻ sơ sinh.",
+            indication: "Dự phòng và điều trị xuất huyết do thiếu Vitamin K ở trẻ sơ sinh (HDN)."
           }
         },
+
         get filteredDrugs() {
           let query = this.searchQuery.toLowerCase().trim();
+          let cat = this.selectedCategory;
           let result = {};
+          
           for (let key in this.drugs) {
             let drug = this.drugs[key];
+            let matchCat = (cat === 'Tất cả' || drug.category === cat);
             let matchQuery = !query || 
                              drug.name.toLowerCase().includes(query) || 
                              drug.indication.toLowerCase().includes(query) ||
                              drug.doseDetails.toLowerCase().includes(query);
-            if (matchQuery) {
+            
+            if (matchCat && matchQuery) {
               result[key] = drug;
             }
           }
