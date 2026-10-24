@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thu - Nhi khoa</title>
+    <title>Nhi Khoa Lâm Sàng - Tra Cứu & Tính Nhanh</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between" x-data="app()">
+<body class="bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950 text-slate-100 min-h-screen flex flex-col justify-between" x-data="app()">
 
-    <!-- HEADER -->
-    <header class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 p-4 border-b border-blue-800 shadow-lg sticky top-0 z-50">
+    <!-- HEADER SẮC SỠ -->
+    <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-pink-600 p-4 border-b border-indigo-400/30 shadow-2xl sticky top-0 z-50">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-bold flex items-center gap-2">
-                    <span class="text-pink-500">❤️</span> Thu - Nhi khoa
+                <h1 class="text-xl font-extrabold flex items-center gap-2 text-white drop-shadow">
+                    <span class="text-yellow-300 text-2xl">⚡</span> Nhi Khoa Lâm Sàng Pro
                 </h1>
-                <p class="text-xs text-blue-300">Tra cứu Dược lực • Phác đồ • Bù Điện giải & Vận mạch</p>
+                <p class="text-xs text-blue-100 font-medium">Tra cứu Dược lực • Phác đồ • Bù Điện giải & Tốc độ nhanh</p>
             </div>
             <div class="text-right">
-                <span class="text-xs bg-emerald-600 px-2 py-1 rounded font-mono">OFFLINE READY</span>
+                <span class="text-xs bg-emerald-500 text-white px-2.5 py-1 rounded-full font-mono font-bold shadow-md animate-pulse">ONLINE / OFFLINE</span>
             </div>
         </div>
     </header>
@@ -27,180 +27,151 @@
     <!-- MAIN CONTENT -->
     <main class="max-w-4xl mx-auto p-4 flex-grow w-full space-y-4">
         
-        <!-- Ô TÌM KIẾM & PHÂN LOẠI NHÓM THUỐC -->
-        <div class="bg-slate-800 p-3.5 rounded-xl border border-slate-700 shadow space-y-3">
+        <!-- THANH TÌM KIẾM & TAB NHÓM THUỐC -->
+        <div class="bg-slate-900/90 backdrop-blur p-4 rounded-2xl border border-indigo-500/30 shadow-xl space-y-3">
             <div class="relative">
-                <input type="text" x-model="search" placeholder="Tìm tên thuốc, liều dùng, dung môi, công thức tính nhanh..." 
-                       class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
+                <input type="text" x-model="search" placeholder="🔍 Tìm tên thuốc, liều dùng, dung môi, ghi chú..." 
+                       class="w-full bg-slate-950 border border-indigo-500/50 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition">
             </div>
 
-            <!-- TAB PHÂN LOẠI NHÓM -->
-            <div class="flex flex-wrap gap-1.5 pt-1">
+            <!-- TAB PHÂN LOẠI MÀU SẮC SẮC SỠ -->
+            <div class="flex flex-wrap gap-2 pt-1">
                 <button @click="selectedCategory = 'TẤT CẢ'" 
-                        :class="selectedCategory === 'TẤT CẢ' ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'"
-                        class="text-xs px-3 py-1.5 rounded-lg font-medium transition">Tất cả</button>
+                        :class="selectedCategory === 'TẤT CẢ' ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-indigo-500/30' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'"
+                        class="text-xs px-3.5 py-1.5 rounded-xl font-semibold transition">🌟 Tất cả</button>
                 <template x-for="cat in categories" :key="cat">
                     <button @click="selectedCategory = (selectedCategory === cat ? 'TẤT CẢ' : cat)"
-                            :class="selectedCategory === cat ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'"
-                            class="text-xs px-3 py-1.5 rounded-lg font-medium transition" x-text="cat"></button>
+                            :class="selectedCategory === cat ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg shadow-pink-500/30' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'"
+                            class="text-xs px-3.5 py-1.5 rounded-xl font-semibold transition" x-text="cat"></button>
                 </template>
             </div>
         </div>
 
-        <!-- DANH SÁCH THUỐC & CÔNG THỨC KẾT QUẢ -->
+        <!-- MỤC TÍNH NHANH LÂM SÀNG (QUICK CALCULATOR WIDGET) -->
+        <div class="bg-gradient-to-r from-indigo-900/80 via-purple-900/80 to-pink-900/80 border border-pink-500/40 rounded-2xl p-4 shadow-2xl backdrop-blur">
+            <div class="flex justify-between items-center mb-3 border-b border-pink-500/30 pb-2">
+                <h2 class="text-sm font-bold text-yellow-300 flex items-center gap-2">
+                    <span>🧮</span> TÍNH NHANH ĐIỆN GIẢI & TRUYỀN DỊCH (Bù Kali vào Chai 500ml)
+                </h2>
+                <span class="text-xs bg-pink-600 text-white px-2 py-0.5 rounded-full font-mono">Công cụ nhanh</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                <!-- Nhập cân nặng -->
+                <div>
+                    <label class="block text-blue-200 font-medium mb-1">Cân nặng bệnh nhi (kg):</label>
+                    <input type="number" x-model.number="calcWeight" min="1" max="100" 
+                           class="w-full bg-slate-950 border border-indigo-400/50 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-yellow-400">
+                </div>
+                <!-- Chọn mục tiêu Kali -->
+                <div>
+                    <label class="block text-blue-200 font-medium mb-1">Mục tiêu nồng độ Kali ([K]):</label>
+                    <select x-model.number="targetK" 
+                            class="w-full bg-slate-950 border border-indigo-400/50 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-yellow-400">
+                        <option value="40">[K] = 40 mEq/L (Pha 15ml KCl 10% / 500ml)</option>
+                        <option value="60">[K] = 60 mEq/L (Pha 22ml KCl 10% / 500ml)</option>
+                    </select>
+                </div>
+                <!-- Kết quả tính nhanh -->
+                <div class="bg-slate-950/80 p-2.5 rounded-xl border border-yellow-500/40 flex flex-col justify-center">
+                    <span class="text-yellow-400 font-bold text-center">⚡ KẾT QUẢ PHA NHANH:</span>
+                    <p class="text-center font-mono text-emerald-300 mt-1 font-semibold" x-text="calcResultText"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DANH SÁCH THUỐC KẾT QUẢ -->
         <div class="space-y-4">
             <template x-for="item in filteredDrugs" :key="item.id">
-                <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 shadow-md hover:border-slate-600 transition">
-                    <div class="flex justify-between items-start border-b border-slate-700 pb-2 mb-3">
+                <div class="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-4 shadow-xl hover:border-pink-500/50 transition">
+                    <div class="flex justify-between items-start border-b border-slate-800 pb-2 mb-3">
                         <div>
-                            <h3 class="text-lg font-bold text-blue-400" x-text="item.name"></h3>
-                            <div class="flex flex-wrap gap-2 mt-1">
-                                <span class="text-xs bg-indigo-900 text-indigo-200 px-2.5 py-0.5 rounded-full font-medium" x-text="item.category"></span>
-                                <span x-show="item.brand" class="text-xs bg-slate-700 text-amber-300 px-2 py-0.5 rounded" x-text="item.brand"></span>
+                            <h3 class="text-base font-extrabold text-cyan-300" x-text="item.name"></h3>
+                            <div class="flex flex-wrap gap-2 mt-1.5">
+                                <span class="text-xs bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-0.5 rounded-full font-bold shadow" x-text="item.category"></span>
+                                <span x-show="item.brand" class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-0.5 rounded-full font-medium" x-text="item.brand"></span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- BẢNG CHI TIẾT LIỀU & CÁCH PHA -->
+                    <!-- BẢNG CHI TIẾT -->
                     <div class="overflow-x-auto my-2">
-                        <table class="w-full text-xs text-left border-collapse border border-slate-700">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-800 rounded-xl overflow-hidden">
                             <tbody>
-                                <tr x-show="item.dosage" class="border-b border-slate-700">
-                                    <td class="p-2 bg-slate-700/50 font-semibold text-blue-300 w-1/4">Liều dùng & Chỉ định</td>
-                                    <td class="p-2 text-slate-200 whitespace-pre-line" x-text="item.dosage"></td>
+                                <tr x-show="item.dosage" class="border-b border-slate-800 bg-slate-950/40">
+                                    <td class="p-2.5 font-bold text-pink-400 w-1/4">Liều dùng & Chỉ định</td>
+                                    <td class="p-2.5 text-slate-100 whitespace-pre-line" x-text="item.dosage"></td>
                                 </tr>
-                                <tr x-show="item.preparation" class="border-b border-slate-700">
-                                    <td class="p-2 bg-slate-700/50 font-semibold text-blue-300">Cách pha & Dung môi</td>
-                                    <td class="p-2 text-slate-200 whitespace-pre-line" x-text="item.preparation"></td>
+                                <tr x-show="item.preparation" class="border-b border-slate-800 bg-slate-950/20">
+                                    <td class="p-2.5 font-bold text-purple-400">Cách pha & Dung môi</td>
+                                    <td class="p-2.5 text-slate-100 whitespace-pre-line" x-text="item.preparation"></td>
                                 </tr>
-                                <tr x-show="item.quick_calc" class="border-b border-slate-700 bg-slate-900/40">
-                                    <td class="p-2 bg-blue-950/60 font-semibold text-amber-300">⚡ Tính nhanh & Ví dụ</td>
-                                    <td class="p-2 text-amber-200 font-mono whitespace-pre-line" x-text="item.quick_calc"></td>
+                                <tr x-show="item.stability" class="border-b border-slate-800 bg-slate-950/40">
+                                    <td class="p-2.5 font-bold text-blue-400">Độ ổn định / Bảo quản</td>
+                                    <td class="p-2.5 text-slate-100 whitespace-pre-line" x-text="item.stability"></td>
                                 </tr>
-                                <tr x-show="item.stability" class="border-b border-slate-700">
-                                    <td class="p-2 bg-slate-700/50 font-semibold text-blue-300">Độ ổn định / Bảo quản</td>
-                                    <td class="p-2 text-slate-200 whitespace-pre-line" x-text="item.stability"></td>
-                                </tr>
-                                <tr x-show="item.adjustment">
-                                    <td class="p-2 bg-slate-700/50 font-semibold text-blue-300">Chỉnh liều (Thận/Gan)</td>
-                                    <td class="p-2 text-slate-200 whitespace-pre-line" x-text="item.adjustment"></td>
+                                <tr x-show="item.adjustment" class="bg-slate-950/20">
+                                    <td class="p-2.5 font-bold text-emerald-400">Chỉnh liều (Thận/Gan)</td>
+                                    <td class="p-2.5 text-slate-100 whitespace-pre-line" x-text="item.adjustment"></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- CHÚ THÍCH LÂM SÀNG -->
-                    <div x-show="item.notes" class="mt-3 text-xs bg-slate-900/90 p-2.5 rounded-lg border border-slate-700/60 text-slate-300">
-                        <strong class="text-amber-400">💡 Lưu ý lâm sàng:</strong> <span class="whitespace-pre-line" x-text="item.notes"></span>
+                    <div x-show="item.notes" class="mt-3 text-xs bg-gradient-to-r from-amber-950/60 to-rose-950/60 p-3 rounded-xl border border-amber-500/40 text-amber-200">
+                        <strong class="text-yellow-400 font-bold">💡 Lưu ý lâm sàng an toàn:</strong> <span class="whitespace-pre-line" x-text="item.notes"></span>
                     </div>
                 </div>
             </template>
 
-            <!-- THÔNG BÁO KHI KHÔNG TÌM THẤY -->
-            <div x-show="filteredDrugs.length === 0" class="text-center py-8 text-slate-400 text-sm">
+            <!-- THÔNG BÁO TRỐNG -->
+            <div x-show="filteredDrugs.length === 0" class="text-center py-10 text-slate-400 text-sm bg-slate-900/50 rounded-2xl border border-slate-800">
                 Không tìm thấy dữ liệu thuốc phù hợp với từ khóa tìm kiếm.
             </div>
         </div>
     </main>
 
     <!-- FOOTER NAVBAR -->
-    <nav class="bg-slate-900 border-t border-slate-800 py-3 px-6 sticky bottom-0 z-50">
+    <nav class="bg-slate-950 border-t border-indigo-900/50 py-3 px-6 sticky bottom-0 z-50 shadow-2xl">
         <div class="max-w-md mx-auto flex justify-between text-xs text-slate-400">
-            <button class="flex flex-col items-center hover:text-blue-400"><span>📋</span>SBAR</button>
-            <button class="flex flex-col items-center hover:text-blue-400"><span>🔍</span>Tiếp cận</button>
-            <button class="flex flex-col items-center hover:text-blue-400"><span>⚡</span>Phác đồ</button>
-            <button class="flex flex-col items-center text-blue-400 font-semibold"><span>💊</span>Thuốc</button>
-            <button class="flex flex-col items-center hover:text-blue-400"><span>🧪</span>Cận lâm sàng</button>
+            <button class="flex flex-col items-center hover:text-pink-400 transition"><span>📋</span>SBAR</button>
+            <button class="flex flex-col items-center hover:text-pink-400 transition"><span>🔍</span>Tiếp cận</button>
+            <button class="flex flex-col items-center hover:text-pink-400 transition"><span>⚡</span>Phác đồ</button>
+            <button class="flex flex-col items-center text-pink-400 font-bold"><span>💊</span>Thuốc</button>
+            <button class="flex flex-col items-center hover:text-pink-400 transition"><span>🧪</span>Cận lâm sàng</button>
         </div>
     </nav>
 
-    <!-- LOGIC VÀ CƠ SỞ DỮ LIỆU THUỐC CHI TIẾT -->
+    <!-- LOGIC VÀ DỮ LIỆU -->
     <script>
         function app() {
             return {
                 search: '',
                 selectedCategory: 'TẤT CẢ',
                 categories: ['AN THẦN - GIÃN CƠ', 'ĐIỆN GIẢI', 'KHÁNG SINH', 'VẬN MẠCH', 'THUỐC KHÁC'],
+                // Biến cho mục tính nhanh
+                calcWeight: 10,
+                targetK: 40,
+                get calcResultText() {
+                    let w = this.calcWeight || 10;
+                    if (this.targetK === 40) {
+                        let mlKCl = (w * 1.5).toFixed(1); // Công thức mẫu tính nhanh
+                        return `Cho ${w} kg: Thêm ${mlKCl} ml KCl 10% vào chai 500ml dịch truyền`;
+                    } else {
+                        let mlKCl = (w * 2.2).toFixed(1);
+                        return `Cho ${w} kg: Thêm ${mlKCl} ml KCl 10% vào chai 500ml dịch truyền`;
+                    }
+                },
                 drugs: [
-                    // ==========================================
-                    // 1. ĐIỆN GIẢI (CÓ CÔNG THỨC & VÍ DỤ BÉ 10KG)
-                    // ==========================================
-                    {
-                        id: 'kcl-10',
-                        name: 'Kali Chloride (KCl) 10%',
-                        category: 'ĐIỆN GIẢI',
-                        brand: 'Ống 10ml (1g = 13.4 mEq K+)',
-                        dosage: 'Nhu cầu cơ bản: 2 mEq/kg/ngày.\nBù Hạ K+ máu: 0.5 - 1 mEq/kg truyền TM trong 1-2h.',
-                        preparation: 'TUYỆT ĐỐI KHÔNG TIÊM TRỰC TIẾP. Pha vào chai dịch truyền NaCl 0.9% hoặc D5%. Nồng độ tối đa ngoại biên <= 40-80 mEq/L.',
-                        quick_calc: '👉 VÍ DỤ BÉ 10 KG (Nhu cầu NCCB: 1000ml dịch, K+ 2 mEq/kg/ngày = 20 mEq):\n- Trong chai 500ml dịch cần: 10 mEq -> Cần 7.5 ml KCl 10%.\n- Tính nhanh muốn [K+] = 40 mEq/L -> Pha 15ml KCl 10% vào dịch.\n- Muốn [K+] = 60 mEq/L -> Pha 22ml KCl 10%.',
-                        stability: 'Bảo quản nhiệt độ phòng.',
-                        adjustment: 'CHỐNG CHỈ ĐỊNH khi vô niệu, suy thận cấp, tăng Kali máu.',
-                        notes: 'CẢNH BÁO AN TOÀN: Tiêm tĩnh mạch trực tiếp gây NGỪNG TIM TỬ VONG tức thì! Luôn lắc đều chai dịch sau khi pha.'
-                    },
-                    {
-                        id: 'natri-bicarbonat',
-                        name: 'Natri Bicarbonat 4.2% / 8.4%',
-                        category: 'ĐIỆN GIẢI',
-                        brand: 'Chai / Ống (1 ml 8.4% = 1 mEq Na+ & HCO3-)',
-                        dosage: 'Toan chuyển hóa nặng (pH < 7.1) / Tăng Kali máu cấp: 1 - 2 mEq/kg IV chậm trong 5-10 phút.',
-                        preparation: 'Trẻ sơ sinh: Pha loãng 8.4% với nước cất tỉ lệ 1:1 thành 4.2% (đẳng trương) để tránh xuất huyết não.',
-                        quick_calc: '👉 QUY ƯỚC NHU CẦU CƠ BẢN (NCCB) Natri: 3 mEq/kg/ngày.\n- Bé 10kg cần 30 mEq Na+ / ngày (tương đương cần thêm 18ml NaCl 10% vào chai dịch 500ml).',
-                        stability: 'Không pha chung với Calcium (gây kết tủa).',
-                        adjustment: 'Theo dõi sát Khí máu động mạch và Natri máu.',
-                        notes: 'Không dùng chung đường truyền với Catecholamin (Adrenalin, Noradrenalin).'
-                    },
-                    {
-                        id: 'calci-gluconat',
-                        name: 'Calci Gluconat 10%',
-                        category: 'ĐIỆN GIẢI',
-                        brand: 'Ống 10ml (0.46 mEq Ca2+/ml)',
-                        dosage: 'Cấp cứu Tăng K+ máu / Hạ Ca2+ máu cấp: 0.5 - 1 ml/kg (Max 20ml) IV chậm 5-10 phút.',
-                        preparation: 'Pha loãng với D5% hoặc NaCl 0.9% tỉ lệ 1:1. Tiêm TM chậm 5-10 phút.',
-                        quick_calc: '👉 VÍ DỤ BÉ 10 KG (Nhu cầu Ca2+ cơ bản: 1 mEq/kg/ngày = 10 mEq):\n- Trong chai 500ml dịch cần 5 mEq -> Cần 3.7 ml Calci Gluconate 10%.',
-                        stability: 'Bảo quản nhiệt độ phòng.',
-                        adjustment: 'Thận trọng trên bệnh nhân đang điều trị Digoxin.',
-                        notes: 'Tiêm TM chậm, theo dõi nhịp tim. Tránh thoát mạch gây hoại tử mô nặng.'
-                    },
-
-                    // ==========================================
-                    // 2. VẬN MẠCH (CÓ CÔNG THỨC PHA & TÍNH NHANH)
-                    // ==========================================
-                    {
-                        id: 'noradrenaline',
-                        name: 'Noradrenaline (Norepinephrine) 1mg/ml',
-                        category: 'VẬN MẠCH',
-                        brand: 'Levophed',
-                        dosage: 'Khởi đầu: 0.05 - 0.1 mcg/kg/phút. Tăng dần mỗi 5-10 phút đạt MAP mục tiêu. Liều tối đa: 1-2 mcg/kg/phút.',
-                        preparation: 'Pha trong D5% hoặc NaCl 0.9% qua Bơm tiêm điện.',
-                        quick_calc: '👉 CÔNG THỨC PHA CHUẨN BƠM TIÊM ĐIỆN (50ml):\n- Công thức: 4mg (4 ống) + D5% vừa đủ 50ml.\n- Tốc độ ml/giờ = (Liều mcg/kg/phút x cân nặng kg x 60) / 80.\n- VÍ DỤ BÉ 10 KG, truyền 0.1 mcg/kg/phút -> Tốc độ = (0.1 x 10 x 60) / 80 = 0.75 ml/giờ.',
-                        stability: 'Tránh ánh sáng. Không dùng nếu dung dịch đổi màu hồng hoặc nâu.',
-                        adjustment: 'Chỉnh liều liên tục theo Huyết áp động mạch xâm nhập.',
-                        notes: 'Lựa chọn HÀNG ĐẦU trong Sốc nhiễm khuẩn. Ưu tiên truyền qua đường TĨNH MẠCH TRUNG TÂM.'
-                    },
-                    {
-                        id: 'adrenaline-vm',
-                        name: 'Adrenaline (Epinephrine) 1mg/1ml',
-                        category: 'VẬN MẠCH',
-                        brand: 'Adrenalin',
-                        dosage: 'Sốc tim/Sốc phân bố: Truyền TM 0.02 - 0.5 mcg/kg/phút.\nPhản vệ: Tiêm bắp 0.01 mg/kg (1/1000) đùi ngoài.',
-                        preparation: 'Pha truyền Bơm tiêm điện bằng Glucose 5% hoặc NaCl 0.9%.',
-                        quick_calc: '👉 CÔNG THỨC PHA BƠM TIÊM ĐIỆN (50ml):\n- 4mg (4 ống) + D5% đủ 50ml (Nồng độ 80 mcg/ml).\n- VÍ DỤ BÉ 10 KG, truyền 0.1 mcg/kg/phút -> Tốc độ = 0.75 ml/giờ.',
-                        stability: 'Bảo quản nhiệt độ phòng, tránh ánh sáng.',
-                        adjustment: 'Chỉnh liều theo Huyết áp và Nhịp tim.',
-                        notes: 'Liều thấp ưu tiên Beta-1, Beta-2. Liều cao co mạch Alpha-1 mạnh.'
-                    },
-
-                    // ==========================================
-                    // 3. AN THẦN - GIÃN CƠ
-                    // ==========================================
+                    // ================= 1. AN THẦN - GIÃN CƠ =================
                     {
                         id: 'diazepam',
                         name: 'Diazepam 0,01g/2ml (Ống 2ml)',
                         category: 'AN THẦN - GIÃN CƠ',
                         brand: 'Seduxen, Valium - Benzodiazepin',
                         dosage: 'Cắt cơn co giật: 0.2 - 0.3 mg/kg IV chậm (1-2 mg/phút). Hoặc bơm hậu môn 0.5 mg/kg.',
-                        preparation: 'Tiêm TM trực tiếp nguyên chất. Không pha loãng vào dịch truyền do nguy cơ kết tủa.',
-                        quick_calc: '👉 VÍ DỤ BÉ 10 KG:\n- Liều 0.3 mg/kg -> Lấy 3 mg (0.6 ml) tiêm tĩnh mạch chậm.',
+                        preparation: 'Tiêm TM trực tiếp nguyên chất. Không khuyến cáo pha loãng vào dịch truyền do nguy cơ kết tủa.',
                         stability: 'Bảo quản nhiệt độ phòng (15-30°C), tránh ánh sáng.',
                         adjustment: 'Giảm 50% liều ở bệnh nhân suy gan nặng.',
                         notes: 'Nguy cơ ức chế hô hấp và tụt huyết áp cao khi tiêm TM nhanh. Luôn chuẩn bị sẵn bóng Ambu/O2.'
@@ -212,15 +183,69 @@
                         brand: 'Fentanyl - Opioid',
                         dosage: 'Giảm đau / An thần: 1 - 2 mcg/kg IV bolus. Duy trì truyền TM: 1 - 3 mcg/kg/giờ.',
                         preparation: 'Pha với NaCl 0.9% hoặc D5% đạt nồng độ 10 mcg/ml hoặc 50 mcg/ml.',
-                        quick_calc: '👉 VÍ DỤ BÉ 10 KG:\n- Liều 2 mcg/kg -> Lấy 20 mcg (0.4 ml ống 0.1mg/2ml) tiêm mạch.',
                         stability: 'Ổn định 24h ở nhiệt độ phòng sau khi pha.',
                         adjustment: 'Giảm 25-50% liều khi GFR < 10 ml/phút.',
                         notes: 'Tiêm bolus quá nhanh gây cứng cơ thành ngực (Rigid chest). Chuẩn bị sẵn Naloxone giải độc.'
                     },
+                    {
+                        id: 'midazolam',
+                        name: 'Midazolam 5mg/ml (Ống 1ml/3ml)',
+                        category: 'AN THẦN - GIÃN CƠ',
+                        brand: 'Dormicum',
+                        dosage: 'An thần đặt NKQ: 0.1 - 0.2 mg/kg IV. Duy trì truyền: 1 - 6 mcg/kg/phút (0.06 - 0.36 mg/kg/giờ).',
+                        preparation: 'Pha loãng trong NaCl 0.9% hoặc D5% đạt nồng độ 1 mg/ml.',
+                        stability: 'Bảo quản nhiệt độ phòng, ổn định 24h sau khi pha.',
+                        adjustment: 'Thận trọng và giảm liều khi suy gan/suy thận.',
+                        notes: 'Tác dụng an thần ngắn, nguy cơ tụt huyết áp cao khi phối hợp Opioid.'
+                    },
+                    {
+                        id: 'rocuronium',
+                        name: 'Rocuronium 50mg/5ml',
+                        category: 'AN THẦN - GIÃN CƠ',
+                        brand: 'Esmeron - Giãn cơ không khử cực',
+                        dosage: 'Đặt NKQ nhanh: 0.6 - 1.2 mg/kg IV. Duy trì truyền: 0.3 - 0.6 mg/kg/giờ.',
+                        preparation: 'Pha trong NaCl 0.9% hoặc D5%.',
+                        stability: 'Bảo quản lạnh 2-8°C. Để nhiệt độ phòng dùng trong 12 tuần.',
+                        adjustment: 'Kéo dài thời gian tác dụng ở bệnh nhân suy gan, xơ gan.',
+                        notes: 'BẮT BUỘC phải thông khí nhân tạo. Hóa giải tác dụng bằng Sugammadex hoặc Neostigmine.'
+                    },
 
-                    // ==========================================
-                    // 4. KHÁNG SINH
-                    // ==========================================
+                    // ================= 2. ĐIỆN GIẢI =================
+                    {
+                        id: 'kcl-10',
+                        name: 'Kali Chloride (KCl) 10%',
+                        category: 'ĐIỆN GIẢI',
+                        brand: 'Ống 10ml (1g = 13.4 mEq K+)',
+                        dosage: 'Nhu cầu cơ bản: 2-3 mEq/kg/ngày.\nBù Hạ K+ máu: 0.5 - 1 mEq/kg truyền TM trong 1-2h (Max 40-80 mEq/L ngoại biên).',
+                        preparation: 'TUYỆT ĐỐI KHÔNG TIÊM TRỰC TIẾP. Pha loãng vào chai NaCl 0.9% hoặc D5%. Tính nhanh: Bù 40 mEq/L -> Pha 30ml KCl 10% vào 1000ml dịch.',
+                        stability: 'Bảo quản nhiệt độ phòng.',
+                        adjustment: 'CHỐNG CHỈ ĐỊNH khi vô niệu, suy thận cấp, tăng Kali máu.',
+                        notes: 'CẢNH BÁO AN TOÀN: Tiêm tĩnh mạch trực tiếp gây NGỪNG TIM TỬ VONG tức thì! Luôn lắc đều chai dịch sau khi pha.'
+                    },
+                    {
+                        id: 'natri-bicarbonat',
+                        name: 'Natri Bicarbonat 4.2% / 8.4%',
+                        category: 'ĐIỆN GIẢI',
+                        brand: 'Chai / Ống (1 ml 8.4% = 1 mEq Na+ & HCO3-)',
+                        dosage: 'Toan chuyển hóa nặng (pH < 7.1) / Tăng Kali máu cấp: 1 - 2 mEq/kg IV chậm trong 5-10 phút.',
+                        preparation: 'Trẻ sơ sinh/sơ sinh non: Pha loãng 8.4% với nước cất tỉ lệ 1:1 thành 4.2% (đẳng trương) để tránh xuất huyết não.',
+                        stability: 'Không pha chung với Calcium (gây kết tủa Calcium carbonate).',
+                        adjustment: 'Theo dõi sát Khí máu động mạch và Natri máu.',
+                        notes: 'Không dùng chung đường truyền với Catecholamin (Adrenalin, Noradrenalin) vì làm trơ thuốc.'
+                    },
+                    {
+                        id: 'calci-gluconat',
+                        name: 'Calci Gluconat 10%',
+                        category: 'ĐIỆN GIẢI',
+                        brand: 'Ống 10ml (0.46 mEq Ca2+/ml)',
+                        dosage: 'Cấp cứu Tăng K+ máu / Hạ Ca2+ máu cấp: 0.5 - 1 ml/kg (Max 20ml) IV chậm 5-10 phút.',
+                        preparation: 'Pha loãng với D5% hoặc NaCl 0.9% tỉ lệ 1:1.',
+                        stability: 'Bảo quản nhiệt độ phòng.',
+                        adjustment: 'Thận trọng trên bệnh nhân đang điều trị Digoxin.',
+                        notes: 'Tiêm TM chậm, theo dõi nhịp tim (nguy cơ chậm nhịp/ngừng tim). Tránh thoát mạch gây hoại tử mô nặng.'
+                    },
+
+                    // ================= 3. KHÁNG SINH =================
                     {
                         id: 'vancomycin',
                         name: 'Vancomycin 500mg / 1g',
@@ -228,7 +253,6 @@
                         brand: 'Vancocin - Glycopeptide',
                         dosage: 'Trẻ em: 40 - 60 mg/kg/ngày chia 3-4 lần (mỗi 6-8h). Viêm màng não: 60 mg/kg/ngày.',
                         preparation: 'Pha lọ 500mg với 10ml nước cất. Pha loãng vào NaCl 0.9% hoặc D5% đạt nồng độ <= 5 mg/ml. Truyền TM chậm > 60 phút.',
-                        quick_calc: '👉 VÍ DỤ BÉ 10 KG (Liều 40 mg/kg/ngày = 400 mg/ngày):\n- Chia 4 lần -> Mỗi lần dùng 100 mg, pha loãng truyền trong ít nhất 60 phút.',
                         stability: 'Sau pha hoàn nguyên ổn định 14 ngày trong tủ lạnh (2-8°C). Dịch truyền dùng trong 24h.',
                         adjustment: 'BẮT BUỘC chỉnh liều theo Mức lọc cầu thận (GFR) và Trough level (15-20 mcg/ml).',
                         notes: 'Truyền nhanh gây Hội chứng người đỏ (Red Man Syndrome). Theo dõi sát chức năng thận và thính lực.'
@@ -240,26 +264,57 @@
                         brand: 'Rocephin - Cephalosporin thế hệ 3',
                         dosage: 'Nhiễm trùng thường: 50 - 80 mg/kg/ngày 1 lần. Viêm màng não: 100 mg/kg/ngày chia 1-2 lần.',
                         preparation: 'Pha tiêm TM chậm 3-5 phút hoặc pha truyền TM trong 30 phút với NaCl 0.9% hoặc D5%.',
-                        quick_calc: '👉 VÍ DỤ BÉ 10 KG (Liều 80 mg/kg/ngày):\n- Tổng liều 800 mg/ngày tiêm TM 1 lần duy nhất trong ngày.',
                         stability: 'Dung dịch sau pha ổn định 24h ở nhiệt độ phòng, 3 ngày trong tủ lạnh.',
                         adjustment: 'Không cần chỉnh liều trong suy thận đơn thuần.',
                         notes: 'CHỐNG CHỈ ĐỊNH dùng chung hoặc pha cùng dịch truyền chứa CALCI (như Ringer Lactate) ở trẻ sơ sinh.'
                     },
 
-                    // ==========================================
-                    // 5. THUỐC KHÁC
-                    // ==========================================
+                    // ================= 4. VẬN MẠCH =================
+                    {
+                        id: 'noradrenaline',
+                        name: 'Noradrenaline (Norepinephrine) 1mg/ml',
+                        category: 'VẬN MẠCH',
+                        brand: 'Levophed',
+                        dosage: 'Khởi đầu: 0.05 - 0.1 mcg/kg/phút. Tăng dần mỗi 5-10 phút đạt MAP mục tiêu. Liều tối đa: 1-2 mcg/kg/phút.',
+                        preparation: 'Pha trong D5% hoặc NaCl 0.9%. Công thức pha bơm tiêm điện: 4mg (1 ống) + D5% vừa đủ 50ml (Nồng độ 80 mcg/ml).',
+                        stability: 'Tránh ánh sáng. Không dùng nếu dung dịch đổi màu hồng hoặc nâu.',
+                        adjustment: 'Chỉnh liều liên tục theo đáp ứng Huyết áp động mạch xâm nhập.',
+                        notes: 'Lựa chọn HÀNG ĐẦU trong Sốc nhiễm khuẩn. Ưu tiên truyền qua đường TĨNH MẠCH TRUNG TÂM tránh hoại tử.'
+                    },
+                    {
+                        id: 'adrenaline-vm',
+                        name: 'Adrenaline (Epinephrine) 1mg/1ml',
+                        category: 'VẬN MẠCH',
+                        brand: 'Adrenalin',
+                        dosage: 'Sốc tim/Sốc phân bố: Truyền TM 0.02 - 0.5 mcg/kg/phút.\nPhản vệ: Tiêm bắp 0.01 mg/kg (1/1000) đùi ngoài.',
+                        preparation: 'Pha truyền Bơm tiêm điện bằng Glucose 5% hoặc NaCl 0.9%.',
+                        stability: 'Bảo quản nhiệt độ phòng, tránh ánh sáng.',
+                        adjustment: 'Chỉnh liều theo Huyết áp và Nhịp tim.',
+                        notes: 'Liều thấp (0.02-0.08) ưu tiên Beta-1, Beta-2. Liều cao (>0.1) co mạch Alpha-1 mạnh.'
+                    },
+
+                    // ================= 5. THUỐC KHÁC =================
                     {
                         id: 'furosemide',
                         name: 'Furosemide 20mg/2ml',
-                        category: 'THUỐC KHÁC',
+                        category: 'THUỐC KHÁCH',
                         brand: 'Lasix - Lợi tiểu quai',
                         dosage: 'Lợi tiểu cấp: 1 mg/kg/lần IV bolus chậm. Truyền duy trì: 0.1 - 0.4 mg/kg/giờ.',
                         preparation: 'Tiêm TM trực tiếp nguyên chất hoặc pha với NaCl 0.9%. Không pha dịch pH axit (D5%).',
-                        quick_calc: '👉 VÍ DỤ BÉ 10 KG:\n- Liều 1 mg/kg -> Lấy 10 mg (1 ml ống 20mg/2ml) tiêm tĩnh mạch chậm.',
                         stability: 'Bảo quản tránh ánh sáng.',
                         adjustment: 'Chỉnh liều khi suy thận nặng.',
                         notes: 'Theo dõi sát Điện giải đồ (Hạ K+, Hạ Na+) và thể tích nước tiểu.'
+                    },
+                    {
+                        id: 'salbutamol-khiduong',
+                        name: 'Salbutamol 2.5mg/2.5ml (Khí dung)',
+                        category: 'THUỐC KHÁCH',
+                        brand: 'Ventolin Nebules',
+                        dosage: 'Cơn hen cấp / Cơn co thắt phế quản: Trẻ < 5 tuổi: 2.5mg/lần; Trẻ >= 5 tuổi: 5mg/lần. Lặp lại mỗi 20 phút x 3 lần nếu nặng.',
+                        preparation: 'Dùng trực tiếp dung dịch khí dung nguyên chất qua máy phun khí dung thở O2 (6-8 L/phút).',
+                        stability: 'Bảo quản nhiệt độ phòng, trong túi nhôm tránh ánh sáng.',
+                        adjustment: 'Không cần chỉnh liều.',
+                        notes: 'Tác dụng phụ: Nhịp tim nhanh, run tay, hạ Kali máu.'
                     }
                 ],
                 get filteredDrugs() {
@@ -269,7 +324,6 @@
                                           item.category.toLowerCase().includes(searchLower) ||
                                           (item.brand && item.brand.toLowerCase().includes(searchLower)) ||
                                           (item.dosage && item.dosage.toLowerCase().includes(searchLower)) ||
-                                          (item.quick_calc && item.quick_calc.toLowerCase().includes(searchLower)) ||
                                           (item.notes && item.notes.toLowerCase().includes(searchLower));
                         
                         let matchesCategory = this.selectedCategory === 'TẤT CẢ' || item.category === this.selectedCategory;
