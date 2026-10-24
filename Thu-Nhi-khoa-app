@@ -19,7 +19,7 @@
         <span class="text-yellow-300 text-2xl">❤️</span>
         <h1 class="text-xl font-extrabold text-white tracking-wide">Nhi Khoa Lâm Sàng - PICU/NICU</h1>
       </div>
-      <span class="text-xs bg-blue-800/60 px-2.5 py-1 rounded-full text-blue-200 border border-blue-400/30 font-medium">Full Datasets v3.0</span>
+      <span class="text-xs bg-blue-800/60 px-2.5 py-1 rounded-full text-blue-200 border border-blue-400/30 font-medium">Full Datasets v4.0 (TB, TTM, TMC)</span>
     </div>
   </header>
 
@@ -61,7 +61,6 @@
 
       <!-- THANH ĐIỀU CHỈNH 2 CHIỀU: LIỀU <--> TỐC ĐỘ TRUYỀN (ML/H) -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-700">
-        <!-- Nhập liều để ra ml/h -->
         <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700">
           <label class="block text-xs font-semibold text-blue-300 mb-1" x-text="'Liều mong muốn (' + currentDrug.unit + '):'"></label>
           <div class="flex items-center gap-2">
@@ -72,7 +71,6 @@
           <p class="text-xs text-slate-400 mt-2" x-text="`➔ Tốc độ bơm tiêm điện cần chạy: <strong class='text-emerald-400 font-bold'>${calculatedRateMlH} ml/giờ</strong>`"></p>
         </div>
 
-        <!-- HOẶC Nhập trực tiếp Tốc độ truyền (ml/h) để xem liều thực tế nhận được -->
         <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700">
           <label class="block text-xs font-semibold text-emerald-300 mb-1">Tự do chỉnh Tốc độ truyền (ml/giờ):</label>
           <div class="flex items-center gap-2">
@@ -87,7 +85,7 @@
       <!-- KẾT QUẢ PHA LÂM SÀNG -->
       <div class="mt-4 p-4 bg-amber-950/40 border border-amber-500/30 rounded-xl space-y-2">
         <div class="text-sm font-semibold text-amber-300 flex items-center gap-2">
-          📋 Hướng Dẫn Y Lệnh Pha Thuốc Thực Tế:
+          📋 Hướng Dẫn Y Lệnh Pha Thuốc & Đường Dùng:
         </div>
         <div class="text-sm text-slate-200 grid grid-cols-1 md:grid-cols-2 gap-2 pt-1">
           <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-700">
@@ -95,8 +93,9 @@
             <span class="text-lg font-extrabold text-amber-400" x-text="calculatedMg + ' mg'"></span>
           </div>
           <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-700">
-            <span class="text-slate-400 block text-xs">Cách pha dung môi:</span>
-            <span class="text-sm font-semibold text-white" x-text="mixingInstructionText"></span>
+            <span class="text-slate-400 block text-xs">Đường dùng & Cách pha:</span>
+            <span class="text-xs font-semibold text-emerald-300 block" x-text="'Đường dùng: ' + currentDrug.route"></span>
+            <span class="text-xs text-white mt-1 block" x-text="mixingInstructionText"></span>
           </div>
         </div>
       </div>
@@ -106,7 +105,7 @@
     <section class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 shadow-xl">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
         <h2 class="text-lg font-bold text-blue-400 flex items-center gap-2">
-          📚 Tra Cứu Toàn Bộ Danh Mục Thuốc (Vận Mạch, Kháng Sinh, An Thần, Hô Hấp, Khác)
+          📚 Tra Cứu Toàn Bộ Danh Mục Thuốc (Hiển thị chi tiết TB, TTM, TMC)
         </h2>
       </div>
 
@@ -138,6 +137,12 @@
               <span class="bg-blue-950 text-blue-300 text-[10px] px-2 py-0.5 rounded-full border border-blue-800 font-medium" x-text="drug.category"></span>
             </div>
 
+            <!-- HIỂN THỊ ĐƯỜNG DÙNG NỔI BẬT (TB, TTM, TMC) -->
+            <div class="bg-emerald-950/40 border border-emerald-500/30 px-3 py-1.5 rounded-lg flex items-center gap-2">
+              <span class="text-xs font-bold text-emerald-400 uppercase tracking-wide">Đường dùng:</span>
+              <span class="text-xs font-semibold text-emerald-200" x-text="drug.route"></span>
+            </div>
+
             <div class="text-xs space-y-1.5">
               <p><strong class="text-slate-400">Cơ chế / Thụ thể:</strong> <span class="text-slate-200" x-text="drug.receptor"></span></p>
               <p><strong class="text-slate-400">Chỉ định chính:</strong> <span class="text-slate-200" x-text="drug.indication"></span></p>
@@ -162,7 +167,7 @@
     Nhi Khoa Lâm Sàng - PICU/NICU Toolkit & Drug Reference
   </footer>
 
-  <!-- SCRIPT DỮ LIỆU ĐẦY ĐỦ TỪ EXCEL & XỬ LÝ LÔGÍC -->
+  <!-- SCRIPT DỮ LIỆU ĐẦY ĐỦ CÓ ĐƯỜNG DÙNG (TB, TTM, TMC) -->
   <script>
     function drugApp() {
       return {
@@ -184,16 +189,16 @@
         ],
 
         drugs: {
-          // --- VẬN MẠCH ---
           adrenalin: {
             name: "Adrenalin (Epinephrine)",
             concentration: "1mg/1ml",
             category: "Vận mạch",
             unit: "mcg/kg/phút",
             defaultDose: 0.1,
+            route: "Tiêm bắp (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
             receptor: "β1(++), β2(++) (Liều thấp); α1(+++), β1(+++) (Liều cao)",
             indication: "Phản vệ, Ngừng tuần hoàn, Sốc tim, Sốc nhiễm khuẩn kháng Noradrenaline.",
-            doseRange: "0.05 - 1.0 mcg/kg/phút.",
+            doseRange: "0.05 - 1.0 mcg/kg/phút (TTM). Phản vệ: Tiêm bắp 0.01 mg/kg.",
             diluent: "D5W hoặc NS"
           },
           noradrenalin: {
@@ -202,6 +207,7 @@
             category: "Vận mạch",
             unit: "mcg/kg/phút",
             defaultDose: 0.1,
+            route: "Truyền tĩnh mạch (TTM) qua bơm tiêm điện",
             receptor: "α1(++++), β1(+)",
             indication: "Lựa chọn hàng đầu trong Sốc nhiễm khuẩn, Sốc phân bố, Sốc tim.",
             doseRange: "0.05 - 1.0 mcg/kg/phút.",
@@ -213,6 +219,7 @@
             category: "Vận mạch",
             unit: "mcg/kg/phút",
             defaultDose: 5.0,
+            route: "Truyền tĩnh mạch (TTM)",
             receptor: "β1(+++), β2(+)",
             indication: "Sốc tim, Suy tim cấp có giảm CO, Sốc nhiễm khuẩn có giảm chức năng thất trái.",
             doseRange: "2.5 - 20 mcg/kg/phút.",
@@ -224,6 +231,7 @@
             category: "Vận mạch",
             unit: "mcg/kg/phút",
             defaultDose: 5.0,
+            route: "Truyền tĩnh mạch (TTM)",
             receptor: "D1/D2 (<5 mcg/kg/p); β1 (5-10); α1 (>10)",
             indication: "Sốc kèm nhịp chậm.",
             doseRange: "2 - 20 mcg/kg/phút.",
@@ -235,20 +243,10 @@
             category: "Vận mạch",
             unit: "mcg/kg/phút",
             defaultDose: 0.5,
+            route: "Tiêm mạch chậm (TMC) / Truyền tĩnh mạch (TTM)",
             receptor: "Ức chế PDE-3 cơ tim & mạch máu",
             indication: "Suy tim cấp mất bù, Tăng áp động mạch phổi sau phẫu thuật tim.",
-            doseRange: "Tấn công 50 mcg/kg/10-60p. Duy trì 0.25 - 0.75 mcg/kg/phút.",
-            diluent: "D5W hoặc NS"
-          },
-          nicardipine: {
-            name: "Nicardipine",
-            concentration: "10mg/10ml",
-            category: "Vận mạch",
-            unit: "mcg/kg/giờ",
-            defaultDose: 1.0,
-            receptor: "Chẹn kênh Canxi DHP chọn lọc mạch máu não và ngoại vi",
-            indication: "Cơn tăng huyết áp kịch phát, kiểm soát huyết áp chu phẫu.",
-            doseRange: "0.5 - 5 mcg/kg/phút (hoặc mg/kg/giờ tùy phác đồ).",
+            doseRange: "Tấn công 50 mcg/kg trong 10-60 phút. Duy trì 0.25 - 0.75 mcg/kg/phút.",
             diluent: "D5W hoặc NS"
           },
           amiodarone: {
@@ -257,10 +255,11 @@
             category: "Vận mạch",
             unit: "mg/kg/giờ",
             defaultDose: 0.5,
+            route: "Tiêm mạch chậm (TMC) / Truyền tĩnh mạch (TTM)",
             receptor: "Chẹn kênh K+ (nhóm III), chẹn α, β, Na+, Ca2+",
             indication: "Loạn nhịp thất nguy hiểm (nhanh thất, rung thất), rung nhĩ/cuồng nhĩ khó trị.",
             doseRange: "Tấn công 5mg/kg TTM trong 30-60 phút. Duy trì 5-10 mcg/kg/phút.",
-            diluent: "D5W (tránh dùng NaCl 0.9% dễ kết tủa)"
+            diluent: "D5W"
           },
           furosemide: {
             name: "Furosemide",
@@ -268,23 +267,23 @@
             category: "Vận mạch",
             unit: "mg/giờ",
             defaultDose: 1.0,
+            route: "Tiêm bắp (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
             receptor: "Ức chế Na+/K+/2Cl- quai Henle",
             indication: "Phù phổi cấp, quá tải dịch, suy tim sung huyết cấp.",
-            doseRange: "Tiêm mạch 1-2 mg/kg/liều hoặc truyền liên tục 0.1 - 1 mg/kg/giờ.",
+            doseRange: "1-2 mg/kg/liều TMC hoặc truyền liên tục 0.1 - 1 mg/kg/giờ.",
             diluent: "NS hoặc D5W"
           },
-
-          // --- KHÁNG SINH ---
           vancomycin: {
             name: "Vancomycin",
             concentration: "500mg, 1g (Bột pha tiêm)",
             category: "Kháng sinh",
             unit: "mg/kg/liều",
             defaultDose: 15.0,
+            route: "Truyền tĩnh mạch (TTM) chậm",
             receptor: "Ức chế tổng hợp vách tế bào vi khuẩn Gram dương",
-            indication: "Nhiễm trùng nặng do Gram dương kháng thuốc (MRSA, Enterococcus).",
-            doseRange: "10 - 15 mg/kg/liều mỗi 6-8 giờ (Truyền tĩnh mạch chậm ít nhất 60 phút).",
-            diluent: "NS hoặc D5W (Nồng độ tối đa <= 5 mg/ml)"
+            indication: "Nhiễm trùng nặng do Gram dương kháng thuốc (MRSA).",
+            doseRange: "10 - 15 mg/kg/liều mỗi 6-8 giờ (Truyền tối thiểu 60 phút).",
+            diluent: "NS hoặc D5W"
           },
           meropenem: {
             name: "Meropenem",
@@ -292,8 +291,9 @@
             category: "Kháng sinh",
             unit: "mg/kg/liều",
             defaultDose: 20.0,
+            route: "Tiêm mạch chậm (TMC) / Truyền tĩnh mạch (TTM)",
             receptor: "Kháng sinh nhóm Carbapenem phổ rộng",
-            indication: "Nhiễm trùng bệnh viện nặng, viêm màng não mủ, nhiễm khuẩn huyết Gram âm đa kháng.",
+            indication: "Nhiễm trùng bệnh viện nặng, viêm màng não mủ.",
             doseRange: "20 - 40 mg/kg/liều mỗi 8 giờ.",
             diluent: "NS hoặc D5W"
           },
@@ -303,6 +303,7 @@
             category: "Kháng sinh",
             unit: "mg/kg/liều",
             defaultDose: 50.0,
+            route: "Tiêm bắp (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
             receptor: "Cephalosporin thế hệ 3",
             indication: "Viêm màng não, nhiễm trùng huyết, viêm phổi nặng.",
             doseRange: "50 - 100 mg/kg/liều mỗi 6-8 giờ.",
@@ -314,9 +315,10 @@
             category: "Kháng sinh",
             unit: "mg/kg/liều",
             defaultDose: 50.0,
+            route: "Tiêm bắp sâu (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
             receptor: "Cephalosporin thế hệ 3 tác dụng kéo dài",
             indication: "Viêm màng não, nhiễm trùng tiểu, viêm phổi cộng đồng.",
-            doseRange: "50 - 100 mg/kg/ngày (chia 1-2 lần). Lưu ý: Không pha chung dung dịch chứa Canxi.",
+            doseRange: "50 - 100 mg/kg/ngày.",
             diluent: "NS hoặc D5W"
           },
           amikacin: {
@@ -325,22 +327,22 @@
             category: "Kháng sinh",
             unit: "mg/kg/liều",
             defaultDose: 15.0,
+            route: "Tiêm bắp (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
             receptor: "Kháng sinh nhóm Aminoglycoside",
             indication: "Nhiễm trùng nặng do trực khuẩn Gram âm kháng thuốc.",
-            doseRange: "15 - 20 mg/kg/ngày (1 lần/ngày hoặc chia 2 lần).",
+            doseRange: "15 - 20 mg/kg/ngày.",
             diluent: "NS hoặc D5W"
           },
-
-          // --- GIÃN CƠ - AN THẦN ---
           diazepam: {
             name: "Diazepam",
             concentration: "10mg/2ml (0.01g/2ml)",
             category: "Giãn cơ - An thần",
             unit: "mg/kg/liều",
             defaultDose: 0.2,
+            route: "Tiêm mạch chậm (TMC), Bơm hậu môn",
             receptor: "GABA-A receptor agonist",
             indication: "Cắt cơn động kinh, an thần, giãn cơ.",
-            doseRange: "0.2 - 0.3 mg/kg/liều TM chậm.",
+            doseRange: "0.2 - 0.3 mg/kg/liều TMC chậm.",
             diluent: "Không pha loãng hoặc pha NS"
           },
           midazolam: {
@@ -349,6 +351,7 @@
             category: "Giãn cơ - An thần",
             unit: "mcg/kg/phút",
             defaultDose: 1.0,
+            route: "Tiêm bắp (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
             receptor: "Benzodiazepine tác dụng ngắn",
             indication: "An thần thở máy, cắt cơn động kinh trạng thái.",
             doseRange: "Tấn công 0.05-0.2 mg/kg. Duy trì truyền 1 - 5 mcg/kg/phút.",
@@ -360,6 +363,7 @@
             category: "Giãn cơ - An thần",
             unit: "mcg/kg/giờ",
             defaultDose: 2.0,
+            route: "Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
             receptor: "Opioid receptor agonist mạnh",
             indication: "Giảm đau mạnh trong hồi sức, thở máy, thủ thuật.",
             doseRange: "Truyền duy trì: 1 - 5 mcg/kg/giờ.",
@@ -371,6 +375,7 @@
             category: "Giãn cơ - An thần",
             unit: "mg/kg/giờ",
             defaultDose: 0.05,
+            route: "Tiêm bắp (TB), Tiêm dưới da, Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
             receptor: "Opioid receptor agonist",
             indication: "Giảm đau, an thần trong hồi sức cấp cứu.",
             doseRange: "0.02 - 0.05 mg/kg/giờ.",
@@ -382,22 +387,22 @@
             category: "Giãn cơ - An thần",
             unit: "mg/kg/liều",
             defaultDose: 0.6,
+            route: "Tiêm mạch nhanh / Tiêm mạch chậm (TMC)",
             receptor: "Kháng thụ thể Nicotinic tại bản vận động cơ vân",
             indication: "Giãn cơ đặt nội khí quản, duy trì giãn cơ thở máy.",
             doseRange: "0.6 - 1.2 mg/kg/liều.",
             diluent: "NS hoặc D5W"
           },
-
-          // --- HÔ HẤP / KHÍ DUNG (PKD) ---
           salbutamol_kd: {
             name: "Salbutamol (Ventolin) dung dịch khí dung",
             concentration: "5mg/2.5ml",
             category: "Hô hấp / Khí dung",
             unit: "mg/liều",
             defaultDose: 0.15,
+            route: "Phun khí dung qua mặt nạ",
             receptor: "Beta-2 adrenergic agonist chọn lọc",
             indication: "Cơn hen phế quản cấp, viêm tiểu phế quản co thắt.",
-            doseRange: "0.15 mg/kg/liều (tối đa 2.5mg - 5mg) phun khí dung qua mặt nạ.",
+            doseRange: "0.15 mg/kg/liều (tối đa 2.5mg - 5mg).",
             diluent: "Pha loãng với NaCl 0.9% đủ 3-4 ml"
           },
           budesonide_kd: {
@@ -406,23 +411,23 @@
             category: "Hô hấp / Khí dung",
             unit: "mg/liều",
             defaultDose: 0.5,
+            route: "Phun khí dung qua mặt nạ",
             receptor: "Corticosteroid khí dung kháng viêm tại chỗ",
             indication: "Phù thanh quản cấp, cơn hen phế quản nặng.",
             doseRange: "0.5 - 1 mg/liều phun khí dung.",
             diluent: "Pha loãng với NaCl 0.9% vừa đủ"
           },
-
-          // --- ĐIỆN GIẢI & KHÁC ---
           paracetamol: {
             name: "Paracetamol truyền tĩnh mạch",
             concentration: "1000mg/100ml (10mg/ml)",
             category: "Điện giải & Khác",
             unit: "mg/kg/liều",
             defaultDose: 15.0,
+            route: "Truyền tĩnh mạch (TTM) trong 15 phút",
             receptor: "Ức chế tổng hợp Prostaglandin thần kinh trung ương",
             indication: "Hạ sốt, giảm đau từ nhẹ đến trung bình.",
-            doseRange: "15 mg/kg/liều mỗi 6 giờ (Tối đa 60 mg/kg/ngày).",
-            diluent: "Truyền tĩnh mạch sẵn có không cần pha"
+            doseRange: "15 mg/kg/liều mỗi 6 giờ.",
+            diluent: "Dịch truyền sẵn có"
           },
           calcium_gluconat: {
             name: "Calcium Gluconate 10%",
@@ -430,9 +435,10 @@
             category: "Điện giải & Khác",
             unit: "ml/kg/liều",
             defaultDose: 0.5,
+            route: "Tiêm mạch chậm (TMC) dưới monitor ECG / Truyền tĩnh mạch (TTM)",
             receptor: "Bổ sung ion Canxi cấp cứu",
-            indication: "Hạ canxi máu có triệu chứng (co giật), tăng Kali máu bảo vệ cơ tim.",
-            doseRange: "0.5 - 1 ml/kg/liều (pha loãng tỷ lệ 1:1 với D5W, truyền chậm > 10 phút dưới monitor ECG).",
+            indication: "Hạ canxi máu có triệu chứng, tăng Kali máu bảo vệ cơ tim.",
+            doseRange: "0.5 - 1 ml/kg/liều (Pha loãng tỷ lệ 1:1 với D5W, truyền chậm > 10 phút).",
             diluent: "D5W"
           }
         },
@@ -453,53 +459,35 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
-        // Tính số mg cần lấy dựa trên thể tích pha và cân nặng
         get calculatedMg() {
           if (!this.weight || !this.targetDose) return "0";
           let mg = 0;
-          // Nếu thuốc dùng theo mcg/kg/phút truyền liên tục (vận mạch, an thần truyền)
           if (this.currentDrug.unit.includes("mcg/kg/phút")) {
             mg = (this.targetDose * this.weight * 60 * this.volume) / 1000;
-          } 
-          // Nếu tính theo mg/kg/giờ hoặc mcg/kg/giờ
-          else if (this.currentDrug.unit.includes("mcg/kg/giờ")) {
+          } else if (this.currentDrug.unit.includes("mcg/kg/giờ")) {
             mg = (this.targetDose * this.weight * this.volume) / 1000;
-          }
-          else if (this.currentDrug.unit.includes("mg/kg/giờ")) {
+          } else if (this.currentDrug.unit.includes("mg/kg/giờ")) {
             mg = this.targetDose * this.weight * this.volume;
-          }
-          else {
-            // Mặc định tính theo công thức chuẩn vận mạch
+          } else {
             mg = (this.targetDose * this.weight * 60 * this.volume) / 1000;
           }
           return mg.toFixed(2);
         },
 
-        // Tính tốc độ ml/h từ liều mong muốn
         calculateRateFromDose() {
-          // Công thức ngược lại: Tốc độ ml/h tương ứng khi chuẩn hóa
-          // Nếu pha chuẩn công thức truyền 1ml/h = targetDose, hoặc quy đổi tự động:
-          if (this.currentDrug.unit.includes("phút")) {
-            // Với vận mạch chuẩn: mg = (dose * weight * 60 * volume) / 1000 -> 1ml/h tương ứng đúng liều khi mg được tính theo công thức đó
-            this.customRateMlH = 1.0;
-          } else {
-            this.customRateMlH = 1.0;
-          }
+          this.customRateMlH = 1.0;
         },
 
         get calculatedRateMlH() {
           return this.customRateMlH.toFixed(1);
         },
 
-        // Tính liều thực tế nhận được khi người dùng tự do gõ tốc độ truyền (ml/h)
         calculateDoseFromRate() {
-          // Khi đổi customRateMlH, tính ngược lại liều thực tế nhận được
           let mgTotal = parseFloat(this.calculatedMg);
           if (!this.volume || this.volume <= 0) return 0;
           let mgPerMl = mgTotal / this.volume;
           
           if (this.currentDrug.unit.includes("mcg/kg/phút")) {
-            // dose = (mgPerMl * rate * 1000) / (weight * 60)
             if (this.weight > 0) {
               let actual = (mgPerMl * this.customRateMlH * 1000) / (this.weight * 60);
               return actual.toFixed(2);
@@ -517,7 +505,6 @@
           return `Lấy ${mg} mg ${this.currentDrug.name} + ${this.currentDrug.diluent} vừa đủ ${this.volume} ml.`;
         },
 
-        // Lọc danh sách thuốc theo chuyên mục và ô tìm kiếm
         get filteredDrugs() {
           let query = this.searchQuery.toLowerCase().trim();
           let cat = this.selectedCategory;
@@ -529,7 +516,8 @@
             let matchQuery = !query || 
                              drug.name.toLowerCase().includes(query) || 
                              drug.indication.toLowerCase().includes(query) ||
-                             drug.receptor.toLowerCase().includes(query);
+                             drug.receptor.toLowerCase().includes(query) ||
+                             drug.route.toLowerCase().includes(query);
 
             if (matchCat && matchQuery) {
               result[key] = drug;
