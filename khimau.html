@@ -3,281 +3,266 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nhi Khoa Lâm Sàng - Phân Tích Khí Máu Động Mạch & Tra Cứu Thuốc</title>
+  <title>Nhi Khoa Lâm Sàng - Hệ Thống Phân Tích Khí Máu Động Mạch (ABG Expert)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between" x-data="clinicalApp()">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between" x-data="abgApp()">
 
   <!-- HEADER -->
   <header class="bg-gradient-to-r from-teal-700 via-blue-800 to-indigo-900 p-4 shadow-xl sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto flex justify-between items-center">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
         <span class="text-yellow-400 text-2xl">🩸</span>
-        <h1 class="text-xl font-extrabold text-white">Nhi Khoa & Hồi Sức Cấp Cứu - ABG Expert System</h1>
+        <h1 class="text-xl font-extrabold text-white">Nhi Khoa & Hồi Sức Cấp Cứu - Phân Tích Khí Máu Động Mạch (ABG)</h1>
       </div>
-      <span class="text-xs bg-teal-900 px-3 py-1 rounded-full text-teal-200 border border-teal-400/40">PICU ABG v7.0 (Auto Anion Gap)</span>
+      <span class="text-xs bg-teal-900 px-3 py-1 rounded-full text-teal-200 border border-teal-400/40">PICU ABG Expert v7.0</span>
     </div>
   </header>
 
   <!-- MAIN -->
-  <main class="max-w-6xl mx-auto w-full p-4 flex-1 space-y-6">
+  <main class="max-w-5xl mx-auto w-full p-4 flex-1 space-y-6">
 
-    <!-- TAB SWITCHER -->
-    <div class="flex gap-2 border-b border-slate-800 pb-3">
-      <button @click="currentTab = 'abg'" :class="currentTab === 'abg' ? 'bg-teal-600 text-white' : 'bg-slate-900 text-slate-400'" class="px-4 py-2 rounded-xl text-sm font-bold transition shadow">
-        🧪 Phân Tích Khí Máu Động Mạch (ABG & Điện Giải)
+    <!-- FORM NHẬP LIỆU KHÍ MÁU VÀ ION ĐỒ -->
+    <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
+      <h2 class="text-lg font-bold text-teal-400 flex items-center gap-2">
+        🧪 Nhập Thông Số Khí Máu & Ion Đồ Lâm Sàng
+      </h2>
+      <p class="text-xs text-slate-400">Thứ tự tiêu chuẩn: pH / PaO₂ / PaCO₂ / HCO₃⁻ / BE kèm các điện giải đồ để tự động tính Anion Gap, AG hiệu chỉnh theo Albumin và đánh giá bù trừ.</p>
+
+      <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">pH (7.35-7.45):</label>
+          <input type="number" step="0.001" x-model.number="form.ph" placeholder="7.40" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">PaO₂ (mmHg):</label>
+          <input type="number" step="0.1" x-model.number="form.pao2" placeholder="90" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">PaCO₂ (mmHg):</label>
+          <input type="number" step="0.1" x-model.number="form.paco2" placeholder="40" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">HCO₃⁻ (mmol/L):</label>
+          <input type="number" step="0.1" x-model.number="form.hco3" placeholder="24" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">BE (mmol/L):</label>
+          <input type="number" step="0.1" x-model.number="form.be" placeholder="0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">FiO₂ (%):</label>
+          <input type="number" step="1" x-model.number="form.fio2" placeholder="21" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
+        </div>
+      </div>
+
+      <!-- ION ĐỒ VÀ SINH HÓA BỔ SUNG -->
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3 pt-2 border-t border-slate-800">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Na⁺ (mEq/L):</label>
+          <input type="number" step="1" x-model.number="form.na" placeholder="140" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">K⁺ (mEq/L):</label>
+          <input type="number" step="0.1" x-model.number="form.k" placeholder="4.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Cl⁻ (mEq/L):</label>
+          <input type="number" step="1" x-model.number="form.cl" placeholder="100" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Ure (mmol/L):</label>
+          <input type="number" step="0.1" x-model.number="form.ure" placeholder="5.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Albumin (g/dL):</label>
+          <input type="number" step="0.1" x-model.number="form.albumin" placeholder="4.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
+        </div>
+      </div>
+
+      <button @click="analyzeABG()" class="w-full bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-500 hover:to-blue-500 text-white font-bold py-3 rounded-xl shadow-lg transition">
+        🚀 Phân Tích Chuyên Sâu Khí Máu Động Mạch & Định Hướng Xử Trí
       </button>
-      <button @click="currentTab = 'drugs'" :class="currentTab === 'drugs' ? 'bg-teal-600 text-white' : 'bg-slate-900 text-slate-400'" class="px-4 py-2 rounded-xl text-sm font-bold transition shadow">
-        💊 Tra Cứu Liều Thuốc & Tính Nhanh BTĐ
-      </button>
-    </div>
+    </section>
 
-    <!-- ================= TAB 1: PHÂN TÍCH KHÍ MÁU (ABG) ================= -->
-    <div x-show="currentTab === 'abg'" class="space-y-6">
-      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
-        <h2 class="text-lg font-bold text-teal-400 flex items-center gap-2">
-          📊 Nhập Thông Số Khí Máu & Ion Đồ (Thứ tự: pH / PaO₂ / PaCO₂ / HCO₃⁻ / BE)
-        </h2>
-
-        <!-- Khí máu cơ bản -->
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">pH (7.35-7.45):</label>
-            <input type="number" step="0.001" x-model.number="abg.ph" placeholder="7.40" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">PaO₂ (mmHg):</label>
-            <input type="number" step="0.1" x-model.number="abg.pao2" placeholder="90" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">PaCO₂ (mmHg):</label>
-            <input type="number" step="0.1" x-model.number="abg.paco2" placeholder="40" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">HCO₃⁻ (mmol/L):</label>
-            <input type="number" step="0.1" x-model.number="abg.hco3" placeholder="24" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">BE (mmol/L):</label>
-            <input type="number" step="0.1" x-model.number="abg.be" placeholder="0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
-          </div>
-        </div>
-
-        <!-- Ion đồ & Thông số sinh hóa (Tự động tính AG) -->
-        <h3 class="text-sm font-bold text-amber-400 pt-2 border-t border-slate-800">
-          🧪 Ion Đồ & Sinh Hóa (Dùng để tự động tính Anion Gap)
-        </h3>
-        <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Na⁺ (mEq/L):</label>
-            <input type="number" step="1" x-model.number="abg.na" placeholder="140" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">K⁺ (mEq/L):</label>
-            <input type="number" step="0.1" x-model.number="abg.k" placeholder="4.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Cl⁻ (mEq/L):</label>
-            <input type="number" step="1" x-model.number="abg.cl" placeholder="100" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Ure (mmol/L hoặc mg/dL):</label>
-            <input type="number" step="0.1" x-model.number="abg.ure" placeholder="5.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Albumin (g/dL):</label>
-            <input type="number" step="0.1" x-model.number="abg.albumin" placeholder="4.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">FiO₂ (%):</label>
-            <input type="number" step="1" x-model.number="abg.fio2" placeholder="21" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
-          </div>
-        </div>
-
-        <button @click="analyzeABG()" class="w-full bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-500 hover:to-blue-500 text-white font-bold py-3 rounded-xl shadow-lg transition">
-          🚀 Chạy Phân Tích Khí Máu & Tự Động Tính Anion Gap
-        </button>
-      </section>
-
-      <!-- KẾT QUẢ PHÂN TÍCH KHÍ MÁU -->
-      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4" x-show="abgResult">
-        <h3 class="text-lg font-bold text-amber-400">📋 Báo Cáo Phân Tích Lâm Sàng Khí Máu Động Mạch</h3>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-            <h4 class="text-sm font-bold text-teal-300 border-b border-slate-800 pb-1">1. Rối Loạn Kiềm - Toan Nguyên Phát & Bù Trừ</h4>
-            <p class="text-xs text-slate-300" x-html="abgResult.primaryDisorder"></p>
-            <p class="text-xs text-slate-300" x-html="abgResult.compensation"></p>
-          </div>
-
-          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-            <h4 class="text-sm font-bold text-blue-300 border-b border-slate-800 pb-1">2. Tình Trạng Oxygen Hóa & Thông Khí (P/F, A-aDO₂)</h4>
-            <p class="text-xs text-slate-300" x-html="abgResult.oxygenation"></p>
-            <p class="text-xs text-slate-300" x-html="abgResult.aaGradient"></p>
-          </div>
-        </div>
-
+    <!-- KẾT QUẢ PHÂN TÍCH -->
+    <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-5" x-show="result">
+      <h3 class="text-lg font-bold text-amber-400">📋 Báo Cáo Phân Tích & Hướng Dẫn Xử Trí Lâm Sàng</h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- 1. Kiềm Toan & Bù Trừ -->
         <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-          <h4 class="text-sm font-bold text-purple-300 border-b border-slate-800 pb-1">3. Tự Động Tính Anion Gap & Định Hướng Nguyên Nhân</h4>
-          <p class="text-xs text-slate-300" x-html="abgResult.anionGapAnalysis"></p>
-          <div class="mt-2 p-3 bg-red-950/30 border border-red-500/30 rounded-lg text-xs text-red-200">
-            <strong>🏥 Định Hướng Nguyên Nhân Lâm Sàng:</strong>
-            <p class="mt-1" x-text="abgResult.clinicalCauses"></p>
-          </div>
+          <h4 class="text-sm font-bold text-teal-300 border-b border-slate-800 pb-1">1. Rối Loạn Kiềm - Toan Nguyên Phát & Bù Trừ</h4>
+          <p class="text-xs text-slate-300" x-html="result.primary"></p>
+          <p class="text-xs text-slate-300" x-html="result.compensation"></p>
         </div>
-      </section>
-    </div>
 
-    <!-- ================= TAB 2: TRA CỨU THUỐC ================= -->
-    <div x-show="currentTab === 'drugs'" class="space-y-6">
-      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl">
-        <h2 class="text-lg font-bold text-amber-400 mb-4">⚡ Tính Nhanh Bơm Tiêm Điện Lâm Sàng (PICU/NICU)</h2>
+        <!-- 2. Oxy Hóa & Thông Khí -->
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+          <h4 class="text-sm font-bold text-blue-300 border-b border-slate-800 pb-1">2. Tình Trạng Oxygen Hóa & Thông Khí</h4>
+          <p class="text-xs text-slate-300" x-html="result.oxygenation"></p>
+          <p class="text-xs text-slate-300" x-html="result.ventilation"></p>
+          <p class="text-xs text-slate-300" x-html="result.aaGradient"></p>
+        </div>
+      </div>
+
+      <!-- 3. Anion Gap Tự Động & Hiệu Chỉnh Albumin -->
+      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+        <h4 class="text-sm font-bold text-purple-300 border-b border-slate-800 pb-1">3. Phân Tích Anion Gap Tự Động & Hiệu Chỉnh Albumin</h4>
+        <p class="text-xs text-slate-300" x-html="result.anionGapText"></p>
+      </div>
+
+      <!-- 4. Định Hướng Nguyên Nhân Theo Bệnh Cảnh & Xử Trí Lâm Sàng -->
+      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+        <h4 class="text-sm font-bold text-amber-300 border-b border-slate-800 pb-1">4. Nguyên Nhân Theo Bệnh Cảnh & Hướng Xử Trí Lâm Sàng</h4>
         
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Cân nặng bé (kg):</label>
-            <input type="number" step="0.1" x-model.number="weight" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white">
+        <div class="space-y-2 text-xs text-slate-300">
+          <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+            <strong class="text-amber-400 block mb-1">🏥 Nguyên Nhân Cần Theo Dõi (Sốc, Sepsis, DKA, Tiêu Chảy, Suy Thận, Ngộ Độc):</strong>
+            <p x-text="result.causesText"></p>
           </div>
-          <div class="md:col-span-2">
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Chọn Thuốc:</label>
-            <select x-model="selectedDrugKey" @change="onDrugChange()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white">
-              <template x-for="(drug, key) in drugs" :key="key">
-                <option :value="key" x-text="'[' + drug.category + '] ' + drug.name"></option>
-              </template>
-            </select>
+
+          <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+            <strong class="text-teal-400 block mb-1">🫁 Hỗ Trợ Hô Hấp Không Xâm Lấn (NIV - CPAP / BiPAP):</strong>
+            <p x-text="result.nivText"></p>
           </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Thể tích pha (ml):</label>
-            <input type="number" step="1" x-model.number="volume" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white">
+
+          <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
+            <strong class="text-blue-400 block mb-1">⚡ Hỗ Trợ Hô Hấp Xâm Lấn (Thở Máy & Cài Đặt Thông Số):</strong>
+            <p x-text="result.invasiveText"></p>
           </div>
         </div>
-
-        <div class="mt-4 pt-4 border-t border-slate-800 bg-slate-950 p-3.5 rounded-xl">
-          <span class="text-xs text-slate-400 block">Hướng dẫn pha y lệnh:</span>
-          <span class="text-sm font-bold text-amber-300 mt-1 block" x-text="mixingInstructionText"></span>
-        </div>
-      </section>
-
-      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-lg font-bold text-teal-400">📚 Tra Cứu Liều Chi Tiết</h2>
-          <input type="text" x-model="searchQuery" placeholder="Tìm tên thuốc..." class="w-64 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white">
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto">
-          <template x-for="(drug, key) in filteredDrugs" :key="key">
-            <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4 space-y-2">
-              <h3 class="text-base font-bold text-white" x-text="drug.name"></h3>
-              <p class="text-xs text-slate-300" x-text="'Chỉ định: ' + drug.indication"></p>
-              <p class="text-xs text-red-300" x-text="'Liều tối đa: ' + drug.maxDose"></p>
-              <button @click="selectDrugForCalc(key)" class="w-full bg-teal-600/20 text-teal-300 text-xs py-1 rounded border border-teal-500/30">⚡ Chọn tính nhanh</button>
-            </div>
-          </template>
-        </div>
-      </section>
-    </div>
+      </div>
+    </section>
 
   </main>
 
   <footer class="bg-slate-950 p-4 border-t border-slate-800 text-center text-xs text-slate-500">
-    Nhi Khoa Lâm Sàng - ABG Expert System
+    Nhi Khoa Lâm Sàng - Hệ thống Phân tích Khí máu Động mạch Chuyên sâu PICU/NICU
   </footer>
 
   <script>
-    function clinicalApp() {
+    function abgApp() {
       return {
-        currentTab: 'abg',
-        weight: 10,
-        volume: 50,
-        targetDose: 0.1,
-        selectedDrugKey: 'adrenalin',
-        searchQuery: '',
-
-        abg: {
-          ph: 7.40, pao2: 90, paco2: 40, hco3: 24, be: 0,
-          na: 140, k: 4.0, cl: 100, ure: 5.0, albumin: 4.0, fio2: 21
+        form: {
+          ph: 7.40,
+          pao2: 90,
+          paco2: 40,
+          hco3: 24,
+          be: 0,
+          fio2: 21,
+          na: 140,
+          k: 4.0,
+          cl: 100,
+          ure: 5.0,
+          albumin: 4.0
         },
-        abgResult: null,
+        result: null,
 
         analyzeABG() {
-          let ph = this.abg.ph;
-          let pao2 = this.abg.pao2;
-          let paco2 = this.abg.paco2;
-          let hco3 = this.abg.hco3;
-          let na = this.abg.na || 140;
-          let cl = this.abg.cl || 100;
-          let k = this.abg.k || 4.0;
-          let albumin = this.abg.albumin || 4.0;
-          let fio2 = this.abg.fio2 > 1 ? this.abg.fio2 / 100 : this.abg.fio2;
-
-          // Tự động tính Anion Gap: AG = Na - (Cl + HCO3) (có thể tính kèm K: Na + K - (Cl + HCO3))
-          let calculatedAg = na - (cl + hco3);
-          
-          // Hiệu chỉnh Anion Gap theo Albumin (Mỗi 1g/dL Albumin giảm dưới 4.0, AG giảm khoảng 2.5)
-          let correctedAg = calculatedAg + 2.5 * (4.0 - albumin);
+          let ph = this.form.ph;
+          let pao2 = this.form.pao2;
+          let paco2 = this.form.paco2;
+          let hco3 = this.form.hco3;
+          let na = this.form.na;
+          let cl = this.form.cl;
+          let fio2 = this.form.fio2 > 1 ? this.form.fio2 / 100 : this.form.fio2;
+          let alb = this.form.albumin;
+          let ure = this.form.ure;
 
           let primary = "";
           let comp = "";
 
+          // 1. Phân tích kiềm toan nguyên phát
           if (ph < 7.35) {
-            if (paco2 > 45 && hco3 < 22) primary = "Toan hỗn hợp (Toan hô hấp & Toan chuyển hóa)";
-            else if (paco2 > 45) primary = "Nhiễm toan hô hấp nguyên phát";
+            if (paco2 > 45 && hco3 < 22) primary = "Toan hỗn hợp (Toan hô hấp & Toan chuyển hóa nguyên phát)";
+            else if (paco2 > 45) primary = "Nhiễm toan hô hấp nguyên phát (Giảm thông khí)";
             else if (hco3 < 22) primary = "Nhiễm toan chuyển hóa nguyên phát";
-            else primary = "Toan máu";
+            else primary = "Toan máu chưa phân loại rõ";
           } else if (ph > 7.45) {
-            if (paco2 < 35 && hco3 > 26) primary = "Kiềm hỗn hợp (Kiềm hô hấp & Kiềm chuyển hóa)";
-            else if (paco2 < 35) primary = "Nhiễm kiềm hô hấp nguyên phát";
+            if (paco2 < 35 && hco3 > 26) primary = "Kiềm hỗn hợp (Kiềm hô hấp & Kiềm chuyển hóa nguyên phát)";
+            else if (paco2 < 35) primary = "Nhiễm kiềm hô hấp nguyên phát (Tăng thông khí)";
             else if (hco3 > 26) primary = "Nhiễm kiềm chuyển hóa nguyên phát";
-            else primary = "Kiềm máu";
+            else primary = "Kiềm máu chưa phân loại rõ";
           } else {
-            primary = "pH trong giới hạn bình thường (Bù trừ hoàn toàn hoặc hỗn hợp triệt tiêu)";
+            primary = "pH trong giới hạn bình thường (7.35 - 7.45) - Có thể bù trừ hoàn toàn hoặc rối loạn hỗn hợp triệt tiêu nhau.";
           }
 
+          // 2. Bù trừ (Công thức Winter cho Toan chuyển hóa: PaCO2 dự kiến = 1.5 * HCO3 + 8 ± 2)
           if (hco3 < 22) {
             let expPaco2 = (1.5 * hco3) + 8;
-            if (paco2 >= expPaco2 - 2 && paco2 <= expPaco2 + 2) comp = `Bù trừ hô hấp đủ (Expected PaCO₂ ~ ${expPaco2.toFixed(1)} mmHg).`;
-            else if (paco2 < expPaco2 - 2) comp = `Kèm Kiềm hô hấp nguyên phát.`;
-            else comp = `Kèm Toan hô hấp phối hợp.`;
+            if (paco2 >= expPaco2 - 2 && paco2 <= expPaco2 + 2) {
+              comp = `Bù trừ hô hấp đủ theo công thức Winter (PaCO₂ dự kiến ~ ${expPaco2.toFixed(1)} mmHg).`;
+            } else if (paco2 < expPaco2 - 2) {
+              comp = `Kèm theo Kiềm hô hấp nguyên phát (PaCO₂ thấp hơn mức bù trừ dự kiến).`;
+            } else {
+              comp = `Kèm theo Toan hô hấp phối hợp (PaCO₂ cao hơn mức bù trừ dự kiến, nguy cơ suy hô hấp cấp/kiệt sức).`;
+            }
+          } else if (paco2 > 45) {
+            comp = `Đánh giá bù trừ thận: Tăng mỗi 10 mmHg PaCO₂ làm tăng HCO₃⁻ khoảng 1 mEq/L (cấp) hoặc 3.5-4 mEq/L (mãn).`;
           } else {
             comp = `Không có rối loạn chuyển hóa chính cần bù trừ cấp.`;
           }
 
+          // 3. Oxygen hóa & P/F Ratio
           let pfRatio = (pao2 / fio2).toFixed(0);
-          let oxyStatus = `PaO₂ = ${pao2} mmHg (FiO₂ = ${(fio2*100).toFixed(0)}%) ➔ P/F = ${pfRatio} (${pfRatio > 300 ? 'Bình thường' : pfRatio >= 200 ? 'ARDS nhẹ' : 'ARDS trung bình/nặng'}).`;
+          let oxyText = `PaO₂ = ${pao2} mmHg (FiO₂ = ${(fio2*100).toFixed(0)}%) ➔ Tỷ lệ P/F = ${pfRatio}. `;
+          if (pfRatio > 300) oxyText += "Oxy hóa máu bình thường.";
+          else if (pfRatio >= 200) oxyText += "ARDS nhẹ (200 ≤ P/F ≤ 300).";
+          else if (pfRatio >= 100) oxyText += "ARDS trung bình (100 ≤ P/F < 200).";
+          else oxyText += "ARDS nặng (P/F < 100) - Cần can thiệp hồi sức tích cực cao.";
 
+          // 4. Thông khí
+          let ventText = `PaCO₂ = ${paco2} mmHg. `;
+          if (paco2 > 45) ventText += "Giảm thông khí phế nang (Ứ CO₂ / Toan hô hấp).";
+          else if (paco2 < 35) ventText += "Tăng thông khí phế nang (Thải CO₂ / Kiềm hô hấp).";
+          else ventText += "Thông khí phế nang bình thường.";
+
+          // 5. A-aDO2
           let pao2Ideal = (fio2 * 713) - (paco2 / 0.8);
           let aaDiff = (pao2Ideal - pao2).toFixed(1);
-          let aaText = `A-aDO₂ ≈ ${aaDiff} mmHg (${aaDiff > 20 ? 'Tăng ➔ Bệnh lý phổi' : 'Bình thường'}).`;
+          let aaText = `Độ chênh áp oxy phế nang - động mạch (A-aDO₂) ≈ ${aaDiff} mmHg. ` + (aaDiff > 20 ? "Tăng A-aDO₂ ➔ Bệnh lý tại phổi (Shunt, V/Q mismatch)." : "A-aDO₂ bình thường ➔ Nguyên nhân ngoài phổi.");
 
-          let agText = `AG tính toán = ${calculatedAg.toFixed(1)} mEq/L. AG hiệu chỉnh theo Albumin (${albumin} g/dL) = ${correctedAg.toFixed(1)} mEq/L. `;
-          if (correctedAg > 14) {
-            agText += "➔ TOAN CHUYỂN HÓA TĂNG ANION GAP (Nghĩ đến Lactic acidosis, DKA, suy thận, ngộ độc).";
+          // 6. Anion Gap tự động từ Na, Cl, HCO3 và hiệu chỉnh theo Albumin
+          let ag = na - (cl + hco3);
+          let correctedAg = ag;
+          if (alb && alb < 4.0) {
+            correctedAg = ag + 2.5 * (4.0 - alb);
+          }
+          let agText = `Anion Gap (AG) tính toán = ${ag.toFixed(1)} mEq/L. `;
+          if (alb) agText += `AG hiệu chỉnh theo Albumin (${alb} g/dL) ≈ ${correctedAg.toFixed(1)} mEq/L. `;
+          
+          let isHighAG = correctedAg > 14;
+          if (isHighAG) {
+            agText += "➔ Toan chuyển hóa TĂNG ANION GAP (HAGMA).";
           } else {
-            agText += "➔ TOAN CHUYỂN HÓA AG BÌNH THƯỜNG / Mất HCO₃⁻ (Tiêu chảy, mất nước, toan ống thận).";
+            agText += "➔ Toan chuyển hóa AG BÌNH THƯỜNG (NAGMA / Toan do mất HCO₃⁻).";
           }
 
-          let causes = hco3 < 22 ? (correctedAg > 14 ? "Sốc, Nhiễm khuẩn huyết (Sepsis), DKA (Nhiễm toan ceton), Suy thận, Ngộ độc." : "Tiêu chảy, Mất nước nặng, Mất HCO₃⁻ qua đường tiêu hóa/thận.") : "Đánh giá thêm theo bệnh cảnh lâm sàng.";
+          // 7. Nguyên nhân lâm sàng chi tiết
+          let causes = "";
+          if (isHighAG) {
+            causes = "MUDPILES: Lactic acidosis (gặp trong Sốc, Sepsis, thiếu oxy mô, tưới máu kém), Nhiễm toan ceton do đái tháo đường (DKA), Suy thận (tăng Ure máu), Ngộ độc (Aspirin, Methanol).";
+          } else {
+            causes = "Mất HCO₃⁻ qua đường tiêu hóa (Tiêu chảy nặng, rò dịch tiêu hóa), toan hóa ống thận (RTA), hoặc do truyền lượng lớn dịch muối NaCl 0.9%.";
+          }
 
-          this.abgResult = {
-            primaryDisorder: `<strong>Rối loạn chính:</strong> ${primary}`,
-            compensation: `<strong>Bù trừ:</strong> ${comp}`,
-            oxygenation: `<strong>Tình trạng Oxy hóa:</strong> ${oxyStatus}`,
+          let nivText = "Chỉ định NIV (CPAP / BiPAP): Áp dụng khi bệnh nhân còn tỉnh táo, hợp tác tốt, tự thở hiệu quả và chưa kiệt sức. Hỗ trợ tốt trong đợt cấp hen suyễn, viêm tiểu phế quản, phù phổi cấp hoặc hỗ trợ cai máy thở nhằm giảm công hô hấp và tránh đặt nội khí quản xâm lấn.";
+          let invasiveText = "Chỉ định thở máy xâm nhập: Bắt buộc khi thất bại với NIV, rối loạn ý thức (hôn mê GCS thấp), ngưng thở, sốc nặng, hoặc suy hô hấp kiệt sức (PaCO₂ tăng cao liên tục, pH < 7.20). Cài đặt ban đầu: Thể tích khí lưu thông (Vt) 6-8 ml/kg, PEEP 5-8 cmH₂O, tần số thở (RR) theo tuổi, FiO₂ chỉnh theo SpO₂ mục tiêu (92-95%). Theo dõi sát khí máu sau 30-60 phút để đánh giá lại hiệu quả thông khí.";
+
+          this.result = {
+            primary: `<strong>Rối loạn nguyên phát:</strong> ${primary}`,
+            compensation: `<strong>Đánh giá bù trừ:</strong> ${comp}`,
+            oxygenation: `<strong>Oxy hóa (P/F ratio):</strong> ${oxyText}`,
+            ventilation: `<strong>Thông khí:</strong> ${ventText}`,
             aaGradient: `<strong>Độ chênh A-aDO₂:</strong> ${aaText}`,
-            anionGapAnalysis: `<strong>Tự động tính Anion Gap:</strong> ${agText}`,
-            clinicalCauses: causes
+            anionGapText: `<strong>Phân tích Anion Gap:</strong> ${agText}`,
+            causesText: causes,
+            nivText: nivText,
+            invasiveText: invasiveText
           };
-        },
-
-        drugs: {
-          adrenalin: { name: "Adrenaline", concentration: "1mg/1ml", category: "Vận mạch", unit: "mcg/kg/phút", defaultDose: 0.1, indication: "Phản vệ, Ngừng tim", maxDose: "Tùy đáp ứng", note: "Truyền qua BTĐ", diluent: "D5W" }
-        },
-        get currentDrug() { return this.drugs[this.selectedDrugKey] || this.drugs['adrenalin']; },
-        onDrugChange() { this.targetDose = this.currentDrug.defaultDose; },
-        selectDrugForCalc(key) { this.selectedDrugKey = key; this.targetDose = this.currentDrug.defaultDose; },
-        get calculatedMg() { return ((this.targetDose * this.weight * 60 * this.volume) / 1000).toFixed(2); },
-        get mixingInstructionText() { return `Lấy ${this.calculatedMg} mg + ${this.currentDrug.diluent} vừa đủ ${this.volume} ml.`; },
-        get filteredDrugs() { return this.drugs; }
+        }
       }
     }
   </script>
