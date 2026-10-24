@@ -16,7 +16,7 @@
         <span class="text-yellow-400 text-2xl">🩸</span>
         <h1 class="text-xl font-extrabold text-white">Nhi Khoa & Hồi Sức Cấp Cứu - Phân Tích Khí Máu Động Mạch (ABG)</h1>
       </div>
-      <span class="text-xs bg-teal-900 px-3 py-1 rounded-full text-teal-200 border border-teal-400/40">PICU ABG Expert v7.0</span>
+      <span class="text-xs bg-teal-900 px-3 py-1 rounded-full text-teal-200 border border-teal-400/40">PICU ABG Expert v8.0 (Clinical Enhanced)</span>
     </div>
   </header>
 
@@ -36,19 +36,19 @@
           <input type="number" step="0.001" x-model.number="form.ph" placeholder="7.40" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">PaO₂ (mmHg):</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">PaO₂ (80-100 mmHg):</label>
           <input type="number" step="0.1" x-model.number="form.pao2" placeholder="90" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">PaCO₂ (mmHg):</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">PaCO₂ (35-45 mmHg):</label>
           <input type="number" step="0.1" x-model.number="form.paco2" placeholder="40" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">HCO₃⁻ (mmol/L):</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">HCO₃⁻ (22-26 mmol/L):</label>
           <input type="number" step="0.1" x-model.number="form.hco3" placeholder="24" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">BE (mmol/L):</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">BE (-2 đến +2):</label>
           <input type="number" step="0.1" x-model.number="form.be" placeholder="0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
         </div>
         <div>
@@ -60,29 +60,29 @@
       <!-- ION ĐỒ VÀ SINH HÓA BỔ SUNG -->
       <div class="grid grid-cols-2 md:grid-cols-5 gap-3 pt-2 border-t border-slate-800">
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Na⁺ (mEq/L):</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Na⁺ (135-145 mEq/L):</label>
           <input type="number" step="1" x-model.number="form.na" placeholder="140" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">K⁺ (mEq/L):</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">K⁺ (3.5-5.0 mEq/L):</label>
           <input type="number" step="0.1" x-model.number="form.k" placeholder="4.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Cl⁻ (mEq/L):</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Cl⁻ (96-106 mEq/L):</label>
           <input type="number" step="1" x-model.number="form.cl" placeholder="100" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Ure (mmol/L):</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Ure (2.5-7.5 mmol/L):</label>
           <input type="number" step="0.1" x-model.number="form.ure" placeholder="5.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Albumin (g/dL):</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Albumin (3.5-5.0 g/dL):</label>
           <input type="number" step="0.1" x-model.number="form.albumin" placeholder="4.0" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-bold text-center">
         </div>
       </div>
 
       <button @click="analyzeABG()" class="w-full bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-500 hover:to-blue-500 text-white font-bold py-3 rounded-xl shadow-lg transition">
-        🚀 Phân Tích Chuyên Sâu Khí Máu Động Mạch & Định Hướng Xử Trí
+        🚀 Phân Tích Chuyên Sâu Khí Máu Động Mạch & Định Hướng Xử Trí Lâm Sàng
       </button>
     </section>
 
@@ -113,24 +113,24 @@
         <p class="text-xs text-slate-300" x-html="result.anionGapText"></p>
       </div>
 
-      <!-- 4. Định Hướng Nguyên Nhân Theo Bệnh Cảnh & Xử Trí Lâm Sàng -->
+      <!-- 4. Định Hướng Nguyên Nhân Chi Tiết & Xử Trí Lâm Sàng -->
       <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-        <h4 class="text-sm font-bold text-amber-300 border-b border-slate-800 pb-1">4. Nguyên Nhân Theo Bệnh Cảnh & Hướng Xử Trí Lâm Sàng</h4>
+        <h4 class="text-sm font-bold text-amber-300 border-b border-slate-800 pb-1">4. Nguyên Nhân Chi Tiết & Hướng Xử Trí Lâm Sàng Theo Bệnh Cảnh</h4>
         
-        <div class="space-y-2 text-xs text-slate-300">
-          <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
-            <strong class="text-amber-400 block mb-1">🏥 Nguyên Nhân Cần Theo Dõi (Sốc, Sepsis, DKA, Tiêu Chảy, Suy Thận, Ngộ Độc):</strong>
-            <p x-text="result.causesText"></p>
+        <div class="space-y-3 text-xs text-slate-300">
+          <div class="bg-slate-900 p-3.5 rounded-lg border border-slate-800 space-y-1">
+            <strong class="text-amber-400 block text-sm">🏥 Phân Tích Nguyên Nhân Chi Tiết:</strong>
+            <p x-html="result.causesText"></p>
           </div>
 
-          <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
-            <strong class="text-teal-400 block mb-1">🫁 Hỗ Trợ Hô Hấp Không Xâm Lấn (NIV - CPAP / BiPAP):</strong>
-            <p x-text="result.nivText"></p>
+          <div class="bg-slate-900 p-3.5 rounded-lg border border-slate-800 space-y-1">
+            <strong class="text-teal-400 block text-sm">🫁 Hỗ Trợ Hô Hấp Không Xâm Lấn (NIV - CPAP / BiPAP):</strong>
+            <p x-html="result.nivText"></p>
           </div>
 
-          <div class="bg-slate-900 p-3 rounded-lg border border-slate-800">
-            <strong class="text-blue-400 block mb-1">⚡ Hỗ Trợ Hô Hấp Xâm Lấn (Thở Máy & Cài Đặt Thông Số):</strong>
-            <p x-text="result.invasiveText"></p>
+          <div class="bg-slate-900 p-3.5 rounded-lg border border-slate-800 space-y-1">
+            <strong class="text-blue-400 block text-sm">⚡ Hỗ Trợ Hô Hấp Xâm Lấn & Điều Chỉnh Máy Thở Theo Khí Máu:</strong>
+            <p x-html="result.invasiveText"></p>
           </div>
         </div>
       </div>
@@ -174,7 +174,6 @@
           let primary = "";
           let comp = "";
 
-          // 1. Phân tích kiềm toan nguyên phát
           if (ph < 7.35) {
             if (paco2 > 45 && hco3 < 22) primary = "Toan hỗn hợp (Toan hô hấp & Toan chuyển hóa nguyên phát)";
             else if (paco2 > 45) primary = "Nhiễm toan hô hấp nguyên phát (Giảm thông khí)";
@@ -189,7 +188,6 @@
             primary = "pH trong giới hạn bình thường (7.35 - 7.45) - Có thể bù trừ hoàn toàn hoặc rối loạn hỗn hợp triệt tiêu nhau.";
           }
 
-          // 2. Bù trừ (Công thức Winter cho Toan chuyển hóa: PaCO2 dự kiến = 1.5 * HCO3 + 8 ± 2)
           if (hco3 < 22) {
             let expPaco2 = (1.5 * hco3) + 8;
             if (paco2 >= expPaco2 - 2 && paco2 <= expPaco2 + 2) {
@@ -205,7 +203,6 @@
             comp = `Không có rối loạn chuyển hóa chính cần bù trừ cấp.`;
           }
 
-          // 3. Oxygen hóa & P/F Ratio
           let pfRatio = (pao2 / fio2).toFixed(0);
           let oxyText = `PaO₂ = ${pao2} mmHg (FiO₂ = ${(fio2*100).toFixed(0)}%) ➔ Tỷ lệ P/F = ${pfRatio}. `;
           if (pfRatio > 300) oxyText += "Oxy hóa máu bình thường.";
@@ -213,18 +210,15 @@
           else if (pfRatio >= 100) oxyText += "ARDS trung bình (100 ≤ P/F < 200).";
           else oxyText += "ARDS nặng (P/F < 100) - Cần can thiệp hồi sức tích cực cao.";
 
-          // 4. Thông khí
           let ventText = `PaCO₂ = ${paco2} mmHg. `;
           if (paco2 > 45) ventText += "Giảm thông khí phế nang (Ứ CO₂ / Toan hô hấp).";
           else if (paco2 < 35) ventText += "Tăng thông khí phế nang (Thải CO₂ / Kiềm hô hấp).";
           else ventText += "Thông khí phế nang bình thường.";
 
-          // 5. A-aDO2
           let pao2Ideal = (fio2 * 713) - (paco2 / 0.8);
           let aaDiff = (pao2Ideal - pao2).toFixed(1);
           let aaText = `Độ chênh áp oxy phế nang - động mạch (A-aDO₂) ≈ ${aaDiff} mmHg. ` + (aaDiff > 20 ? "Tăng A-aDO₂ ➔ Bệnh lý tại phổi (Shunt, V/Q mismatch)." : "A-aDO₂ bình thường ➔ Nguyên nhân ngoài phổi.");
 
-          // 6. Anion Gap tự động từ Na, Cl, HCO3 và hiệu chỉnh theo Albumin
           let ag = na - (cl + hco3);
           let correctedAg = ag;
           if (alb && alb < 4.0) {
@@ -240,16 +234,36 @@
             agText += "➔ Toan chuyển hóa AG BÌNH THƯỜNG (NAGMA / Toan do mất HCO₃⁻).";
           }
 
-          // 7. Nguyên nhân lâm sàng chi tiết
+          // Chi tiết nguyên nhân theo yêu cầu
           let causes = "";
           if (isHighAG) {
-            causes = "MUDPILES: Lactic acidosis (gặp trong Sốc, Sepsis, thiếu oxy mô, tưới máu kém), Nhiễm toan ceton do đái tháo đường (DKA), Suy thận (tăng Ure máu), Ngộ độc (Aspirin, Methanol).";
+            causes = `<strong>1. Toan chuyển hóa tăng Anion Gap (HAGMA - MUDPILES):</strong><br>
+            • <em>Lactic Acidosis:</em> Gặp trong Sốc (giảm tưới máu mô, chuyển hóa yếm khí), Nhiễm trùng huyết (Sepsis/Septic shock), thiếu oxy mô nặng, co giật kéo dài.<br>
+            • <em>DKA (Nhiễm toan ceton đái tháo đường):</em> Thiếu Insulin tuyệt đối dẫn đến tăng đường huyết, tăng thể Ceton trong máu.<br>
+            • <em>Suy thận:</em> Giảm đào thải acid hữu cơ, tăng Ure máu.<br>
+            • <em>Ngộ độc:</em> Quá liều Aspirin (Salicylate), Methanol, Ethylene glycol.`;
           } else {
-            causes = "Mất HCO₃⁻ qua đường tiêu hóa (Tiêu chảy nặng, rò dịch tiêu hóa), toan hóa ống thận (RTA), hoặc do truyền lượng lớn dịch muối NaCl 0.9%.";
+            causes = `<strong>2. Toan chuyển hóa Anion Gap bình thường (NAGMA - Mất HCO₃⁻):</strong><br>
+            • <em>Đường tiêu hóa:</em> Tiêu chảy cấp mất nước nặng, rò dịch tụy / dịch ruột non.<br>
+            • <em>Thận:</em> Toan hóa ống thận (RTA loại 1, 2, 4).<br>
+            • <em>Y thầy thuốc:</em> Truyền lượng lớn dịch muối đẳng trương NaCl 0.9% (Hyperchloremic acidosis).`;
           }
 
-          let nivText = "Chỉ định NIV (CPAP / BiPAP): Áp dụng khi bệnh nhân còn tỉnh táo, hợp tác tốt, tự thở hiệu quả và chưa kiệt sức. Hỗ trợ tốt trong đợt cấp hen suyễn, viêm tiểu phế quản, phù phổi cấp hoặc hỗ trợ cai máy thở nhằm giảm công hô hấp và tránh đặt nội khí quản xâm lấn.";
-          let invasiveText = "Chỉ định thở máy xâm nhập: Bắt buộc khi thất bại với NIV, rối loạn ý thức (hôn mê GCS thấp), ngưng thở, sốc nặng, hoặc suy hô hấp kiệt sức (PaCO₂ tăng cao liên tục, pH < 7.20). Cài đặt ban đầu: Thể tích khí lưu thông (Vt) 6-8 ml/kg, PEEP 5-8 cmH₂O, tần số thở (RR) theo tuổi, FiO₂ chỉnh theo SpO₂ mục tiêu (92-95%). Theo dõi sát khí máu sau 30-60 phút để đánh giá lại hiệu quả thông khí.";
+          if (paco2 > 45) {
+            causes += `<br><br><strong>3. Nguyên nhân Toan hô hấp (Ứ CO₂):</strong><br>
+            • <em>Tắc nghẽn đường thở:</em> Hen phế quản nặng đợt cấp, dị vật đường thở, viêm tiểu quản cấp, tắc đàm nhớt.<br>
+            • <em>Bệnh lý thần kinh cơ / Trung tâm hô hấp:</em> Ngộ độc thuốc an thần/morphin, chấn thương sọ não (CTSN), nhược cơ, hội chứng Guillain-Barré.<br>
+            • <em>Bệnh lý phổi:</em> Viêm phổi nặng, ARDS, xẹp phổi, tràn dịch/tràn khí màng phổi.`;
+          }
+
+          let nivText = `• <strong>Chỉ định:</strong> Bệnh nhân còn tỉnh táo, hợp tác tốt, tự thở hiệu quả, chưa kiệt sức (thích hợp trong đợt cấp hen phế quản, viêm tiểu phế quản, phù phổi cấp, hỗ trợ cai máy thở).<br>
+          • <strong>Cài đặt ban đầu:</strong> CPAP (với PEEP 5-8 cmH₂O) hoặc BiPAP (IPAP 10-14 cmH₂O, EPAP 5-8 cmH₂O), FiO₂ chỉnh theo SpO₂ mục tiêu (92-95%).<br>
+          • <strong>Theo dõi:</strong> Đánh giá lại khí máu sau 30 - 60 phút. Nếu pH tiếp tục giảm, PaCO₂ tăng cao hoặc bệnh nhân lờ đờ, kiệt sức ➔ Thất bại NIV, cần chuyển đặt nội khí quản thở máy xâm nhập ngay lập tức.`;
+
+          let invasiveText = `• <strong>Chỉ định:</strong> Thất bại với NIV, hôn mê (GCS thấp), ngưng thở, sốc nặng, hoặc suy hô hấp kiệt sức (PaCO₂ tăng cao liên tục, pH < 7.20).<br>
+          • <strong>Cài đặt ban đầu & Điều chỉnh theo khí máu:</strong><br>
+          &nbsp;&nbsp;- <em>Kiểm soát Oxygen hóa (PaO₂ / SpO₂):</em> Nếu PaO₂ thấp ➔ Tăng FiO₂ hoặc tăng PEEP.<br>
+          &nbsp;&nbsp;- <em>Kiểm soát Thông khí (PaCO₂):</em> Dùng công thức điều chỉnh PaCO₂: <code>PaCO₂ cũ × RR cũ = PaCO₂ mới × RR mới</code> (nếu giữ nguyên Vt) hoặc tăng thể tích khí lưu thông (Vt 6-8 ml/kg). Kiểm tra kỹ các khoảng chết cơ học, tắc đàm hoặc hở xì ống NKQ.`;
 
           this.result = {
             primary: `<strong>Rối loạn nguyên phát:</strong> ${primary}`,
