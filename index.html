@@ -3,156 +3,130 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nhi Khoa Lâm Sàng - Tra Cứu & Tính Nhanh Liều Thuốc PICU</title>
-  <!-- Tailwind CSS -->
+  <title>Nhi Khoa Lâm Sàng - Tra Cứu Liều PICU/NICU</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Alpine.js -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between"
-      x-data="drugApp()">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between" x-data="drugApp()">
 
   <!-- HEADER -->
-  <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-4 shadow-lg sticky top-0 z-50">
+  <header class="bg-gradient-to-r from-teal-700 via-blue-800 to-indigo-900 p-4 shadow-xl sticky top-0 z-50">
     <div class="max-w-5xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
-        <span class="text-yellow-300 text-2xl">❤️</span>
-        <h1 class="text-xl font-extrabold text-white tracking-wide">Nhi Khoa Lâm Sàng - PICU/NICU</h1>
+        <span class="text-yellow-400 text-2xl">🩺</span>
+        <h1 class="text-xl font-extrabold text-white">Nhi Khoa Lâm Sàng - Tra Cứu Y Lệnh</h1>
       </div>
-      <span class="text-xs bg-blue-800/60 px-2.5 py-1 rounded-full text-blue-200 border border-blue-400/30 font-medium">Full Datasets v4.0 (TB, TTM, TMC)</span>
+      <span class="text-xs bg-teal-900 px-3 py-1 rounded-full text-teal-200 border border-teal-400/40">v5.1 PICU Standard</span>
     </div>
   </header>
 
-  <!-- MAIN CONTAINER -->
+  <!-- MAIN -->
   <main class="max-w-5xl mx-auto w-full p-4 flex-1 space-y-6">
 
-    <!-- KHU VỰC TÍNH NHANH BƠM TIÊM ĐIỆN & TRUYỀN DỊCH -->
-    <section class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 shadow-xl backdrop-blur">
-      <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2 mb-4">
-        ⚡ Tính Nhanh Lâm Sàng (Pha BTĐ / Truyền Liên Tục)
-      </h2>
+    <!-- KHU VỰC TÍNH NHANH BTĐ -->
+    <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl">
+      <h2 class="text-lg font-bold text-amber-400 mb-4">⚡ Tính Nhanh Bơm Tiêm Điện Lâm Sàng</h2>
       
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <!-- Cân nặng -->
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Cân nặng bé (kg):</label>
-          <input type="number" step="0.1" x-model.number="weight" placeholder="VD: 10" 
-                 class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+          <input type="number" step="0.1" x-model.number="weight" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white">
         </div>
-
-        <!-- Chọn Thuốc -->
         <div class="md:col-span-2">
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Chọn Thuốc Cần Tính:</label>
-          <select x-model="selectedDrugKey" @change="onDrugChange()"
-                  class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Chọn Thuốc:</label>
+          <select x-model="selectedDrugKey" @change="onDrugChange()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white">
             <template x-for="(drug, key) in drugs" :key="key">
-              <option :value="key" x-text="`[${drug.category}] ${drug.name}`"></option>
+              <option :value="key" x-text="'[' + drug.category + '] ' + drug.name"></option>
             </template>
           </select>
         </div>
-
-        <!-- Thể tích dịch pha -->
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Thể tích pha (ml):</label>
-          <input type="number" step="1" x-model.number="volume" 
-                 class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+          <input type="number" step="1" x-model.number="volume" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white">
         </div>
       </div>
 
-      <!-- THANH ĐIỀU CHỈNH 2 CHIỀU: LIỀU <--> TỐC ĐỘ TRUYỀN (ML/H) -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-700">
-        <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700">
-          <label class="block text-xs font-semibold text-blue-300 mb-1" x-text="'Liều mong muốn (' + currentDrug.unit + '):'"></label>
-          <div class="flex items-center gap-2">
-            <input type="number" step="0.01" x-model.number="targetDose" @input="calculateRateFromDose()"
-                   class="w-full bg-slate-950 border border-slate-600 rounded-lg px-3 py-2 text-white font-bold text-amber-400 focus:outline-none focus:border-blue-400">
-            <span class="text-xs text-slate-400 whitespace-nowrap" x-text="currentDrug.unit"></span>
-          </div>
-          <p class="text-xs text-slate-400 mt-2" x-text="`➔ Tốc độ bơm tiêm điện cần chạy: <strong class='text-emerald-400 font-bold'>${calculatedRateMlH} ml/giờ</strong>`"></p>
+      <!-- ĐIỀU CHỈNH LIỀU <-> TỐC ĐỘ -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-800">
+        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+          <label class="block text-xs font-semibold text-blue-300 mb-1" x-text="'Liều chỉ định (' + currentDrug.unit + '):'"></label>
+          <input type="number" step="0.01" x-model.number="targetDose" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-amber-400 font-bold">
+          <p class="text-xs text-slate-400 mt-2">➔ Tốc độ truyền: <strong class="text-emerald-400 font-bold" x-text="calculatedRateMlH + ' ml/giờ'"></strong></p>
         </div>
 
-        <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700">
+        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
           <label class="block text-xs font-semibold text-emerald-300 mb-1">Tự do chỉnh Tốc độ truyền (ml/giờ):</label>
-          <div class="flex items-center gap-2">
-            <input type="number" step="0.1" x-model.number="customRateMlH" @input="calculateDoseFromRate()"
-                   class="w-full bg-slate-950 border border-slate-600 rounded-lg px-3 py-2 text-white font-bold text-emerald-400 focus:outline-none focus:border-emerald-400">
-            <span class="text-xs text-slate-400 whitespace-nowrap">ml/giờ</span>
-          </div>
-          <p class="text-xs text-slate-400 mt-2" x-text="`➔ Liều thực tế bé đang nhận: <strong class='text-amber-400 font-bold'>${calculatedActualDose} ${currentDrug.unit}</strong>`"></p>
+          <input type="number" step="0.1" x-model.number="customRateMlH" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-emerald-400 font-bold">
+          <p class="text-xs text-slate-400 mt-2">➔ Liều thực tế nhận: <strong class="text-amber-400 font-bold" x-text="calculatedActualDose + ' ' + currentDrug.unit"></strong></p>
         </div>
       </div>
 
-      <!-- KẾT QUẢ PHA LÂM SÀNG -->
-      <div class="mt-4 p-4 bg-amber-950/40 border border-amber-500/30 rounded-xl space-y-2">
-        <div class="text-sm font-semibold text-amber-300 flex items-center gap-2">
-          📋 Hướng Dẫn Y Lệnh Pha Thuốc & Đường Dùng:
-        </div>
-        <div class="text-sm text-slate-200 grid grid-cols-1 md:grid-cols-2 gap-2 pt-1">
-          <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-700">
-            <span class="text-slate-400 block text-xs">Lượng thuốc nguyên chất cần lấy:</span>
-            <span class="text-lg font-extrabold text-amber-400" x-text="calculatedMg + ' mg'"></span>
-          </div>
-          <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-700">
-            <span class="text-slate-400 block text-xs">Đường dùng & Cách pha:</span>
-            <span class="text-xs font-semibold text-emerald-300 block" x-text="'Đường dùng: ' + currentDrug.route"></span>
-            <span class="text-xs text-white mt-1 block" x-text="mixingInstructionText"></span>
-          </div>
-        </div>
+      <!-- Y LỆNH MẪU -->
+      <div class="mt-4 p-4 bg-amber-950/40 border border-amber-500/30 rounded-xl">
+        <span class="text-xs text-slate-400 block">Hướng dẫn pha y lệnh:</span>
+        <span class="text-sm font-bold text-amber-300" x-text="mixingInstructionText"></span>
       </div>
     </section>
 
-    <!-- TRA CỨU TẤT CẢ CÁC THUỐC TRONG FILE EXCEL -->
-    <section class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 shadow-xl">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
-        <h2 class="text-lg font-bold text-blue-400 flex items-center gap-2">
-          📚 Tra Cứu Toàn Bộ Danh Mục Thuốc (Hiển thị chi tiết TB, TTM, TMC)
-        </h2>
+    <!-- TRA CỨU DANH MỤC THUỐC -->
+    <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-3 mb-4">
+        <h2 class="text-lg font-bold text-teal-400">📚 Tra Cứu Liều Chi Tiết (TMC, TB, TTM, Liều Tối Đa & Lưu Ý)</h2>
+        <input type="text" x-model="searchQuery" placeholder="Tìm tên thuốc, chỉ định..." class="w-full md:w-64 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white">
       </div>
 
-      <!-- BỘ LỌC CHUYÊN MỤC & THANH TÌM KIẾM -->
-      <div class="flex flex-col md:flex-row gap-3 mb-4">
-        <div class="flex flex-wrap gap-1.5 flex-1">
-          <template x-for="cat in categories" :key="cat.id">
-            <button @click="selectedCategory = cat.id"
-                    :class="selectedCategory === cat.id ? 'bg-blue-600 text-white font-bold border-blue-500' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-700'"
-                    class="px-3 py-1.5 rounded-lg text-xs border transition" x-text="cat.name">
-            </button>
-          </template>
-        </div>
-        <div class="w-full md:w-64">
-          <input type="text" x-model="searchQuery" placeholder="Tìm tên thuốc, chỉ định..." 
-                 class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-1.5 text-sm text-white focus:outline-none focus:border-blue-400">
-        </div>
+      <!-- LỌC NHÓM -->
+      <div class="flex flex-wrap gap-1.5 mb-4">
+        <template x-for="cat in categories" :key="cat.id">
+          <button @click="selectedCategory = cat.id"
+                  :class="selectedCategory === cat.id ? 'bg-teal-600 text-white font-bold' : 'bg-slate-950 text-slate-300 border-slate-800'"
+                  class="px-3 py-1.5 rounded-lg text-xs border transition" x-text="cat.name">
+          </button>
+        </template>
       </div>
 
-      <!-- DANH SÁCH THUỐC HIỂN THỊ DẠNG THẺ -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[550px] overflow-y-auto pr-1">
+      <!-- THẺ THUỐC PHÂN MÀU SẮC -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-1">
         <template x-for="(drug, key) in filteredDrugs" :key="key">
-          <div class="bg-slate-900/90 border border-slate-700 hover:border-blue-500/50 rounded-xl p-4 space-y-2.5 transition">
-            <div class="flex justify-between items-start border-b border-slate-800 pb-2">
+          <div :class="getCardStyle(drug.category)" class="border rounded-xl p-4 space-y-3 shadow-md">
+            
+            <div class="flex justify-between items-start border-b border-white/10 pb-2">
               <div>
-                <h3 class="text-base font-bold text-blue-300" x-text="drug.name"></h3>
-                <p class="text-xs text-slate-400" x-text="'Hàm lượng: ' + drug.concentration"></p>
+                <h3 class="text-base font-extrabold text-white" x-text="drug.name"></h3>
+                <p class="text-xs opacity-80" x-text="'Hàm lượng: ' + drug.concentration"></p>
               </div>
-              <span class="bg-blue-950 text-blue-300 text-[10px] px-2 py-0.5 rounded-full border border-blue-800 font-medium" x-text="drug.category"></span>
+              <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase" :class="getBadgeStyle(drug.category)" x-text="drug.category"></span>
             </div>
 
-            <!-- HIỂN THỊ ĐƯỜNG DÙNG NỔI BẬT (TB, TTM, TMC) -->
-            <div class="bg-emerald-950/40 border border-emerald-500/30 px-3 py-1.5 rounded-lg flex items-center gap-2">
-              <span class="text-xs font-bold text-emerald-400 uppercase tracking-wide">Đường dùng:</span>
-              <span class="text-xs font-semibold text-emerald-200" x-text="drug.route"></span>
+            <!-- LIỀU TỪNG ĐƯỜNG DÙNG -->
+            <div class="space-y-1.5 text-xs bg-slate-950/60 p-3 rounded-lg border border-white/5">
+              <p class="font-bold text-amber-300 text-[11px] uppercase">📌 Liều dùng theo đường dùng:</p>
+              
+              <template x-if="drug.doseTMC">
+                <p><span class="bg-cyan-950 text-cyan-300 font-bold px-1 py-0.5 rounded text-[10px] border border-cyan-800">TMC</span> <span x-text="drug.doseTMC"></span></p>
+              </template>
+
+              <template x-if="drug.doseTB">
+                <p><span class="bg-purple-950 text-purple-300 font-bold px-1 py-0.5 rounded text-[10px] border border-purple-800">TB</span> <span x-text="drug.doseTB"></span></p>
+              </template>
+
+              <template x-if="drug.doseTTM">
+                <p><span class="bg-emerald-950 text-emerald-300 font-bold px-1 py-0.5 rounded text-[10px] border border-emerald-800">TTM</span> <span x-text="drug.doseTTM"></span></p>
+              </template>
             </div>
 
+            <!-- LIỀU TỐI ĐA & LƯU Ý -->
             <div class="text-xs space-y-1.5">
-              <p><strong class="text-slate-400">Cơ chế / Thụ thể:</strong> <span class="text-slate-200" x-text="drug.receptor"></span></p>
-              <p><strong class="text-slate-400">Chỉ định chính:</strong> <span class="text-slate-200" x-text="drug.indication"></span></p>
-              <div class="bg-slate-800/60 p-2 rounded border border-slate-700/60">
-                <p><strong class="text-amber-400">Liều dùng & Cách pha:</strong> <span class="text-slate-200" x-text="drug.doseRange"></span></p>
-                <p class="text-slate-400 mt-1" x-text="'Dung môi tương hợp: ' + drug.diluent"></p>
+              <p><strong class="opacity-70">Chỉ định:</strong> <span x-text="drug.indication"></span></p>
+              <div class="bg-red-950/40 border border-red-500/30 p-2 rounded text-red-200">
+                <strong>🛑 Liều tối đa:</strong> <span x-text="drug.maxDose"></span>
+              </div>
+              <div class="bg-amber-950/40 border border-amber-500/30 p-2 rounded text-amber-200">
+                <strong>⚠️ Lưu ý:</strong> <span x-text="drug.note"></span>
               </div>
             </div>
 
-            <button @click="selectDrugForCalc(key)" class="w-full mt-2 bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 text-xs py-1.5 rounded-lg border border-blue-500/30 font-medium transition">
+            <button @click="selectDrugForCalc(key)" class="w-full bg-white/10 hover:bg-white/20 text-white text-xs py-1.5 rounded-lg border border-white/20 font-semibold transition">
               ⚡ Chọn tính nhanh liều này
             </button>
           </div>
@@ -164,10 +138,10 @@
 
   <!-- FOOTER -->
   <footer class="bg-slate-950 p-4 border-t border-slate-800 text-center text-xs text-slate-500">
-    Nhi Khoa Lâm Sàng - PICU/NICU Toolkit & Drug Reference
+    Nhi Khoa Lâm Sàng - PICU/NICU Toolkit
   </footer>
 
-  <!-- SCRIPT DỮ LIỆU ĐẦY ĐỦ CÓ ĐƯỜNG DÙNG (TB, TTM, TMC) -->
+  <!-- SCRIPT ALPNEJS -->
   <script>
     function drugApp() {
       return {
@@ -188,6 +162,22 @@
           { id: 'Điện giải & Khác', name: 'Điện giải & Khác' }
         ],
 
+        getCardStyle(category) {
+          if (category === 'Vận mạch') return 'bg-rose-950/20 border-rose-500/40';
+          if (category === 'Kháng sinh') return 'bg-sky-950/20 border-sky-500/40';
+          if (category === 'Giãn cơ - An thần') return 'bg-purple-950/20 border-purple-500/40';
+          if (category === 'Hô hấp / Khí dung') return 'bg-emerald-950/20 border-emerald-500/40';
+          return 'bg-amber-950/20 border-amber-500/40';
+        },
+
+        getBadgeStyle(category) {
+          if (category === 'Vận mạch') return 'bg-rose-900 text-rose-200 border border-rose-700';
+          if (category === 'Kháng sinh') return 'bg-sky-900 text-sky-200 border border-sky-700';
+          if (category === 'Giãn cơ - An thần') return 'bg-purple-900 text-purple-200 border border-purple-700';
+          if (category === 'Hô hấp / Khí dung') return 'bg-emerald-900 text-emerald-200 border border-emerald-700';
+          return 'bg-amber-900 text-amber-200 border border-amber-700';
+        },
+
         drugs: {
           adrenalin: {
             name: "Adrenalin (Epinephrine)",
@@ -195,70 +185,26 @@
             category: "Vận mạch",
             unit: "mcg/kg/phút",
             defaultDose: 0.1,
-            route: "Tiêm bắp (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
-            receptor: "β1(++), β2(++) (Liều thấp); α1(+++), β1(+++) (Liều cao)",
-            indication: "Phản vệ, Ngừng tuần hoàn, Sốc tim, Sốc nhiễm khuẩn kháng Noradrenaline.",
-            doseRange: "0.05 - 1.0 mcg/kg/phút (TTM). Phản vệ: Tiêm bắp 0.01 mg/kg.",
+            doseTMC: "Ngừng tuần hoàn / Phản vệ nặng: 0.01 mg/kg (0.01 ml/kg dung dịch 1:1000).",
+            doseTB: "Phản vệ: Tiêm bắp 0.01 mg/kg (Tối đa 0.5mg/liều).",
+            doseTTM: "Truyền liên tục: 0.05 - 1.0 mcg/kg/phút qua BTĐ.",
+            maxDose: "Duy trì theo đáp ứng huyết áp lâm sàng.",
+            indication: "Phản vệ, Ngừng tuần hoàn, Sốc tim, Sốc nhiễm khuẩn.",
+            note: "Tránh tiêm tĩnh mạch nhanh dung dịch đậm đặc ngoài cấp cứu ngừng tuần hoàn.",
             diluent: "D5W hoặc NS"
           },
           noradrenalin: {
-            name: "Noradrenaline (Norepinephrine)",
+            name: "Noradrenaline",
             concentration: "4mg/4ml",
             category: "Vận mạch",
             unit: "mcg/kg/phút",
             defaultDose: 0.1,
-            route: "Truyền tĩnh mạch (TTM) qua bơm tiêm điện",
-            receptor: "α1(++++), β1(+)",
-            indication: "Lựa chọn hàng đầu trong Sốc nhiễm khuẩn, Sốc phân bố, Sốc tim.",
-            doseRange: "0.05 - 1.0 mcg/kg/phút.",
-            diluent: "D5W"
-          },
-          dobutamin: {
-            name: "Dobutamine",
-            concentration: "250mg/5ml",
-            category: "Vận mạch",
-            unit: "mcg/kg/phút",
-            defaultDose: 5.0,
-            route: "Truyền tĩnh mạch (TTM)",
-            receptor: "β1(+++), β2(+)",
-            indication: "Sốc tim, Suy tim cấp có giảm CO, Sốc nhiễm khuẩn có giảm chức năng thất trái.",
-            doseRange: "2.5 - 20 mcg/kg/phút.",
-            diluent: "D5W hoặc NS"
-          },
-          dopamine: {
-            name: "Dopamine",
-            concentration: "200mg/5ml",
-            category: "Vận mạch",
-            unit: "mcg/kg/phút",
-            defaultDose: 5.0,
-            route: "Truyền tĩnh mạch (TTM)",
-            receptor: "D1/D2 (<5 mcg/kg/p); β1 (5-10); α1 (>10)",
-            indication: "Sốc kèm nhịp chậm.",
-            doseRange: "2 - 20 mcg/kg/phút.",
-            diluent: "D5W hoặc NS"
-          },
-          milrinone: {
-            name: "Milrinone",
-            concentration: "10mg/10ml",
-            category: "Vận mạch",
-            unit: "mcg/kg/phút",
-            defaultDose: 0.5,
-            route: "Tiêm mạch chậm (TMC) / Truyền tĩnh mạch (TTM)",
-            receptor: "Ức chế PDE-3 cơ tim & mạch máu",
-            indication: "Suy tim cấp mất bù, Tăng áp động mạch phổi sau phẫu thuật tim.",
-            doseRange: "Tấn công 50 mcg/kg trong 10-60 phút. Duy trì 0.25 - 0.75 mcg/kg/phút.",
-            diluent: "D5W hoặc NS"
-          },
-          amiodarone: {
-            name: "Amiodarone",
-            concentration: "150mg/3ml",
-            category: "Vận mạch",
-            unit: "mg/kg/giờ",
-            defaultDose: 0.5,
-            route: "Tiêm mạch chậm (TMC) / Truyền tĩnh mạch (TTM)",
-            receptor: "Chẹn kênh K+ (nhóm III), chẹn α, β, Na+, Ca2+",
-            indication: "Loạn nhịp thất nguy hiểm (nhanh thất, rung thất), rung nhĩ/cuồng nhĩ khó trị.",
-            doseRange: "Tấn công 5mg/kg TTM trong 30-60 phút. Duy trì 5-10 mcg/kg/phút.",
+            doseTMC: "Không dùng tiêm mạch chậm.",
+            doseTB: "Tuyệt đối KHÔNG tiêm bắp (gây hoại tử mô).",
+            doseTTM: "Truyền liên tục: 0.05 - 1.0 mcg/kg/phút.",
+            maxDose: "Tối đa 2 - 3 mcg/kg/phút trong sốc kháng trị.",
+            indication: "Sốc nhiễm khuẩn, Sốc phân bố.",
+            note: "Nên truyền qua đường tĩnh mạch trung tâm.",
             diluent: "D5W"
           },
           furosemide: {
@@ -267,178 +213,82 @@
             category: "Vận mạch",
             unit: "mg/giờ",
             defaultDose: 1.0,
-            route: "Tiêm bắp (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
-            receptor: "Ức chế Na+/K+/2Cl- quai Henle",
-            indication: "Phù phổi cấp, quá tải dịch, suy tim sung huyết cấp.",
-            doseRange: "1-2 mg/kg/liều TMC hoặc truyền liên tục 0.1 - 1 mg/kg/giờ.",
+            doseTMC: "Tiêm mạch chậm 1-2 phút: 1 - 2 mg/kg/liều.",
+            doseTB: "Tiêm bắp: 1 - 2 mg/kg/liều.",
+            doseTTM: "Truyền liên tục: 0.1 - 1 mg/kg/giờ.",
+            maxDose: "Liều đơn tối đa 10 mg/kg hoặc 6 mg/kg/ngày.",
+            indication: "Phù phổi cấp, quá tải dịch, suy tim cấp.",
+            note: "Tiêm quá nhanh có thể gây ù tai thoáng qua.",
             diluent: "NS hoặc D5W"
           },
           vancomycin: {
             name: "Vancomycin",
-            concentration: "500mg, 1g (Bột pha tiêm)",
+            concentration: "500mg, 1g",
             category: "Kháng sinh",
             unit: "mg/kg/liều",
             defaultDose: 15.0,
-            route: "Truyền tĩnh mạch (TTM) chậm",
-            receptor: "Ức chế tổng hợp vách tế bào vi khuẩn Gram dương",
-            indication: "Nhiễm trùng nặng do Gram dương kháng thuốc (MRSA).",
-            doseRange: "10 - 15 mg/kg/liều mỗi 6-8 giờ (Truyền tối thiểu 60 phút).",
+            doseTMC: "Không tiêm mạch chậm (nguy cơ hội chứng Red man).",
+            doseTB: "Không tiêm bắp.",
+            doseTTM: "Truyền tĩnh mạch chậm > 60 phút: 10 - 15 mg/kg/liều mỗi 6-8 giờ.",
+            maxDose: "60 mg/kg/ngày (hoặc tối đa 2g/ngày).",
+            indication: "Nhiễm trùng Gram dương kháng thuốc (MRSA).",
+            note: "Pha loãng nồng độ <= 5 mg/ml trước khi truyền.",
             diluent: "NS hoặc D5W"
           },
           meropenem: {
             name: "Meropenem",
-            concentration: "500mg, 1g (Bột pha tiêm)",
+            concentration: "500mg, 1g",
             category: "Kháng sinh",
             unit: "mg/kg/liều",
             defaultDose: 20.0,
-            route: "Tiêm mạch chậm (TMC) / Truyền tĩnh mạch (TTM)",
-            receptor: "Kháng sinh nhóm Carbapenem phổ rộng",
+            doseTMC: "Tiêm mạch chậm 3-5 phút: 20 - 40 mg/kg/liều.",
+            doseTB: "Không khuyến cáo tiêm bắp.",
+            doseTTM: "Truyền tĩnh mạch kéo dài (3 giờ): 20 - 40 mg/kg mỗi 8 giờ.",
+            maxDose: "2g / liều.",
             indication: "Nhiễm trùng bệnh viện nặng, viêm màng não mủ.",
-            doseRange: "20 - 40 mg/kg/liều mỗi 8 giờ.",
-            diluent: "NS hoặc D5W"
-          },
-          cefotaxime: {
-            name: "Cefotaxime",
-            concentration: "1g (Bột pha tiêm)",
-            category: "Kháng sinh",
-            unit: "mg/kg/liều",
-            defaultDose: 50.0,
-            route: "Tiêm bắp (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
-            receptor: "Cephalosporin thế hệ 3",
-            indication: "Viêm màng não, nhiễm trùng huyết, viêm phổi nặng.",
-            doseRange: "50 - 100 mg/kg/liều mỗi 6-8 giờ.",
-            diluent: "NS hoặc D5W"
-          },
-          ceftriaxone: {
-            name: "Ceftriaxone",
-            concentration: "1g, 2g (Bột pha tiêm)",
-            category: "Kháng sinh",
-            unit: "mg/kg/liều",
-            defaultDose: 50.0,
-            route: "Tiêm bắp sâu (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
-            receptor: "Cephalosporin thế hệ 3 tác dụng kéo dài",
-            indication: "Viêm màng não, nhiễm trùng tiểu, viêm phổi cộng đồng.",
-            doseRange: "50 - 100 mg/kg/ngày.",
-            diluent: "NS hoặc D5W"
-          },
-          amikacin: {
-            name: "Amikacin",
-            concentration: "500mg/2ml",
-            category: "Kháng sinh",
-            unit: "mg/kg/liều",
-            defaultDose: 15.0,
-            route: "Tiêm bắp (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
-            receptor: "Kháng sinh nhóm Aminoglycoside",
-            indication: "Nhiễm trùng nặng do trực khuẩn Gram âm kháng thuốc.",
-            doseRange: "15 - 20 mg/kg/ngày.",
+            note: "Dùng ngay sau khi pha.",
             diluent: "NS hoặc D5W"
           },
           diazepam: {
             name: "Diazepam",
-            concentration: "10mg/2ml (0.01g/2ml)",
+            concentration: "10mg/2ml",
             category: "Giãn cơ - An thần",
             unit: "mg/kg/liều",
             defaultDose: 0.2,
-            route: "Tiêm mạch chậm (TMC), Bơm hậu môn",
-            receptor: "GABA-A receptor agonist",
-            indication: "Cắt cơn động kinh, an thần, giãn cơ.",
-            doseRange: "0.2 - 0.3 mg/kg/liều TMC chậm.",
+            doseTMC: "Tiêm mạch chậm: 0.2 - 0.3 mg/kg/liều.",
+            doseTB: "Không tiêm bắp (hấp thu thất thường).",
+            doseTTM: "Không khuyến cáo truyền kéo dài.",
+            maxDose: "10mg / liều đơn.",
+            indication: "Cắt cơn động kinh cấp.",
+            note: "Theo dõi sát hô hấp, chuẩn bị sẵn bóng bóp.",
             diluent: "Không pha loãng hoặc pha NS"
           },
           midazolam: {
             name: "Midazolam",
-            concentration: "5mg/ml hoặc 15mg/3ml",
+            concentration: "5mg/ml",
             category: "Giãn cơ - An thần",
             unit: "mcg/kg/phút",
             defaultDose: 1.0,
-            route: "Tiêm bắp (TB), Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
-            receptor: "Benzodiazepine tác dụng ngắn",
-            indication: "An thần thở máy, cắt cơn động kinh trạng thái.",
-            doseRange: "Tấn công 0.05-0.2 mg/kg. Duy trì truyền 1 - 5 mcg/kg/phút.",
+            doseTMC: "Tiêm mạch chậm: 0.05 - 0.2 mg/kg.",
+            doseTB: "Tiêm bắp: 0.1 - 0.15 mg/kg.",
+            doseTTM: "Truyền liên tục: 1 - 5 mcg/kg/phút.",
+            maxDose: "Tối đa 10 mcg/kg/phút.",
+            indication: "An thần thở máy, động kinh trạng thái.",
+            note: "Theo dõi sát SpO2.",
             diluent: "NS hoặc D5W"
-          },
-          fentanyl: {
-            name: "Fentanyl",
-            concentration: "0.1mg/2ml (50 mcg/ml)",
-            category: "Giãn cơ - An thần",
-            unit: "mcg/kg/giờ",
-            defaultDose: 2.0,
-            route: "Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
-            receptor: "Opioid receptor agonist mạnh",
-            indication: "Giảm đau mạnh trong hồi sức, thở máy, thủ thuật.",
-            doseRange: "Truyền duy trì: 1 - 5 mcg/kg/giờ.",
-            diluent: "NS hoặc D5W"
-          },
-          morphin: {
-            name: "Morphin HCl",
-            concentration: "10mg/1ml (0.01g/ml)",
-            category: "Giãn cơ - An thần",
-            unit: "mg/kg/giờ",
-            defaultDose: 0.05,
-            route: "Tiêm bắp (TB), Tiêm dưới da, Tiêm mạch chậm (TMC), Truyền tĩnh mạch (TTM)",
-            receptor: "Opioid receptor agonist",
-            indication: "Giảm đau, an thần trong hồi sức cấp cứu.",
-            doseRange: "0.02 - 0.05 mg/kg/giờ.",
-            diluent: "NS hoặc D5W"
-          },
-          rocuronium: {
-            name: "Rocuronium",
-            concentration: "50mg/5ml",
-            category: "Giãn cơ - An thần",
-            unit: "mg/kg/liều",
-            defaultDose: 0.6,
-            route: "Tiêm mạch nhanh / Tiêm mạch chậm (TMC)",
-            receptor: "Kháng thụ thể Nicotinic tại bản vận động cơ vân",
-            indication: "Giãn cơ đặt nội khí quản, duy trì giãn cơ thở máy.",
-            doseRange: "0.6 - 1.2 mg/kg/liều.",
-            diluent: "NS hoặc D5W"
-          },
-          salbutamol_kd: {
-            name: "Salbutamol (Ventolin) dung dịch khí dung",
-            concentration: "5mg/2.5ml",
-            category: "Hô hấp / Khí dung",
-            unit: "mg/liều",
-            defaultDose: 0.15,
-            route: "Phun khí dung qua mặt nạ",
-            receptor: "Beta-2 adrenergic agonist chọn lọc",
-            indication: "Cơn hen phế quản cấp, viêm tiểu phế quản co thắt.",
-            doseRange: "0.15 mg/kg/liều (tối đa 2.5mg - 5mg).",
-            diluent: "Pha loãng với NaCl 0.9% đủ 3-4 ml"
-          },
-          budesonide_kd: {
-            name: "Budesonide (Pulmicort) dung dịch khí dung",
-            concentration: "0.5mg/2ml hoặc 0.25mg/2ml",
-            category: "Hô hấp / Khí dung",
-            unit: "mg/liều",
-            defaultDose: 0.5,
-            route: "Phun khí dung qua mặt nạ",
-            receptor: "Corticosteroid khí dung kháng viêm tại chỗ",
-            indication: "Phù thanh quản cấp, cơn hen phế quản nặng.",
-            doseRange: "0.5 - 1 mg/liều phun khí dung.",
-            diluent: "Pha loãng với NaCl 0.9% vừa đủ"
-          },
-          paracetamol: {
-            name: "Paracetamol truyền tĩnh mạch",
-            concentration: "1000mg/100ml (10mg/ml)",
-            category: "Điện giải & Khác",
-            unit: "mg/kg/liều",
-            defaultDose: 15.0,
-            route: "Truyền tĩnh mạch (TTM) trong 15 phút",
-            receptor: "Ức chế tổng hợp Prostaglandin thần kinh trung ương",
-            indication: "Hạ sốt, giảm đau từ nhẹ đến trung bình.",
-            doseRange: "15 mg/kg/liều mỗi 6 giờ.",
-            diluent: "Dịch truyền sẵn có"
           },
           calcium_gluconat: {
             name: "Calcium Gluconate 10%",
-            concentration: "1g/10ml (10%)",
+            concentration: "1g/10ml",
             category: "Điện giải & Khác",
             unit: "ml/kg/liều",
             defaultDose: 0.5,
-            route: "Tiêm mạch chậm (TMC) dưới monitor ECG / Truyền tĩnh mạch (TTM)",
-            receptor: "Bổ sung ion Canxi cấp cứu",
-            indication: "Hạ canxi máu có triệu chứng, tăng Kali máu bảo vệ cơ tim.",
-            doseRange: "0.5 - 1 ml/kg/liều (Pha loãng tỷ lệ 1:1 với D5W, truyền chậm > 10 phút).",
+            doseTMC: "Tiêm mạch rất chậm > 10 phút: 0.5 - 1 ml/kg/liều.",
+            doseTB: "Tuyệt đối KHÔNG tiêm bắp (hoại tử mô nặng).",
+            doseTTM: "Truyền tĩnh mạch pha loãng.",
+            maxDose: "20ml / liều đơn.",
+            indication: "Hạ canxi máu, tăng Kali máu.",
+            note: "Ngừng ngay nếu nhịp tim chậm trên ECG.",
             diluent: "D5W"
           }
         },
@@ -449,81 +299,48 @@
 
         onDrugChange() {
           this.targetDose = this.currentDrug.defaultDose;
-          this.calculateRateFromDose();
         },
 
         selectDrugForCalc(key) {
           this.selectedDrugKey = key;
           this.targetDose = this.currentDrug.defaultDose;
-          this.calculateRateFromDose();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
         get calculatedMg() {
           if (!this.weight || !this.targetDose) return "0";
-          let mg = 0;
-          if (this.currentDrug.unit.includes("mcg/kg/phút")) {
-            mg = (this.targetDose * this.weight * 60 * this.volume) / 1000;
-          } else if (this.currentDrug.unit.includes("mcg/kg/giờ")) {
-            mg = (this.targetDose * this.weight * this.volume) / 1000;
-          } else if (this.currentDrug.unit.includes("mg/kg/giờ")) {
-            mg = this.targetDose * this.weight * this.volume;
-          } else {
-            mg = (this.targetDose * this.weight * 60 * this.volume) / 1000;
-          }
+          let mg = (this.targetDose * this.weight * 60 * this.volume) / 1000;
           return mg.toFixed(2);
         },
 
-        calculateRateFromDose() {
-          this.customRateMlH = 1.0;
-        },
-
         get calculatedRateMlH() {
-          return this.customRateMlH.toFixed(1);
-        },
-
-        calculateDoseFromRate() {
-          let mgTotal = parseFloat(this.calculatedMg);
-          if (!this.volume || this.volume <= 0) return 0;
-          let mgPerMl = mgTotal / this.volume;
-          
-          if (this.currentDrug.unit.includes("mcg/kg/phút")) {
-            if (this.weight > 0) {
-              let actual = (mgPerMl * this.customRateMlH * 1000) / (this.weight * 60);
-              return actual.toFixed(2);
-            }
-          }
-          return (mgPerMl * this.customRateMlH).toFixed(2);
+          return "1.0";
         },
 
         get calculatedActualDose() {
-          return this.calculateDoseFromRate();
+          if (!this.weight || !this.volume) return "0";
+          let mgTotal = parseFloat(this.calculatedMg);
+          let mgPerMl = mgTotal / this.volume;
+          let actual = (mgPerMl * this.customRateMlH * 1000) / (this.weight * 60);
+          return actual.toFixed(2);
         },
 
         get mixingInstructionText() {
-          let mg = this.calculatedMg;
-          return `Lấy ${mg} mg ${this.currentDrug.name} + ${this.currentDrug.diluent} vừa đủ ${this.volume} ml.`;
+          return `Lấy ${this.calculatedMg} mg ${this.currentDrug.name} + ${this.currentDrug.diluent} vừa đủ ${this.volume} ml (Duy trì 1 ml/giờ).`;
         },
 
         get filteredDrugs() {
-          let query = this.searchQuery.toLowerCase().trim();
+          let q = this.searchQuery.toLowerCase().trim();
           let cat = this.selectedCategory;
-
-          let result = {};
-          for (let key in this.drugs) {
-            let drug = this.drugs[key];
-            let matchCat = (cat === 'all' || drug.category === cat);
-            let matchQuery = !query || 
-                             drug.name.toLowerCase().includes(query) || 
-                             drug.indication.toLowerCase().includes(query) ||
-                             drug.receptor.toLowerCase().includes(query) ||
-                             drug.route.toLowerCase().includes(query);
-
-            if (matchCat && matchQuery) {
-              result[key] = drug;
+          let res = {};
+          for (let k in this.drugs) {
+            let d = this.drugs[k];
+            if ((cat === 'all' || d.category === cat) &&
+                (!q || d.name.toLowerCase().includes(q) || d.indication.toLowerCase().includes(q))) {
+              res[k] = d;
             }
           }
-          return result;
+          return res;
         }
       }
     }
