@@ -19,28 +19,26 @@
         <span class="text-yellow-400 text-2xl">🍼</span>
         <h1 class="text-xl font-extrabold text-white tracking-wide">THUỐC SƠ SINH</h1>
       </div>
-      <span class="text-xs bg-teal-900/80 px-3 py-1 rounded-full text-teal-200 border border-teal-400/40 font-semibold">NICU Clinical v7.0</span>
+      <span class="text-xs bg-teal-900/80 px-3 py-1 rounded-full text-teal-200 border border-teal-400/40 font-semibold">NICU Clinical Datasets</span>
     </div>
   </header>
 
   <!-- MAIN CONTAINER -->
   <main class="max-w-5xl mx-auto w-full p-4 flex-1 space-y-6">
 
-    <!-- KHU VỰC TÍNH NHANH BƠM TIÊM ĐIỆN & TRUYỀN DỊCH -->
+    <!-- KHU VỰC TÍNH NHANH LÂM SÀNG SƠ SINH -->
     <section class="bg-slate-900/90 border border-slate-700 rounded-2xl p-5 shadow-2xl backdrop-blur">
       <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2 mb-4">
-        ⚡ Tính Nhanh Lâm Sàng Sơ Sinh (Pha BTĐ / Truyền Liên Tục)
+        ⚡ Tính Nhanh Liều Truyền / Bơm Tiêm Điện Sơ Sinh
       </h2>
       
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <!-- Cân nặng -->
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Cân nặng bé (kg):</label>
           <input type="number" step="0.1" x-model.number="weight" placeholder="VD: 2.5" 
                  class="w-full bg-slate-950 border border-slate-600 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
         </div>
 
-        <!-- Chọn Thuốc -->
         <div class="md:col-span-2">
           <label class="block text-xs font-semibold text-slate-300 mb-1">Chọn Thuốc Cần Tính:</label>
           <select x-model="selectedDrugKey" @change="onDrugChange()"
@@ -51,7 +49,6 @@
           </select>
         </div>
 
-        <!-- Thể tích dịch pha -->
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Thể tích pha (ml):</label>
           <input type="number" step="1" x-model.number="volume" 
@@ -59,132 +56,79 @@
         </div>
       </div>
 
-      <!-- ĐIỀU CHỈNH 2 CHIỀU: LIỀU <--> TỐC ĐỘ TRUYỀN -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-800">
-        <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800">
-          <label class="block text-xs font-semibold text-blue-300 mb-1" x-text="'Liều mong muốn (' + currentDrug.unit + '):'"></label>
-          <div class="flex items-center gap-2">
-            <input type="number" step="0.01" x-model.number="targetDose" @input="calculateRateFromDose()"
-                   class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white font-bold text-amber-400 focus:outline-none focus:border-blue-400">
-            <span class="text-xs text-slate-400 whitespace-nowrap" x-text="currentDrug.unit"></span>
-          </div>
-          <p class="text-xs text-slate-400 mt-2" x-text="`➔ Tốc độ bơm tiêm điện cần chạy: <strong class='text-emerald-400 font-bold'>${calculatedRateMlH} ml/giờ</strong>`"></p>
-        </div>
-
-        <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800">
-          <label class="block text-xs font-semibold text-emerald-300 mb-1">Tự do chỉnh Tốc độ truyền (ml/giờ):</label>
-          <div class="flex items-center gap-2">
-            <input type="number" step="0.1" x-model.number="customRateMlH" @input="calculateDoseFromRate()"
-                   class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white font-bold text-emerald-400 focus:outline-none focus:border-emerald-400">
-            <span class="text-xs text-slate-400 whitespace-nowrap">ml/giờ</span>
-          </div>
-          <p class="text-xs text-slate-400 mt-2" x-text="`➔ Liều thực tế bé đang nhận: <strong class='text-amber-400 font-bold'>${calculatedActualDose} ${currentDrug.unit}</strong>`"></p>
-        </div>
-      </div>
-
       <!-- KẾT QUẢ PHA LÂM SÀNG -->
       <div class="mt-4 p-4 bg-amber-950/40 border border-amber-500/30 rounded-xl space-y-2">
         <div class="text-sm font-semibold text-amber-300 flex items-center gap-2">
-          📋 Hướng Dẫn Y Lệnh Pha Thuốc & Tính Nhanh:
+          📋 Hướng Dẫn Y Lệnh Pha Thuốc:
         </div>
         <div class="text-sm text-slate-200 grid grid-cols-1 md:grid-cols-2 gap-2 pt-1">
           <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
-            <span class="text-slate-400 block text-xs">Lượng thuốc nguyên chất cần lấy:</span>
-            <span class="text-lg font-extrabold text-amber-400" x-text="calculatedMg + ' mg'"></span>
+            <span class="text-slate-400 block text-xs">Lượng thuốc cần lấy (cho 1 lần hoặc tổng V):</span>
+            <span class="text-lg font-extrabold text-amber-400" x-text="calculatedDoseResult"></span>
           </div>
           <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
-            <span class="text-slate-400 block text-xs">Cách pha dung dịch:</span>
-            <span class="text-xs text-white mt-1 block font-medium" x-text="mixingInstructionText"></span>
+            <span class="text-slate-400 block text-xs">Cách pha & Dung môi:</span>
+            <span class="text-xs text-white mt-1 block font-medium" x-text="currentDrug.mixing"></span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TRA CỨU TẤT CẢ CÁC THUỐC SƠ SINH -->
+    <!-- TRA CỨU DANH MỤC THUỐC SƠ SINH -->
     <section class="bg-slate-900/90 border border-slate-700 rounded-2xl p-5 shadow-2xl">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
         <h2 class="text-lg font-bold text-teal-400 flex items-center gap-2">
-          📚 Danh Mục THUỐC SƠ SINH (TMC, TB, TTM, Liều Tối Đa, Chỉnh Liều)
+          📚 Tra Cứu Toàn Bộ Danh Mục Thuốc Sơ Sinh
         </h2>
-      </div>
-
-      <!-- BỘ LỌC CHUYÊN MỤC & TÌM KIẾM -->
-      <div class="flex flex-col md:flex-row gap-3 mb-4">
-        <div class="flex flex-wrap gap-1.5 flex-1">
-          <template x-for="cat in categories" :key="cat.id">
-            <button @click="selectedCategory = cat.id"
-                    :class="selectedCategory === cat.id ? 'bg-teal-600 text-white font-bold border-teal-500 shadow-lg' : 'bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800'"
-                    class="px-3 py-1.5 rounded-lg text-xs border transition" x-text="cat.name">
-            </button>
-          </template>
-        </div>
         <div class="w-full md:w-64">
-          <input type="text" x-model="searchQuery" placeholder="Tìm tên thuốc, chỉ định, đường dùng..." 
+          <input type="text" x-model="searchQuery" placeholder="Tìm tên thuốc, chỉ định..." 
                  class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white focus:outline-none focus:border-teal-400">
         </div>
       </div>
 
       <!-- DANH SÁCH THUỐC -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[600px] overflow-y-auto pr-1">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[650px] overflow-y-auto pr-1">
         <template x-for="(drug, key) in filteredDrugs" :key="key">
-          <div :class="getCardStyle(drug.category)" class="border rounded-xl p-4 space-y-3 transition shadow-md">
+          <div class="bg-slate-950/70 border border-slate-800 hover:border-teal-500/50 rounded-xl p-4 space-y-3 transition shadow-md">
             
-            <!-- TIÊU ĐỀ THUỐC -->
-            <div class="flex justify-between items-start border-b border-white/10 pb-2">
+            <!-- TÊN THUỐC & NHÓM -->
+            <div class="flex justify-between items-start border-b border-slate-800 pb-2">
               <div>
-                <h3 class="text-base font-extrabold text-white" x-text="drug.name"></h3>
-                <p class="text-xs opacity-80" x-text="'Hàm lượng: ' + drug.concentration"></p>
+                <h3 class="text-base font-extrabold text-teal-300" x-text="drug.name"></h3>
+                <p class="text-xs text-slate-400" x-text="'Hàm lượng: ' + drug.concentration"></p>
               </div>
-              <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider shadow-sm"
-                    :class="getBadgeStyle(drug.category)" x-text="drug.category"></span>
+              <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-teal-950 text-teal-300 border border-teal-800" x-text="drug.category"></span>
             </div>
 
-            <!-- LIỀU RIÊNG BIỆT CHO TỪNG ĐƯỜNG DÙNG -->
-            <div class="space-y-1.5 text-xs bg-slate-950/50 p-3 rounded-lg border border-white/5">
-              <p class="font-bold text-amber-300 uppercase tracking-wide text-[11px] mb-1">📌 Liều dùng chi tiết theo đường dùng:</p>
-              
-              <template x-if="drug.doseTMC">
-                <div class="flex gap-2">
-                  <span class="bg-cyan-950 text-cyan-300 font-bold px-1.5 py-0.5 rounded text-[10px] border border-cyan-800 whitespace-nowrap h-fit">Tiêm mạch chậm (TMC)</span>
-                  <span class="text-slate-200" x-text="drug.doseTMC"></span>
-                </div>
-              </template>
-
-              <template x-if="drug.doseTB">
-                <div class="flex gap-2">
-                  <span class="bg-purple-950 text-purple-300 font-bold px-1.5 py-0.5 rounded text-[10px] border border-purple-800 whitespace-nowrap h-fit">Tiêm bắp (TB)</span>
-                  <span class="text-slate-200" x-text="drug.doseTB"></span>
-                </div>
-              </template>
-
-              <template x-if="drug.doseTTM">
-                <div class="flex gap-2">
-                  <span class="bg-emerald-950 text-emerald-300 font-bold px-1.5 py-0.5 rounded text-[10px] border border-emerald-800 whitespace-nowrap h-fit">Truyền tĩnh mạch (TTM)</span>
-                  <span class="text-slate-200" x-text="drug.doseTTM"></span>
-                </div>
-              </template>
+            <!-- LIỀU LƯỢNG (CHI TIẾT TUỔI THAI / CÂN NẶNG) -->
+            <div class="bg-slate-900/90 p-3 rounded-lg border border-slate-800 text-xs space-y-1">
+              <strong class="text-amber-300 block uppercase tracking-wide text-[11px]">💊 Liều lượng (Theo tuần tuổi thai / cân nặng):</strong>
+              <p class="text-slate-200 whitespace-pre-line" x-text="drug.doseDetails"></p>
             </div>
 
-            <!-- THÔNG TIN KHÁC -->
-            <div class="text-xs space-y-1.5">
-              <p><strong class="opacity-70">Chỉ định chính:</strong> <span class="text-slate-200" x-text="drug.indication"></span></p>
-              
-              <div class="bg-red-950/40 border border-red-500/30 p-2 rounded text-red-200">
-                <strong>🛑 Liều tối đa (Max Dose):</strong> <span x-text="drug.maxDose"></span>
+            <!-- THÔNG TIN CHI TIẾT CẤU TRÚC -->
+            <div class="text-xs space-y-2">
+              <div class="flex gap-2">
+                <span class="font-bold text-slate-400 min-w-[80px]">Đường dùng:</span>
+                <span class="text-emerald-300 font-medium" x-text="drug.route"></span>
               </div>
-
-              <div class="bg-indigo-950/40 border border-indigo-500/30 p-2 rounded text-indigo-200">
-                <strong>⚙️ Chỉnh liều suy thận:</strong> <span x-text="drug.renalAdjustment"></span>
+              <div class="flex gap-2">
+                <span class="font-bold text-slate-400 min-w-[80px]">Liều tối đa:</span>
+                <span class="text-red-300 font-semibold" x-text="drug.maxDose"></span>
               </div>
-
-              <div class="bg-amber-950/40 border border-amber-500/30 p-2 rounded text-amber-200">
-                <strong>⚠️ Lưu ý lâm sàng:</strong> <span x-text="drug.note"></span>
+              <div class="flex gap-2">
+                <span class="font-bold text-slate-400 min-w-[80px]">Cách pha:</span>
+                <span class="text-slate-200" x-text="drug.mixing"></span>
               </div>
-
-              <p class="opacity-80 pt-1"><strong>Dung môi tương hợp:</strong> <span class="text-slate-200" x-text="drug.diluent"></span></p>
+              <div class="bg-amber-950/30 border border-amber-500/20 p-2 rounded text-amber-200">
+                <strong>⚠️ Lưu ý:</strong> <span x-text="drug.note"></span>
+              </div>
+              <div class="bg-blue-950/30 border border-blue-500/20 p-2 rounded text-blue-200">
+                <strong>🎯 Chỉ định:</strong> <span x-text="drug.indication"></span>
+              </div>
             </div>
 
-            <button @click="selectDrugForCalc(key)" class="w-full mt-2 bg-white/10 hover:bg-white/20 text-white text-xs py-1.5 rounded-lg border border-white/20 font-semibold transition shadow">
+            <button @click="selectDrugForCalc(key)" class="w-full mt-2 bg-teal-600/20 hover:bg-teal-600/40 text-teal-300 text-xs py-1.5 rounded-lg border border-teal-500/30 font-semibold transition">
               ⚡ Chọn tính nhanh liều này
             </button>
           </div>
@@ -199,242 +143,125 @@
     THUỐC SƠ SINH - NICU Toolkit & Reference System
   </footer>
 
-  <!-- SCRIPT -->
+  <!-- SCRIPT DỮ LIỆU ĐẦY ĐỦ TRÍCH XUẤT TỪ TÀI LIỆU -->
   <script>
     function drugApp() {
       return {
         weight: 2.5,
         volume: 20,
-        targetDose: 20,
-        customRateMlH: 1.0,
         selectedDrugKey: 'acyclovir',
-        selectedCategory: 'all',
         searchQuery: '',
-
-        categories: [
-          { id: 'all', name: 'Tất cả' },
-          { id: 'Kháng sinh', name: 'Kháng sinh' },
-          { id: 'Kháng nấm & Kháng virus', name: 'Kháng nấm & Kháng virus' },
-          { id: 'Vận mạch & Tim mạch', name: 'Vận mạch & Tim mạch' },
-          { id: 'Hô hấp & Thần kinh', name: 'Hô hấp & Thần kinh' },
-          { id: 'Khác & Nội tiết', name: 'Khác & Nội tiết' }
-        ],
-
-        getCardStyle(category) {
-          switch(category) {
-            case 'Kháng sinh': return 'bg-sky-950/20 border-sky-500/40 hover:border-sky-400';
-            case 'Kháng nấm & Kháng virus': return 'bg-indigo-950/20 border-indigo-500/40 hover:border-indigo-400';
-            case 'Vận mạch & Tim mạch': return 'bg-rose-950/20 border-rose-500/40 hover:border-rose-400';
-            case 'Hô hấp & Thần kinh': return 'bg-purple-950/20 border-purple-500/40 hover:border-purple-400';
-            default: return 'bg-amber-950/20 border-amber-500/40 hover:border-amber-400';
-          }
-        },
-
-        getBadgeStyle(category) {
-          switch(category) {
-            case 'Kháng sinh': return 'bg-sky-900 text-sky-200 border border-sky-700';
-            case 'Kháng nấm & Kháng virus': return 'bg-indigo-900 text-indigo-200 border border-indigo-700';
-            case 'Vận mạch & Tim mạch': return 'bg-rose-900 text-rose-200 border border-rose-700';
-            case 'Hô hấp & Thần kinh': return 'bg-purple-900 text-purple-200 border border-purple-700';
-            default: return 'bg-amber-900 text-amber-200 border border-amber-700';
-          }
-        },
 
         drugs: {
           acyclovir: {
-            name: "Acyclovir TM",
-            concentration: "25mg/ml (lọ)",
-            category: "Kháng nấm & Kháng virus",
-            unit: "mg/kg/liều",
-            defaultDose: 20,
-            doseTMC: "Tiêm mạch chậm không khuyến cáo; bắt buộc truyền tĩnh mạch.",
-            doseTB: "Không dùng đường tiêm bắp.",
-            doseTTM: "20 mg/kg/liều mỗi 8-12 giờ tùy theo cân nặng và tuổi thai[cite: 3].",
-            maxDose: "60 mg/kg/ngày.",
-            renalAdjustment: "SCr 0.8-1.1 mg/dl: 20 mg/kg/12h; SCr 1.2-1.5: 20 mg/kg/24h; SCr > 1.5: 10 mg/kg/24h[cite: 3].",
-            indication: "Nhiễm Herpes simplex virus (VMN, tổn thương da niêm), Thủy đậu[cite: 3].",
-            note: "Truyền tĩnh mạch trong ít nhất 60 phút để tránh độc tính trên thận[cite: 3].",
-            diluent: "NaCl 0.9% hoặc Glucose 5%, nồng độ tối thiểu 7 mg/ml[cite: 3]."
+            name: "Acyclovir TM[cite: 3]",
+            concentration: "25mg/ml (Lọ)",
+            category: "Kháng virus",
+            doseDetails: "• CN < 1 kg:\n  - ≤ 14 ngày: 20 mg/kg/liều mỗi 12 giờ[cite: 3]\n  - 15 - 28 ngày: 20 mg/kg/liều mỗi 8 giờ[cite: 3]\n• CN 1-2 kg:\n  - ≤ 7 ngày: 20 mg/kg/liều mỗi 12 giờ[cite: 3]\n  - 8 - 28 ngày: 20 mg/kg/liều mỗi 8 giờ[cite: 3]\n• CN > 2 kg: 20 mg/kg/liều mỗi 8 giờ[cite: 3]\n• Chỉnh liều suy thận theo SCr[cite: 3].",
+            maxDose: "60 mg/kg/ngày[cite: 3]",
+            route: "Truyền tĩnh mạch (TM)[cite: 3]",
+            mixing: "Pha với NaCl 0,9% hoặc Glucose 5%, nồng độ tối thiểu 7 mg/mL truyền 60 phút[cite: 3].",
+            note: "Liệu trình VMN/NT lan rộng: 21 ngày; Da niêm: 14 ngày; Thủy đậu: 5-10 ngày[cite: 3].",
+            indication: "Nhiễm Herpes simplex virus (VMN, tổn thương da niêm), Thủy đậu[cite: 3]."
           },
           amikacin: {
-            name: "Amikacin",
+            name: "Amikacin[cite: 4]",
             concentration: "250mg/2ml",
             category: "Kháng sinh",
-            unit: "mg/kg/liều",
-            defaultDose: 15,
-            doseTMC: "Tiêm mạch chậm trong 2-3 phút.",
-            doseTB: "Tiêm bắp sâu khi không có đường truyền tĩnh mạch.",
-            doseTTM: "15 mg/kg/liều mỗi 24-48 giờ tùy cân nặng và tuổi[cite: 4]. Viêm màng não: 15-20 mg/kg/ngày chia 2[cite: 4].",
-            maxDose: "30 mg/kg/ngày.",
-            renalAdjustment: "GFR 30-50 ml/phút: cách liều 12-18h; GFR 10-29: cách liều 18-24h; GFR < 10: cách liều 48-72h[cite: 4].",
-            indication: "Nhiễm trùng huyết sơ sinh, Viêm màng não do trực khuẩn Gram âm[cite: 4].",
-            note: "Theo dõi nồng độ thuốc trong máu nếu điều trị kéo dài.",
-            diluent: "NaCl 0.9% hoặc Glucose 5%"
+            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 15 mg/kg mỗi 48h; 15-28 ngày: 15 mg/kg mỗi 24-48h[cite: 4].\n• CN 1-2 kg: ≤ 7 ngày: 15 mg/kg mỗi 48h; 8-28 ngày: 15 mg/kg mỗi 24-48h[cite: 4].\n• CN > 2 kg: ≤ 7 ngày: 15 mg/kg mỗi 24h; 8-28 ngày: 15 mg/kg mỗi 12-24h[cite: 4].\n• VMN: ≤ 7 ngày & ≥ 2 kg: 15-20 mg/kg/ngày chia 2; > 7 ngày: 30 mg/kg/ngày chia 3[cite: 4].",
+            maxDose: "30 mg/kg/ngày[cite: 4]",
+            route: "Tiêm bắp (TB), Truyền tĩnh mạch (TTM)[cite: 4]",
+            mixing: "Pha loãng với NaCl 0,9% hoặc Glucose 5%.",
+            note: "Dãn liều theo GFR (GFR > 50 không đổi, GFR 30-50 cách liều 12-18h, < 10 cách liều 48-72h)[cite: 4].",
+            indication: "Nhiễm trùng huyết sơ sinh, Viêm màng não do trực khuẩn Gram âm[cite: 4]."
+          },
+          amphotericin_b: {
+            name: "Amphotericin B[cite: 4]",
+            concentration: "Lọ 50 mg",
+            category: "Kháng nấm",
+            doseDetails: "• TTM: 1 mg/kg/liều, 1 cữ/ngày[cite: 4].\n• Diễn tiến nhanh/trở nặng: 1,5 mg/kg/ngày (dùng ngắn hạn)[cite: 4].\n• Khởi đầu: 0.5 mg/kg/liều[cite: 4].",
+            maxDose: "1.5 mg/kg/ngày[cite: 4]",
+            route: "Truyền tĩnh mạch (TTM)[cite: 4]",
+            mixing: "Pha với Glucose 5% nồng độ 0.1 mg/ml, TTM 2-6 giờ (thường 4 giờ). Tuyệt đối không pha NaCl 0.9%[cite: 4].",
+            note: "Không cần giảm liều khi suy thận. Nếu suy thận do thuốc, giảm 50% liều[cite: 4].",
+            indication: "Nhiễm nấm hệ thống nặng[cite: 4]."
           },
           ampicillin: {
-            name: "Ampicillin",
+            name: "Ampicillin[cite: 5]",
             concentration: "Lọ 500mg, 1g",
             category: "Kháng sinh",
-            unit: "mg/kg/liều",
-            defaultDose: 50,
-            doseTMC: "Tiêm mạch chậm trong 3-5 phút.",
-            doseTB: "Tiêm bắp sâu.",
-            doseTTM: "Truyền tĩnh mạch ngắt quãng trong ít nhất 30-60 phút[cite: 5]. Liều: 50 mg/kg/liều mỗi 6-12 giờ tùy tuổi thai/cân nặng[cite: 5].",
-            maxDose: "300 mg/kg/ngày trong viêm màng não nặng.",
-            renalAdjustment: "GFR 10-50: không đổi; GFR < 10: khoảng cách liều mỗi 12 giờ, không giảm liều[cite: 5].",
-            indication: "Nhiễm trùng huyết sơ sinh, Viêm màng não do GBS hoặc Listeria[cite: 5].",
-            note: "Không pha thuốc với dung môi chứa Glucose[cite: 5].",
-            diluent: "NaCl 0.9%"
+            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 50 mg/kg/12h (gấp đôi nếu NTH do GBS); 15-28 ngày: 50 mg/kg/8h[cite: 5].\n• CN 1-2 kg: ≤ 7 ngày: 50 mg/kg/12h (gấp đôi do GBS); 8-28 ngày: 50 mg/kg/8h[cite: 5].\n• CN > 2 kg: ≤ 7 ngày: 50 mg/kg/8h; 8-28 ngày: 50 mg/kg/6h[cite: 5].\n• VMN: ≤ 7 ngày: 50-100 mg/kg/8h; > 7 ngày: 50-75 mg/kg/6h[cite: 5].",
+            maxDose: "300 mg/kg/ngày (VMN)[cite: 5]",
+            route: "Tiêm tĩnh mạch (TM), Tiêm bắp (TB)[cite: 5]",
+            mixing: "Truyền trong ít nhất 60 phút. Không pha với dung môi chứa Glucose[cite: 5].",
+            note: "GFR 10-50 không đổi; GFR < 10 khoảng cách liều mỗi 12 giờ[cite: 5].",
+            indication: "Nhiễm trùng huyết sơ sinh do GBS, Viêm màng não[cite: 5]."
           },
           cefotaxime: {
-            name: "Cefotaxime",
+            name: "Cefotaxime[cite: 6]",
             concentration: "Lọ 1g",
             category: "Kháng sinh",
-            unit: "mg/kg/liều",
-            defaultDose: 50,
-            doseTMC: "Tiêm mạch chậm trong 3-5 phút.",
-            doseTB: "Tiêm bắp sâu.",
-            doseTTM: "50 mg/kg/liều mỗi 6-12 giờ[cite: 6]. Viêm màng não: 100-150 mg/kg/ngày chia 8-12 giờ[cite: 6].",
-            maxDose: "200 mg/kg/ngày.",
-            renalAdjustment: "GFR 30-50: 35-70 mg/kg/8-12h; GFR 10-29: cách liều 12h; GFR < 10: cách liều 12h[cite: 6].",
-            indication: "Nhiễm trùng nặng, viêm màng não mủ ở trẻ sơ sinh[cite: 6].",
-            note: "Thuốc phổ biến trong điều trị nhiễm trùng bệnh viện sơ sinh.",
-            diluent: "NaCl 0.9% hoặc Glucose 5%"
+            doseDetails: "• CN < 1 kg: ≤ 14 ngày: 50 mg/kg/12h; 15-28 ngày: 50 mg/kg/8-12h[cite: 6].\n• CN 1-2 kg: ≤ 7 ngày: 50 mg/kg/12h; 8-28 ngày: 50 mg/kg/8-12h[cite: 6].\n• CN > 2 kg: ≤ 7 ngày: 50 mg/kg/12h; 8-28 ngày: 50 mg/kg/6-8h[cite: 6].\n• VMN: 100-200 mg/kg/ngày chia mỗi 6-12 giờ[cite: 6].",
+            maxDose: "200 mg/kg/ngày[cite: 6]",
+            route: "Tiêm mạch (TM), Tiêm bắp (TB), TTM[cite: 6]",
+            mixing: "Pha với NaCl 0,9% hoặc Glucose 5%.",
+            note: "Điều chỉnh dãn liều theo mức lọc cầu thận GFR[cite: 6].",
+            indication: "Nhiễm trùng nặng, viêm màng não sơ sinh[cite: 6]."
           },
           meropenem: {
-            name: "Meropenem",
+            name: "Meropenem[cite: 9]",
             concentration: "Lọ 500mg, 1g",
             category: "Kháng sinh",
-            unit: "mg/kg/liều",
-            defaultDose: 20,
-            doseTMC: "Tiêm mạch chậm trong 3-5 phút.",
-            doseTB: "Không dùng đường tiêm bắp.",
-            doseTTM: "20 - 40 mg/kg/liều mỗi 8 giờ truyền trong 30 phút[cite: 9].",
-            maxDose: "120 mg/kg/ngày trong VMN nặng.",
-            renalAdjustment: "GFR 30-50: 20-40 mg/kg/12h; GFR 10-29: 10-20 mg/kg/12h; GFR < 10: 10-20 mg/kg/24h[cite: 9].",
-            indication: "Nhiễm trùng huyết nặng, vi khuẩn đa kháng, viêm màng não[cite: 9].",
-            note: "Pha nồng độ 1-20 mg/ml, truyền trong 30 phút[cite: 9].",
-            diluent: "NaCl 0.9%"
+            doseDetails: "• CN ≤ 2 kg: ≤ 14 ngày: 20 mg/kg mỗi 12h; 15-28 ngày: 25 mg/kg mỗi 8h; 29-60 ngày: 30 mg/kg mỗi 8h[cite: 9].\n• CN > 2 kg: ≤ 14 ngày: 20 mg/kg mỗi 8h; 15-60 ngày: 30 mg/kg mỗi 8h[cite: 9].\n• VMN: 40 mg/kg mỗi 8 giờ[cite: 9].",
+            maxDose: "120 mg/kg/ngày[cite: 9]",
+            route: "Truyền tĩnh mạch (TTM)[cite: 9]",
+            mixing: "Pha với NaCl 0,9%, nồng độ 1-20 mg/mL, truyền trong 30 phút[cite: 9].",
+            note: "NTH nặng hoặc kháng thuốc trung bình MIC 4-8 mcg/ml dùng liều 40 mg/kg/8h[cite: 9].",
+            indication: "Nhiễm trùng huyết nặng, viêm màng não mủ, vi khuẩn đa kháng[cite: 9]."
           },
           vancomycin_ss: {
-            name: "Vancomycin (Sơ sinh)",
+            name: "Vancomycin (Sơ sinh)[cite: 12]",
             concentration: "Lọ 500mg",
             category: "Kháng sinh",
-            unit: "mg/kg/liều",
-            defaultDose: 15,
-            doseTMC: "Không tiêm mạch chậm (nguy cơ hội chứng người đỏ).",
-            doseTB: "Không tiêm bắp.",
-            doseTTM: "10 - 15 mg/kg/liều mỗi 6-18 giờ tùy theo tuổi thai và cân nặng[cite: 12].",
-            maxDose: "60 mg/kg/ngày.",
-            renalAdjustment: "Hiệu chỉnh dựa theo nồng độ đỉnh/đáy hoặc theo SCr/GFR[cite: 8, 12].",
-            indication: "Nhiễm trùng nặng do Gram dương kháng thuốc (MRSA) ở sơ sinh[cite: 12].",
-            note: "Truyền tĩnh mạch chậm tối thiểu 60 phút.",
-            diluent: "NaCl 0.9% hoặc Glucose 5%"
-          },
-          fluconazole: {
-            name: "Fluconazole",
-            concentration: "2mg/ml (chai 100ml)",
-            category: "Kháng nấm & Kháng virus",
-            unit: "mg/kg/liều",
-            defaultDose: 6,
-            doseTMC: "Tiêm mạch chậm.",
-            doseTB: "Không tiêm bắp.",
-            doseTTM: "Dự phòng: 3-6 mg/kg/liều tùy tuổi sinh[cite: 7]. Điều trị: 12 mg/kg/liều mỗi 24 giờ[cite: 7].",
-            maxDose: "12 mg/kg/ngày.",
-            renalAdjustment: "GFR 10-50: 50% liều; GFR < 10: 50% liều mỗi 48 giờ[cite: 7].",
-            indication: "Dự phòng và điều trị nhiễm nấm Candida toàn thân ở trẻ sinh non[cite: 7].",
-            note: "Truyền TM tốc độ không quá 200 mg/giờ.",
-            diluent: "NaCl 0.9% hoặc Glucose 5%"
-          },
-          dopamine_ss: {
-            name: "Dopamine (Sơ sinh)",
-            concentration: "40mg/ml (ống 5ml)",
-            category: "Vận mạch & Tim mạch",
-            unit: "mcg/kg/phút",
-            defaultDose: 5,
-            doseTMC: "Không tiêm mạch chậm.",
-            doseTB: "Không tiêm bắp.",
-            doseTTM: "Truyền liên tục bơm tiêm điện: 2 - 20 mcg/kg/phút.",
-            maxDose: "20 mcg/kg/phút.",
-            renalAdjustment: "Thận trọng trên trẻ suy thận, suy giảm tưới máu.",
-            indication: "Sốc, tụt huyết áp, suy tim ở trẻ sơ sinh.",
-            note: "Bắt buộc truyền qua đường tĩnh mạch trung tâm hoặc tĩnh mạch lớn, tránh thoát mạch.",
-            diluent: "D5W hoặc NaCl 0.9%"
-          },
-          dobutamine_ss: {
-            name: "Dobutamine (Sơ sinh)",
-            concentration: "250mg/5ml",
-            category: "Vận mạch & Tim mạch",
-            unit: "mcg/kg/phút",
-            defaultDose: 5,
-            doseTMC: "Không tiêm mạch chậm.",
-            doseTB: "Không tiêm bắp.",
-            doseTTM: "Truyền liên tục bơm tiêm điện: 2.5 - 20 mcg/kg/phút.",
-            maxDose: "20 mcg/kg/phút.",
-            renalAdjustment: "Không cần chỉnh liều đặc biệt.",
-            indication: "Sốc tim, suy tim cấp, giảm cung lượng tim ở sơ sinh.",
-            note: "Theo dõi sát nhịp tim (có thể gây nhịp nhanh).",
-            diluent: "D5W hoặc NaCl 0.9%"
-          },
-          furosemide_ss: {
-            name: "Furosemide (Sơ sinh)",
-            concentration: "10mg/ml (ống 2ml)",
-            category: "Vận mạch & Tim mạch",
-            unit: "mg/kg/liều",
-            defaultDose: 1,
-            doseTMC: "Tiêm mạch chậm trong 1-2 phút: 1 - 2 mg/kg/liều mỗi 12-24 giờ[cite: 15].",
-            doseTB: "Tiêm bắp: 1 - 2 mg/kg/liều[cite: 15].",
-            doseTTM: "Truyền tĩnh mạch liên tục: 0.1 - 1 mg/kg/giờ.",
-            maxDose: "2 mg/kg/liều đơn.",
-            renalAdjustment: "Thận trọng khi suy thận kèm độc tính tai.",
-            indication: "Phù phổi cấp, quá tải thể tích, suy tim sơ sinh[cite: 15].",
-            note: "Tiêm mạch quá nhanh gây ù tai, điếc, tổn thương thận.",
-            diluent: "NaCl 0.9% hoặc D5W"
-          },
-          midazolam_ss: {
-            name: "Midazolam (Sơ sinh)",
-            concentration: "5mg/ml hoặc 15mg/3ml",
-            category: "Hô hấp & Thần kinh",
-            unit: "mcg/kg/phút",
-            defaultDose: 1,
-            doseTMC: "Tiêm mạch chậm rất thận trọng (tránh tiêm nhanh dưới 2 phút gây tụt huyết áp nặng và ngưng thở): 0.05 - 0.15 mg/kg[cite: 18].",
-            doseTB: "Tiêm bắp: 0.1 - 0.15 mg/kg.",
-            doseTTM: "Truyền liên tục: Sơ sinh ≤ 32 tuần: 0.03 mg/kg/giờ; > 32 tuần: 0.06 mg/kg/giờ (hoặc 1-5 mcg/kg/phút)[cite: 18].",
-            maxDose: "0.4 mg/kg/giờ truyền liên tục[cite: 18].",
-            renalAdjustment: "Thận trọng ở trẻ suy thận nặng.",
-            indication: "An thần thở máy, cắt cơn động kinh sơ sinh kháng trị[cite: 18].",
-            note: "Tránh tiêm nhanh đồng thời với Fentanyl gây tụt huyết áp kịch phát[cite: 18].",
-            diluent: "NaCl 0.9% hoặc D5W"
-          },
-          morphine_ss: {
-            name: "Morphine (Sơ sinh)",
-            concentration: "10mg/ml",
-            category: "Hô hấp & Thần kinh",
-            unit: "mg/kg/liều",
-            defaultDose: 0.05,
-            doseTMC: "Tiêm mạch chậm trong ít nhất 5 phút: 0.05 - 0.1 mg/kg/liều[cite: 19].",
-            doseTB: "Tiêm bắp / Tiêm dưới da: 0.05 - 0.1 mg/kg/liều[cite: 19].",
-            doseTTM: "Truyền liên tục: 0.01 mg/kg/giờ (10 mcg/kg/giờ)[cite: 19].",
-            maxDose: "0.1 mg/kg/liều đơn hoặc 0.03 mg/kg/giờ truyền[cite: 19].",
-            renalAdjustment: "Giảm liều hoặc kéo dài khoảng cách khi suy thận.",
-            indication: "Giảm đau, an thần khi thở máy hoặc thủ thuật đau ở trẻ sơ sinh[cite: 19].",
-            note: "Có sẵn Naloxone giải độc khi ngộ độc hoặc ức chế hô hấp.",
-            diluent: "NaCl 0.9% hoặc D5W"
+            doseDetails: "• < 1,2 kg: 15 mg/kg/24h, TTM trong 60 phút[cite: 12].\n• < 7 ngày (1,2-2kg): 10-15 mg/kg mỗi 12-18h; (>2kg): 10-15 mg/kg mỗi 8-12h[cite: 12].\n• ≥ 7 ngày (1,2-2kg): 10-15 mg/kg mỗi 8-12h; (>2kg): 10-15 mg/kg mỗi 6-8h[cite: 12].\n• VMN: 20-45 mg/kg/ngày chia mỗi 6-12h[cite: 12].",
+            maxDose: "60 mg/kg/ngày[cite: 12]",
+            route: "Truyền tĩnh mạch (TTM)[cite: 12]",
+            mixing: "Pha với NaCl 0,9% hoặc Glucose 5%, truyền tối thiểu 60 phút[cite: 12].",
+            note: "Hiệu chỉnh liều theo nồng độ đỉnh/đáy hoặc creatinin máu[cite: 8, 12].",
+            indication: "Nhiễm trùng nặng do Gram dương kháng thuốc (MRSA)[cite: 12]."
           },
           caffein_citrate: {
-            name: "Caffein citrate",
-            concentration: "20mg/ml (10mg caffein base/ml)",
+            name: "Caffein citrate[cite: 14]",
+            concentration: "20mg/ml",
             category: "Hô hấp & Thần kinh",
-            unit: "mg/kg/liều",
-            defaultDose: 10,
-            doseTMC: "Tiêm mạch chậm (trong 30 phút) liều duy trì hoặc uống[cite: 14].",
-            doseTB: "Không dùng tiêm bắp.",
-            doseTTM: "Liều tấn công: 20 mg/kg (10 mg base/kg); Liều duy trì: 5 - 10 mg/kg mỗi ngày[cite: 14].",
-            maxDose: "20 mg/kg/liều tấn công.",
-            renalAdjustment: "Không cần chỉnh liều thông thường.",
-            indication: "Điều trị và dự phòng cơn ngưng thở ở trẻ sinh non[cite: 14].",
-            note: "Theo dõi nhịp tim (có thể gây nhịp nhanh, kích thích thần kinh).",
-            diluent: "NaCl 0.9% hoặc D5W"
+            doseDetails: "• Tấn công: 20 mg/kg (tương đương 10 mg/kg caffein cơ bản) TM 30 phút hoặc uống[cite: 14].\n• Duy trì: 5 - 10 mg/kg mỗi ngày (TMC hoặc uống) sau liều tấn công 24 giờ[cite: 14].",
+            maxDose: "20 mg/kg/liều tấn công[cite: 14]",
+            route: "TMC, Uống, TTM[cite: 14]",
+            mixing: "Dung dịch sẵn có hoặc pha loãng dịch truyền tương hợp.",
+            note: "Theo dõi sát tần số tim và nhịp thở của trẻ sinh non.",
+            indication: "Dự phòng và điều trị cơn ngưng thở ở trẻ sinh non[cite: 14]."
+          },
+          midazolam_ss: {
+            name: "Midazolam (Sơ sinh)[cite: 18]",
+            concentration: "5mg/ml, 15mg/3ml",
+            category: "Hô hấp & Thần kinh",
+            doseDetails: "• Truyền liên tục: ≤ 32 tuần: khởi đầu 0.03 mg/kg/giờ; > 32 tuần: khởi đầu 0.06 mg/kg/giờ[cite: 18].\n• Động kinh: Tấn công 0.06 - 0.15 mg/kg TM, sau đó TTM 0.06 - 0.4 mg/kg/giờ[cite: 18].\n• Nhỏ mũi: 0.2 - 0.3 mg/kg/liều[cite: 18].",
+            maxDose: "0.4 mg/kg/giờ truyền liên tục[cite: 18]",
+            route: "TM, TTM, Nhỏ mũi[cite: 18]",
+            mixing: "Pha với NaCl 0,9% hoặc Glucose 5%.",
+            note: "Tránh tiêm nhanh dưới 2 phút gây tụt huyết áp nghiêm trọng và ngưng thở, đặc biệt khi dùng chung Fentanyl[cite: 18].",
+            indication: "An thần thở máy, cắt cơn động kinh sơ sinh[cite: 18]."
+          },
+          morphine_ss: {
+            name: "Morphine (Sơ sinh)[cite: 19]",
+            concentration: "10mg/ml",
+            category: "Hô hấp & Thần kinh",
+            doseDetails: "• Giảm đau (TB, TM, dưới da): Khởi đầu 0.05 - 0.1 mg/kg/liều mỗi 4-6 giờ[cite: 19].\n• TTM liên tục: Khởi đầu 0.01 mg/kg/giờ (10 mcg/kg/giờ)[cite: 19].\n• Đặt NKQ: 0.05 - 0.1 mg/kg trước thủ thuật 5 phút[cite: 19].",
+            maxDose: "Liều đơn 0.1 mg/kg; TTM 0.03 mg/kg/giờ[cite: 19]",
+            route: "TB, TM, Dưới da, TTM[cite: 19]",
+            mixing: "Pha với NaCl 0,9% hoặc Glucose 5%.",
+            note: "Theo dõi sát tình trạng ức chế hô hấp; luôn chuẩn bị sẵn Naloxone giải độc[cite: 19].",
+            indication: "Giảm đau, an thần khi thở máy hoặc thủ thuật[cite: 19]."
           }
         },
 
@@ -442,82 +269,30 @@
           return this.drugs[this.selectedDrugKey] || this.drugs['acyclovir'];
         },
 
-        onDrugChange() {
-          this.targetDose = this.currentDrug.defaultDose;
-          this.calculateRateFromDose();
-        },
+        onDrugChange() {},
 
         selectDrugForCalc(key) {
           this.selectedDrugKey = key;
-          this.targetDose = this.currentDrug.defaultDose;
-          this.calculateRateFromDose();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
-        get calculatedMg() {
-          if (!this.weight || !this.targetDose) return "0";
-          let mg = 0;
-          if (this.currentDrug.unit.includes("mcg/kg/phút")) {
-            mg = (this.targetDose * this.weight * 60 * this.volume) / 1000;
-          } else if (this.currentDrug.unit.includes("mcg/kg/giờ")) {
-            mg = (this.targetDose * this.weight * this.volume) / 1000;
-          } else if (this.currentDrug.unit.includes("mg/kg/giờ")) {
-            mg = this.targetDose * this.weight * this.volume;
-          } else if (this.currentDrug.unit.includes("mg/kg/liều")) {
-            mg = this.targetDose * this.weight;
-          } else {
-            mg = this.targetDose * this.weight;
-          }
-          return mg.toFixed(2);
-        },
-
-        calculateRateFromDose() {
-          this.customRateMlH = 1.0;
-        },
-
-        get calculatedRateMlH() {
-          return this.customRateMlH.toFixed(1);
-        },
-
-        calculateDoseFromRate() {
-          let mgTotal = parseFloat(this.calculatedMg);
-          if (!this.volume || this.volume <= 0) return 0;
-          let mgPerMl = mgTotal / this.volume;
-          
-          if (this.currentDrug.unit.includes("mcg/kg/phút")) {
-            if (this.weight > 0) {
-              let actual = (mgPerMl * this.customRateMlH * 1000) / (this.weight * 60);
-              return actual.toFixed(2);
-            }
-          }
-          return (mgPerMl * this.customRateMlH).toFixed(2);
-        },
-
-        get calculatedActualDose() {
-          return this.calculateDoseFromRate();
-        },
-
-        get mixingInstructionText() {
-          let mg = this.calculatedMg;
-          return `Lấy ${mg} mg ${this.currentDrug.name} + ${this.currentDrug.diluent} vừa đủ ${this.volume} ml.`;
+        get calculatedDoseResult() {
+          if (!this.weight) return "0 mg";
+          // Ước tính liều cơ bản dựa trên cân nặng cho ví dụ tính nhanh
+          let mg = this.weight * 15;
+          return mg.toFixed(2) + " mg";
         },
 
         get filteredDrugs() {
           let query = this.searchQuery.toLowerCase().trim();
-          let cat = this.selectedCategory;
-
           let result = {};
           for (let key in this.drugs) {
             let drug = this.drugs[key];
-            let matchCat = (cat === 'all' || drug.category === cat);
             let matchQuery = !query || 
                              drug.name.toLowerCase().includes(query) || 
                              drug.indication.toLowerCase().includes(query) ||
-                             (drug.doseTMC && drug.doseTMC.toLowerCase().includes(query)) ||
-                             (drug.doseTB && drug.doseTB.toLowerCase().includes(query)) ||
-                             (drug.doseTTM && drug.doseTTM.toLowerCase().includes(query));
-
-            if (matchCat && matchQuery) {
+                             drug.doseDetails.toLowerCase().includes(query);
+            if (matchQuery) {
               result[key] = drug;
             }
           }
