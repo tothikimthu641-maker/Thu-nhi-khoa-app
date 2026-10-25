@@ -1,4 +1,46 @@
-# ==============================================================================
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Hỗ trợ Ra quyết định & Lập trình Thở máy Nhi khoa</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        pre {
+            background-color: #1e1e1e;
+            color: #dcdcdc;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: Consolas, Monaco, "Andale Mono", monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        code {
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mã nguồn Python: Thở máy trong Bệnh lý Trẻ em</h1>
+    <p>Dưới đây là mã nguồn thuật toán lâm sàng được định dạng chuẩn trong thẻ HTML để hiển thị đẹp mắt trên trình duyệt:</p>
+
+    <pre><code># ==============================================================================
 # HỆ THỐNG HỖ TRỢ RA QUYẾT ĐỊNH & LẬP TRÌNH THỞ MÁY NHI KHOA (PEDIATRIC MECHANICAL VENTILATION)
 # Tác giả: Chuyên gia GitHub & Bác sĩ Hồi sức Cấp cứu Nhi khoa
 # Dựa trên tài liệu chuẩn hóa: THỞ MÁY TRONG BỆNH LÝ TRẺ EM (PGS.TS Phạm Văn Quang)
@@ -13,9 +55,9 @@ class PediatricMechanicalVentilation:
     def danh_gia_benh_nhan(self):
         """1. Đánh giá bệnh nhân trước và trong khi thở máy"""
         print("=== 1. ĐÁNH GIÁ BỆNH NHÂN ===")
-        print(- Tuổi: f"{self.age_months} tháng | Cân nặng: {self.weight_kg} kg")
-        print(- Chỉ định giúp thở: Ngừng thở, Suy hô hấp thất bại (Oxy/NCPAP), Sốc nặng, Glasgow <= 8 / Tăng ALNS[cite: 1.2].")
-        print(- Lâm sàng: Sinh hiệu, tri giác, SpO2, phế âm 2 bên, X-quang phổi (đánh giá tổn thương, vị trí NKQ, tràn khí).")
+        print(f"- Tuổi: {self.age_months} tháng | Cân nặng: {self.weight_kg} kg")
+        print("- Chỉ định giúp thở: Ngừng thở, Suy hô hấp thất bại (Oxy/NCPAP), Sốc nặng, Glasgow <= 8 / Tăng ALNS.")
+        print("- Lâm sàng: Sinh hiệu, tri giác, SpO2, phế âm 2 bên, X-quang phổi (đánh giá tổn thương, vị trí NKQ, tràn khí).")
         
     def chon_may_tho_va_phuong_thuc(self):
         """2. Chọn máy thở và phương thức thở"""
@@ -60,35 +102,35 @@ class PediatricMechanicalVentilation:
 
         # PEEP
         if "ARDS" in self.diagnosis:
-            peep = 8  # 6-10 cmH2O hoặc cao hơn tùy PaO2/FiO2[cite: 1.2]
+            peep = 8  # 6-10 cmH2O hoặc cao hơn tùy PaO2/FiO2
         elif "THAN_KINH" in self.diagnosis:
-            peep = 5  # 4-6 cmH2O[cite: 1.2]
+            peep = 5  # 4-6 cmH2O
         else:
             peep = 5
-        print(f"- PEEP: {peep} cmH2O[cite: 1.2]")
+        print(f"- PEEP: {peep} cmH2O")
 
-        # FiO2[cite: 1.2]
-        fio2 = 60  # 40-60% hoặc bằng bóp bóng hiệu quả (trừ khi tím tái nặng đặt 100% rồi giảm dần giữ SpO2 94-96%)[cite: 1.2]
-        print(f"- FiO2 ban đầu: {fio2}% (Mục tiêu SpO2: 92-96% [Tổn thương phổi] hoặc 94-96% [Tổn thương não])[cite: 1.2]")
+        # FiO2
+        fio2 = 60  # 40-60% hoặc bằng bóp bóng hiệu quả (trừ khi tím tái nặng đặt 100% rồi giảm dần giữ SpO2 94-96%)
+        print(f"- FiO2 ban đầu: {fio2}% (Mục tiêu SpO2: 92-96% [Tổn thương phổi] hoặc 94-96% [Tổn thương não])")
 
-        # Thời gian hít vào (Ti) & I/E[cite: 1.2]
+        # Thời gian hít vào (Ti) & I/E
         if self.age_months < 1:
             ti = 0.6
         elif self.age_months <= 120:
             ti = 0.9
         else:
             ti = 1.1
-        print(f"- Thời gian hít vào (Ti): {ti} giây (Tối thiểu 0.5s; trẻ sơ sinh 0.5-0.7s, trẻ em 0.8-1s, trẻ lớn 1-1.2s)[cite: 1.2]")
-        print(f"- Tỉ lệ I/E: 1/2 (Bình thường); Đảo ngược (1/1.5 - 1/1) nếu tổn thương phổi nặng[cite: 1.2]")
+        print(f"- Thời gian hít vào (Ti): {ti} giây (Tối thiểu 0.5s; trẻ sơ sinh 0.5-0.7s, trẻ em 0.8-1s, trẻ lớn 1-1.2s)")
+        print(f"- Tỉ lệ I/E: 1/2 (Bình thường); Đảo ngược (1/1.5 - 1/1) nếu tổn thương phổi nặng")
 
-        # Lưu lượng khí (Flow-rate)[cite: 1.2]
+        # Lưu lượng khí (Flow-rate)
         if self.age_months < 1:
             flow = "4-6 L/phút"
         elif self.age_months <= 24:
             flow = "10-15 L/phút"
         else:
             flow = "30-40 L/phút"
-        print(f"- Flow-rate: {flow} (Gấp 3-4 lần thể tích phút)[cite: 1.2]")
+        print(f"- Flow-rate: {flow} (Gấp 3-4 lần thể tích phút)")
 
         print("- Cài đặt mức báo động: Giới hạn áp lực đỉnh (PIP max ~ 30-35 cmH2O), Giới hạn VT thấp/cao (±20%), Mất nguồn/ngừng thở, Tần số thở cao.")
 
@@ -123,4 +165,7 @@ if __name__ == "__main__":
     patient.cai_dat_thong_so_ban_dau()
     patient.dieu_chinh_thong_so()
     patient.theo_doi_benh_nhan()
-    patient.cai_may_tho()
+    patient.cai_may_tho()</code></pre>
+
+</body>
+</html>
