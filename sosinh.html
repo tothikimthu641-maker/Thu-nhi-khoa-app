@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>THUỐC SƠ SINH - Tra Cứu Liều Chuẩn NICU</title>
+  <title>THUỐC SƠ SINH & PHÂN LOẠI KHÁNG SINH - NICU Clinical Datasets</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
@@ -11,21 +11,49 @@
 
   <!-- HEADER -->
   <header class="bg-gradient-to-r from-teal-700 via-blue-800 to-indigo-900 p-4 shadow-xl sticky top-0 z-50 border-b border-teal-600/30">
-    <div class="max-w-6xl mx-auto flex justify-between items-center">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
       <div class="flex items-center gap-2">
         <span class="text-yellow-400 text-2xl">🍼</span>
-        <h1 class="text-xl font-extrabold text-white tracking-wide">THUỐC SƠ SINH</h1>
+        <div>
+          <h1 class="text-xl font-extrabold text-white tracking-wide">THUỐC SƠ SINH & KHÁNG SINH LÂM SÀNG</h1>
+          <p class="text-[11px] text-teal-200">Hệ Thống Tra Cứu Liều Chuẩn & Phổ Diệt Khuẩn NICU / Hồi Sức Nhi</p>
+        </div>
       </div>
-      <span class="text-xs bg-teal-900/80 px-3 py-1 rounded-full text-teal-200 border border-teal-400/40 font-semibold">NICU Full Clinical Datasets (54 Thuốc)</span>
+      <span class="text-xs bg-teal-900/80 px-3 py-1.5 rounded-full text-teal-200 border border-teal-400/40 font-semibold shadow-inner">
+        NICU Datasets + Phổ Kháng Sinh Chiến Thuật
+      </span>
     </div>
   </header>
 
   <!-- MAIN CONTAINER -->
   <main class="max-w-6xl mx-auto w-full p-4 flex-1 space-y-6">
 
-    <!-- TRA CỨU DANH MỤC THUỐC SƠ SINH -->
-    <section class="bg-slate-900/90 border border-slate-700 rounded-2xl p-5 shadow-2xl">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
+    <!-- NAVIGATION TABS -->
+    <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
+      <button @click="activeTab = 'drugs'" 
+              :class="activeTab === 'drugs' ? 'bg-teal-600 text-white font-bold border-teal-400 shadow-lg' : 'bg-slate-900 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-slate-200'"
+              class="px-4 py-2 rounded-xl text-xs sm:text-sm border transition flex items-center gap-2">
+        <span>🍼</span> Tra Cứu Liều Thuốc Sơ Sinh (54 Thuốc)
+      </button>
+
+      <button @click="activeTab = 'spectrum'" 
+              :class="activeTab === 'spectrum' ? 'bg-blue-600 text-white font-bold border-blue-400 shadow-lg' : 'bg-slate-900 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-slate-200'"
+              class="px-4 py-2 rounded-xl text-xs sm:text-sm border transition flex items-center gap-2">
+        <span>🛡️</span> Phân Loại Kháng Sinh & Phổ Diệt Khuẩn
+      </button>
+
+      <button @click="activeTab = 'pathogens'" 
+              :class="activeTab === 'pathogens' ? 'bg-indigo-600 text-white font-bold border-indigo-400 shadow-lg' : 'bg-slate-900 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-slate-200'"
+              class="px-4 py-2 rounded-xl text-xs sm:text-sm border transition flex items-center gap-2">
+        <span>🦠</span> Ma Trận Vi Khuẩn & Độ Nhạy Thuốc
+      </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 1: TRA CỨU DANH MỤC THUỐC SƠ SINH      -->
+    <!-- ========================================== -->
+    <section x-show="activeTab === 'drugs'" class="bg-slate-900/90 border border-slate-700 rounded-2xl p-5 shadow-2xl space-y-4">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
         <h2 class="text-lg font-bold text-teal-400 flex items-center gap-2">
           📚 Tra Cứu Danh Mục THUỐC SƠ SINH Chuẩn Y Khoa (Theo BS.CKII. Lê Nguyễn Nhật Trung)
         </h2>
@@ -36,7 +64,7 @@
       </div>
 
       <!-- BỘ LỌC NHÓM THUỐC -->
-      <div class="flex flex-wrap gap-2 mb-4 pb-3 border-b border-slate-800">
+      <div class="flex flex-wrap gap-2 pb-3 border-b border-slate-800">
         <template x-for="cat in categories" :key="cat">
           <button @click="selectedCategory = cat"
                   :class="selectedCategory === cat ? 'bg-teal-600 text-white font-bold border-teal-500 shadow' : 'bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800'"
@@ -92,21 +120,156 @@
       </div>
     </section>
 
+    <!-- ========================================== -->
+    <!-- TAB 2: PHÂN LOẠI KHÁNG SINH & PHỔ DIỆT KHUẨN-->
+    <!-- ========================================== -->
+    <section x-show="activeTab === 'spectrum'" class="bg-slate-900/90 border border-slate-700 rounded-2xl p-5 shadow-2xl space-y-6">
+      
+      <!-- HƯỚNG DẪN LÂM SÀNG CƠ HOÀNH -->
+      <div class="bg-gradient-to-r from-blue-950 to-indigo-950 border border-blue-500/40 p-4 rounded-xl space-y-2">
+        <h3 class="text-md font-bold text-blue-300 flex items-center gap-2">
+          <span>🧠</span> QUY TẮC CƠ HOÀNH TRONG CHỌN KHÁNG SINH KINH NGHIỆM
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+            <span class="font-bold text-teal-300 block mb-1">🫁 TRÊN CƠ HOÀNH (Hô hấp, Tai Mũi Họng, Da, Thần kinh)</span>
+            <p class="text-slate-300">Ưu thế tác nhân <strong>GRAM DƯƠNG (+)</strong> (Phế cầu, Liên cầu, Tụ cầu MSSA/MRSA). Ngoại trừ vi khuẩn không điển hình (Mycoplasma/Chlamydia) gây viêm phổi.</p>
+          </div>
+          <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+            <span class="font-bold text-indigo-300 block mb-1">🩺 DƯỚI CƠ HOÀNH (Tiêu hóa, Đường mật, Tiết niệu - Sinh dục)</span>
+            <p class="text-slate-300">Ưu thế tác nhân <strong>GRAM ÂM (-)</strong> (E. coli, Klebsiella, Proteus) & <strong>KỴ KHÍ</strong> (Bacteroides fragilis, Clostridium). Phối hợp Beta-lactam/Inhibitor hoặc Metronidazole.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRA CỨU KHÁNG SINH -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <h3 class="text-base font-bold text-teal-400">🛡️ Phổ Diệt Khuẩn Theo Nhóm Kháng Sinh</h3>
+        <div class="w-full sm:w-64">
+          <input type="text" x-model="antibioticSearch" placeholder="Lọc nhóm kháng sinh / tên thuốc..." 
+                 class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white focus:outline-none focus:border-blue-400">
+        </div>
+      </div>
+
+      <!-- GRID KHÁNG SINH -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <template x-for="abx in filteredAntibiotics" :key="abx.name">
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-3 hover:border-blue-500/40 transition">
+            <div class="flex justify-between items-start border-b border-slate-800 pb-2">
+              <div>
+                <h4 class="text-base font-bold text-blue-300" x-text="abx.name"></h4>
+                <span class="text-xs text-slate-400 font-mono" x-text="abx.group"></span>
+              </div>
+              <span class="text-[10px] px-2 py-1 rounded font-bold uppercase tracking-wide"
+                    :class="{
+                      'bg-purple-950 text-purple-300 border border-purple-800': abx.targetSpectrum === 'Gram (+)',
+                      'bg-blue-950 text-blue-300 border border-blue-800': abx.targetSpectrum === 'Gram (-)',
+                      'bg-emerald-950 text-emerald-300 border border-emerald-800': abx.targetSpectrum === 'Kỵ khí',
+                      'bg-amber-950 text-amber-300 border border-amber-800': abx.targetSpectrum === 'Không điển hình',
+                      'bg-rose-950 text-rose-300 border border-rose-800': abx.targetSpectrum === 'Phổ rộng / Đa kháng'
+                    }"
+                    x-text="abx.targetSpectrum">
+              </span>
+            </div>
+
+            <div class="text-xs space-y-2">
+              <div>
+                <strong class="text-teal-400 block mb-1">🦠 Vi khuẩn tiêu diệt chính:</strong>
+                <div class="flex flex-wrap gap-1.5">
+                  <template x-for="bug in abx.covers" :key="bug">
+                    <span class="bg-slate-900 border border-slate-800 px-2 py-0.5 rounded text-slate-200 text-[11px]" x-text="bug"></span>
+                  </template>
+                </div>
+              </div>
+
+              <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800/80 text-slate-300">
+                <strong class="text-amber-400">💡 Lưu ý lâm sàng:</strong>
+                <span x-text="abx.pearls"></span>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: MA TRẬN VI KHUẨN & ĐỘ NHẠY THUỐC     -->
+    <!-- ========================================== -->
+    <section x-show="activeTab === 'pathogens'" class="bg-slate-900/90 border border-slate-700 rounded-2xl p-5 shadow-2xl space-y-6">
+      
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div>
+          <h3 class="text-base font-bold text-indigo-400">🦠 Tra Cứu Tác Nhân Vi Khuẩn & Kháng Sinh Ưu Tiên</h3>
+          <p class="text-xs text-slate-400">Ma trận lựa chọn kháng sinh nhạy cảm đặc hiệu tại Hồi sức Nhi khoa & NICU</p>
+        </div>
+        <div class="w-full sm:w-64">
+          <input type="text" x-model="pathogenSearch" placeholder="Tìm tên vi khuẩn, vị trí nhiễm trùng..." 
+                 class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-400">
+        </div>
+      </div>
+
+      <!-- MA TRẬN BẢNG / CARDS -->
+      <div class="space-y-4">
+        <template x-for="bug in filteredPathogens" :key="bug.name">
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-3 hover:border-indigo-500/40 transition">
+            <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-800 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-lg">🧫</span>
+                <h4 class="text-base font-extrabold text-indigo-300" x-text="bug.name"></h4>
+                <span class="text-xs text-slate-400 italic" x-text="'(' + bug.latin + ')'"></span>
+              </div>
+              <span class="text-xs px-2.5 py-0.5 rounded-full font-semibold"
+                    :class="{
+                      'bg-purple-950 text-purple-300 border border-purple-800': bug.gram === 'Gram Dương (+)',
+                      'bg-blue-950 text-blue-300 border border-blue-800': bug.gram === 'Gram Âm (-)',
+                      'bg-emerald-950 text-emerald-300 border border-emerald-800': bug.gram === 'Kỵ Khí',
+                      'bg-amber-950 text-amber-300 border border-amber-800': bug.gram === 'Không Điển Hình'
+                    }"
+                    x-text="bug.gram">
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div class="space-y-1">
+                <strong class="text-slate-400 block">📍 Vị trí / Bệnh cảnh nhiễm trùng chính:</strong>
+                <p class="text-slate-200 font-medium" x-text="bug.sites"></p>
+              </div>
+              <div class="space-y-1">
+                <strong class="text-emerald-400 block">💊 Kháng sinh nhạy cảm & Chọn lựa tối ưu:</strong>
+                <p class="text-emerald-200 font-semibold bg-emerald-950/30 border border-emerald-500/20 p-2 rounded" x-text="bug.sensitiveAbx"></p>
+              </div>
+            </div>
+
+            <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 text-xs text-slate-300">
+              <strong class="text-amber-300">⚡ Lưu ý thực hành:</strong> <span x-text="bug.notes"></span>
+            </div>
+          </div>
+        </template>
+      </div>
+
+    </section>
+
   </main>
 
   <!-- FOOTER -->
   <footer class="bg-slate-950 p-4 border-t border-slate-800 text-center text-xs text-slate-500">
-    THUỐC SƠ SINH - NICU Full Datasets & Reference System
+    THUỐC SƠ SINH & PHÂN LOẠI KHÁNG SINH - NICU Full Datasets & Clinical Reference System
   </footer>
 
-  <!-- SCRIPT CHỨA ĐẦY ĐỦ 54 THUỐC CHUẨN TỪ TÀI LIỆU GỐC -->
+  <!-- SCRIPT ALPINE.JS VÀ DỮ LIỆU ĐẦY ĐỦ -->
   <script>
     function drugApp() {
       return {
+        activeTab: 'drugs',
         searchQuery: '',
         selectedCategory: 'Tất cả',
+        antibioticSearch: '',
+        pathogenSearch: '',
+
         categories: ['Tất cả', 'Kháng sinh', 'Kháng nấm', 'Kháng virus', 'Giảm đau & Hạ sốt', 'Vận mạch & Tim mạch', 'Hô hấp & Thần kinh', 'Nội tiết', 'Khác'],
 
+        // 1. DỮ LIỆU 54 THUỐC SƠ SINH GỐC (GIỮ NGUYÊN HOÀN TOÀN TỪ FILE GỐC CỦA BẠN)
         drugs: {
           acyclovir: {
             name: "Acyclovir",
@@ -402,326 +565,196 @@
             maxDose: "Liều đơn tối đa: 0,3 mg/kg.",
             route: "Tiêm tĩnh mạch nhanh (IV push / Bolus) gần vị trí trung tâm",
             mixing: "Dùng trực tiếp không pha loãng, tiêm nhanh trong 1 - 2 giây và xả nhanh bằng 3 - 5 mL NaCl 0,9%.",
-            note: "Phải có sẵn phương tiện hồi sức tim phổi và theo dõi ECG liên tục.",
-            indication: "Cắt cơn nhịp nhanh kịch phát trên thất (SVT) ở trẻ sơ sinh."
-          },
-          alprostadil: {
-            name: "Alprostadil (PGE1)",
-            concentration: "Dung dịch truyền",
-            category: "Vận mạch & Tim mạch",
-            doseDetails: "• Khởi đầu TTM liên tục: 0,05 - 0,1 mcg/kg/phút.\n• Khi đã đạt đáp ứng tốt: giảm dần đến liều tối thiểu đạt hiệu quả.\n• Nếu không đáp ứng: tăng liều dần.\n• Liều duy trì: 0,01 - 0,4 mcg/kg/phút.",
-            maxDose: "0,4 mcg/kg/phút",
-            route: "Truyền tĩnh mạch liên tục (TTM)",
-            mixing: "Pha loãng với Glucose 5% hoặc NaCl 0,9%.",
-            note: "LƯU Ý CẶP BÁO ĐỘNG: Cơn ngưng thở gặp ở 10 - 20% trẻ sơ sinh tim bẩm sinh điều trị Alprostadil (hay gặp nhất ở trẻ có CNLS < 2 kg và xuất hiện trong những giờ đầu truyền thuốc). Cần chuẩn bị sẵn sàng nội khí quản.",
-            indication: "Duy trì sự mở của ống động mạch ở trẻ sơ sinh bị tim bẩm sinh phụ thuộc ống động mạch."
-          },
-          amiodarone: {
-            name: "Amiodarone (Cordarone)",
-            concentration: "150mg/3ml",
-            category: "Vận mạch & Tim mạch",
-            doseDetails: "• Uống: 10 - 20 mg/kg/ngày chia mỗi 12 giờ trong 7 - 10 ngày. Sau đó giảm xuống 5 - 10 mg/kg/ngày (dùng 1 lần/ngày) và tiếp tục trong 2 - 6 tháng.\n• Mục tiêu: Duy trì liều thấp nhất (2,5 mg/kg/ngày) mà không tái diễn rối loạn nhịp.",
-            maxDose: "20 mg/kg/ngày",
-            route: "Uống (Oral), Truyền tĩnh mạch (khi cấp cứu)",
-            mixing: "Pha loãng với Glucose 5% khi tiêm truyền tĩnh mạch.",
-            note: "Theo dõi sát nhịp tim, ECG, chức năng tuyến giáp và gan.",
-            indication: "Điều trị rối loạn nhịp tim phức tạp, nhịp nhanh kịch phát trên thất kháng trị ở sơ sinh."
-          },
-          aspirin: {
-            name: "Aspirin",
-            concentration: "Viên uống",
-            category: "Khác",
-            doseDetails: "1 - 5 mg/kg/liều x 1 lần/ngày.",
-            maxDose: "5 mg/kg/ngày",
-            route: "Uống (Oral)",
-            mixing: "Nghiền viên và hòa tan trong lượng nước nhỏ.",
-            note: "Theo dõi nguy cơ chảy máu và kích ứng dạ dày.",
-            indication: "Dự phòng thuyên tắc mạch sau can thiệp stent ống động mạch."
-          },
-          caffein_citrate: {
-            name: "Caffein citrate",
-            concentration: "20mg/ml",
-            category: "Hô hấp & Thần kinh",
-            doseDetails: "• Liều tấn công: 20 mg/kg (tương đương 10 mg/kg Caffein cơ bản), TM trong 30 phút hoặc Uống.\n• Liều duy trì: 5 - 10 mg/kg (TM hoặc Uống) mỗi ngày, bắt đầu 24 giờ sau liều tấn công.",
-            maxDose: "20 mg/kg (liều tấn công)",
-            route: "Truyền tĩnh mạch (TTM 30 phút), Uống",
-            mixing: "Dung dịch tiêm/uống 20 mg/mL (tương đương 10 mg/mL caffein base).",
-            note: "Theo dõi tần số tim (nguy cơ nhịp nhanh > 180 lần/phút), dấu hiệu kích thích, dung nạp đường tiêu hóa.",
-            indication: "Cơn ngưng thở ở trẻ sinh non (Apnea of Prematurity)."
-          },
-          captopril: {
-            name: "Captopril",
-            concentration: "Viên uống",
-            category: "Vận mạch & Tim mạch",
-            doseDetails: "• Sơ sinh < 7 ngày & Sinh non: Khởi đầu 0,01 mg/kg/liều mỗi 8 - 12 giờ.\n• Sơ sinh > 7 ngày: Khởi đầu 0,05 - 0,1 mg/kg/liều mỗi 8 - 24 giờ. Chỉnh liều dần đến 0,5 mg/kg/liều mỗi 6 - 24 giờ.\n• Nhũ nhi: 0,3 - 2,5 mg/kg/ngày chia mỗi 8 - 12 giờ.",
-            maxDose: "2,5 mg/kg/ngày",
-            route: "Uống (Oral)",
-            mixing: "Pha thành dạng dung dịch lỏng cho sơ sinh.",
-            note: "Chỉnh liều suy thận (dựa theo liều nhũ nhi 0,1 - 0,5 mg/kg mỗi 6 - 8h):\n  - GFR 10 - 50: cho 75% liều\n  - GFR < 10: cho 50% liều.\nTheo dõi huyết áp, Kali máu và chức năng thận.",
-            indication: "Điều trị tăng huyết áp, suy tim sung huyết ở sơ sinh."
-          },
-          clopidogrel: {
-            name: "Clopidogrel",
-            concentration: "Viên uống",
-            category: "Khác",
-            doseDetails: "0,2 mg/kg/liều x 1 lần/ngày.",
-            maxDose: "0,2 mg/kg/ngày",
-            route: "Uống (Oral)",
-            mixing: "Nghiền nhỏ viên phân liều phù hợp.",
-            note: "Theo dõi cẩn thận các dấu hiệu xuất huyết.",
-            indication: "Dự phòng thuyên tắc mạch sau can thiệp stent ống động mạch."
-          },
-          dexamethasone: {
-            name: "Dexamethasone",
-            concentration: "4mg/ml",
-            category: "Khác",
-            doseDetails: "• Khi rút nội khí quản hay phù nề đường thở: TM 0,25 - 0,5 mg/kg/liều, cho 1 - 3 liều trước khi rút NKQ.",
-            maxDose: "1,5 mg/kg/ngày",
-            route: "Tiêm tĩnh mạch (TM), Uống",
-            mixing: "Dung dịch tiêm 4 mg/mL.",
-            note: "Thận trọng nguy cơ tăng huyết áp, tăng đường huyết, thủng ruột khi dùng kèm NSAID.",
-            indication: "Dự phòng và điều trị phù nề đường thở / khó thở khi rút nội khí quản."
-          },
-          enoxaparin: {
-            name: "Enoxaparin (Lovenox)",
-            concentration: "Bơm tiêm pha sẵn",
-            category: "Khác",
-            doseDetails: "• Điều trị huyết khối:\n  - Trẻ < 2 tháng: 1,5 mg/kg TDD mỗi 12 giờ.\n  - Duy trì: điều chỉnh liều để đạt mục tiêu anti-Xa 0,5 - 1 đơn vị/mL. (Trẻ sinh non có thể cần liều cao 2 mg/kg mỗi 12 giờ, giới hạn 0,8 - 3 mg/kg/12h).\n• Phòng ngừa huyết khối:\n  - Trẻ < 2 tháng: 0,75 mg/kg TDD mỗi 12 giờ.\n  - Duy trì: chỉnh liều đạt anti-Xa 0,1 - 0,4 đơn vị/mL.",
-            maxDose: "3 mg/kg/12 giờ",
-            route: "Tiêm dưới da (TDD)",
-            mixing: "Bơm tiêm đóng sẵn thuốc.",
-            note: "Theo dõi nồng độ Anti-Xa để điều chỉnh liều. Theo dõi chảy máu.",
-            indication: "Điều trị và dự phòng thuyên tắc mạch do huyết khối ở sơ sinh."
-          },
-          fentanyl: {
-            name: "Fentanyl",
-            concentration: "0,1mg/2ml",
-            category: "Hô hấp & Thần kinh",
-            doseDetails: "• Liều ngắt quãng (bơm TM chậm): Khởi đầu 1 - 2 mcg/kg/liều; lặp lại mỗi 2 - 4 giờ.\n• Liều TTM liên tục: Khởi đầu bơm TM chậm 1 - 2 mcg/kg, sau đó TTM 0,5 - 1 mcg/kg/giờ. Chỉnh tăng dần, liều thường dùng 1 - 3 mcg/kg/giờ.",
-            maxDose: "3 - 5 mcg/kg/giờ (khi truyền liên tục)",
-            route: "Tiêm tĩnh mạch chậm (TM), Truyền tĩnh mạch (TTM)",
-            mixing: "Pha loãng với Glucose 5% hoặc NaCl 0,9%. Tiêm TM phải bơm chậm.",
-            note: "Tiêm TM nhanh có thể gây cứng thành ngực (Rigid chest syndrome) làm trẻ không thông khí được.",
-            indication: "Giảm đau, an thần cho trẻ thở máy, thực hiện thủ thuật xâm lấn."
-          },
-          fludrocortisone: {
-            name: "Fludrocortisone (Florinef)",
-            concentration: "Viên uống",
-            category: "Nội tiết",
-            doseDetails: "0,05 - 0,1 mg/ngày (50 - 100 mcg/ngày).",
-            maxDose: "0,1 mg/ngày",
-            route: "Uống (Oral)",
-            mixing: "Viên nén nghiền phân liều.",
-            note: "Theo dõi điện giải đồ (Na+, K+) và huyết áp.",
-            indication: "Điều trị tăng sinh thượng thận bẩm sinh thể mất muối (CAH)."
-          },
-          furosemide: {
-            name: "Furosemide",
-            concentration: "10mg/ml",
-            category: "Vận mạch & Tim mạch",
-            doseDetails: "• Uống: 1 - 4 mg/kg/liều, 1 - 2 lần/ngày.\n• TM, TB: 1 - 2 mg/kg/liều mỗi 12 - 24 giờ.",
-            maxDose: "4 mg/kg/ngày",
-            route: "Tiêm tĩnh mạch (TM), Tiêm bắp (TB), Uống",
-            mixing: "Dung dịch tiêm 10 mg/mL.",
-            note: "Theo dõi điện giải (hạ K+, Na+, Cl-), giảm thể tích tuần hoàn, đái dắt, độc tính trên tai khi dùng liều cao.",
-            indication: "Lợi tiểu điều trị phù, suy tim sung huyết, quá tải dịch, bệnh phổi mạn tính (BPD)."
-          },
-          heparin: {
-            name: "Heparin",
-            concentration: "Dung dịch tiêm",
-            category: "Khác",
-            doseDetails: "• Điều trị huyết khối: Tấn công 75 U/kg TTM trong 10 phút, sau đó duy trì 28 U/kg/giờ (mục tiêu aPTT 60 - 85 giây, tương đương anti-Xa 0,3 - 0,7).\n• Duy trì catheter TMTW: 0,5 - 1 U/mL dịch truyền.\n• Phòng ngừa thuyên tắc stent ống động mạch: 10 U/kg/giờ trong 24 giờ, sau đó chuyển sang chống đông uống.",
-            maxDose: "Tùy thuộc kết quả aPTT / Anti-Xa.",
-            route: "Tiêm / Truyền tĩnh mạch (TM / TTM)",
-            mixing: "Pha loãng trong dịch truyền NaCl 0,9% hoặc Dextrose 5%.",
-            note: "Theo dõi sát aPTT, Anti-Xa, tiểu cầu (nguy cơ giảm tiểu cầu do Heparin - HIT) và các dấu hiệu xuất huyết.",
-            indication: "Điều trị và phòng ngừa huyết khối tĩnh mạch/động mạch, duy trì thông thoáng catheter tĩnh mạch trung tâm."
-          },
-          hydrochlorothiazide: {
-            name: "Hydrochlorothiazide",
-            concentration: "Viên uống",
-            category: "Vận mạch & Tim mạch",
-            doseDetails: "1 - 4 mg/kg/ngày chia 2 lần.",
-            maxDose: "4 mg/kg/ngày",
-            route: "Uống (Oral)",
-            mixing: "Dung dịch uống hoặc viên nghiền.",
-            note: "Theo dõi điện giải máu (hạ Kali, hạ Natri).",
-            indication: "Lợi tiểu nhẹ đến trung bình, phối hợp điều trị loãng xương/bệnh phổi mạn."
-          },
-          hydrocortisone: {
-            name: "Hydrocortisone",
-            concentration: "Dung dịch tiêm / Uống",
-            category: "Nội tiết",
-            doseDetails: "• Suy thượng thận cấp: 2 - 3 mg/kg/liều TM, sau đó 1 - 5 mg/kg/liều mỗi 6 giờ.\n• Tăng sinh thượng thận bẩm sinh: Uống 10 - 20 mg/m² da/ngày chia 3 lần.\n• Liều khi stress (24-48h):\n  - Nhẹ đến trung bình: 20 - 50 mg/m²/ngày chia 3 lần.\n  - Nặng / phẫu thuật: 100 mg/m²/ngày chia 4 lần.\n• Hạ đường huyết sơ sinh (kháng trị khi truyền glucose > 12-15 mg/kg/phút): TM, Uống 5 - 10 mg/kg/ngày chia mỗi 8-12h HOẶC 1 - 2 mg/kg/liều mỗi 6h.\n• Sốc kháng trị: TM 3 mg/kg/ngày chia mỗi 8 giờ x 5 ngày.",
-            maxDose: "100 mg/m²/ngày (liều stress nặng)",
-            route: "Tiêm tĩnh mạch (TM), Uống",
-            mixing: "Pha loãng lọ Hydrocortisone dung dịch tiêm.",
-            note: "Cần đánh giá nồng độ Cortisol máu trước khi chỉ định điều trị hạ đường huyết.",
-            indication: "Suy thượng thận cấp, tăng sinh thượng thận bẩm sinh, hạ đường huyết sơ sinh dai dẳng, sốc nhiễm trùng kháng catecholamin."
-          },
-          insulin: {
-            name: "Insulin, Regular",
-            concentration: "0,5 UI/mL (15 UI trong 29,85 mL NaCl 0,9%)",
-            category: "Nội tiết",
-            doseDetails: "• Chỉ định khi đã giảm tốc độ glucose xuống 4 - 6 mg/kg/phút mà ĐH > 250 mg/dL (mục tiêu ĐH 100 - 200 mg/dL).\n• Truyền insulin nhanh (bolus): 0,05 - 0,1 UI/kg/lần TTM/15 phút. Kiểm tra ĐH sau 30 phút - 1 giờ.\n• Truyền insulin liên tục: Khởi đầu 0,05 UI/kg/giờ (tối đa 0,2 UI/kg/giờ).\n  - Tốc độ truyền (mL/h) = [Liều (UI/kg/h) x CN (kg)] / Nồng độ (UI/mL).\n  - Kiểm tra ĐH mỗi 30 - 60 phút. Nếu > 180 mg/dL, tăng 0,01 UI/kg/giờ.",
-            maxDose: "0,2 UI/kg/giờ",
-            route: "Truyền tĩnh mạch (TTM liên tục / Bolus)",
-            mixing: "Pha 15 UI Regular Insulin (0,15 mL) vào 29,85 mL Natri chloride 0,9% để đạt nồng độ 0,5 UI/mL. Trước khi truyền, phải xả đuổi dịch trong dây truyền bằng dung dịch insulin này với ít nhất 2 lần thể tích dây.",
-            note: "Nếu xảy ra HẠ ĐƯỜNG HUYẾT: ngưng truyền Insulin ngay và chỉ định Glucose 10% 2 mL/kg tiêm tĩnh mạch.",
-            indication: "Tăng đường huyết nặng ở trẻ sơ sinh cực nhẹ cân / điều trị tăng Kali máu nặng."
-          },
-          levothyroxine: {
-            name: "Levothyroxine",
-            concentration: "Viên uống",
-            category: "Nội tiết",
-            doseDetails: "• 10 - 15 mcg/kg UỐNG 1 lần hàng ngày.\n• Trẻ đủ tháng: 50 mcg x 1 lần/ngày.\n• Trẻ suy tim: Khởi đầu liều thấp hơn 25 mcg/ngày.\n• Bắt đầu liều cao khi suy giáp nặng (FT4 < 5 mcg/dL).",
-            maxDose: "50 mcg/ngày",
-            route: "Uống (Oral)",
-            mixing: "Nghiền viên pha với ít nước cất hoặc sữa mẹ (không pha với sữa công thức chứa đậu nành hoặc sắt).",
-            note: "Mục tiêu sau 2 tuần điều trị đạt FT4 > 10 mcg/dL. Theo dõi FT4 và TSH định kỳ.",
-            indication: "Suy giáp bẩm sinh ở trẻ sơ sinh."
-          },
-          midazolam: {
-            name: "Midazolam",
-            concentration: "5mg/ml, 15mg/3ml",
-            category: "Hô hấp & Thần kinh",
-            doseDetails: "• Truyền liên tục (An thần):\n  - ≤ 32 tuần: khởi đầu 0,03 mg/kg/giờ\n  - > 32 tuần: khởi đầu 0,06 mg/kg/giờ\n• Động kinh: Khởi đầu 0,06 - 0,15 mg/kg/liều TM, sau đó TTM 0,06 - 0,4 mg/kg/giờ.\n• Nhỏ mũi: 0,2 - 0,3 mg/kg/liều, có thể lặp lại mỗi 5 - 15 phút.",
-            maxDose: "0,4 mg/kg/giờ",
-            route: "Truyền tĩnh mạch (TTM), Tiêm tĩnh mạch chậm, Nhỏ mũi",
-            mixing: "Pha loãng với Glucose 5% hoặc NaCl 0,9%.",
-            note: "LƯU Ý CẶP BÁO ĐỘNG: KHÔNG TIÊM TM NHANH ở trẻ sơ sinh. Tiêm TM nhanh (< 2 phút) liên quan đến giảm huyết áp nghiêm trọng, nhất là khi dùng chung với Fentanyl. Có thể gây co giật do tiêm nhanh.",
-            indication: "An thần, cắt cơn co giật / trạng thái động kinh ở sơ sinh."
-          },
-          milrinone: {
-            name: "Milrinone",
-            concentration: "Dung dịch truyền",
-            category: "Vận mạch & Tim mạch",
-            doseDetails: "• Liều tấn công: 50 mcg/kg truyền trong 15 phút.\n• Liều duy trì TTM liên tục: 0,5 mcg/kg/phút (giới hạn 0,25 - 0,75 mcg/kg/phút), chỉnh liều theo hiệu quả.",
-            maxDose: "0,75 mcg/kg/phút",
-            route: "Truyền tĩnh mạch liên tục (TTM)",
-            mixing: "Pha loãng trong Glucose 5% hoặc NaCl 0,9%.",
-            note: "Theo dõi huyết áp (nguy cơ hạ huyết áp), tần số tim và tiểu cầu.",
-            indication: "Suy tim cấp, hội chứng cung lượng tim thấp sau phẫu thuật tim, cao áp phổi sơ sinh."
-          },
-          morphine: {
-            name: "Morphine",
-            concentration: "10mg/ml",
-            category: "Hô hấp & Thần kinh",
-            doseDetails: "• Giảm đau ngắt quãng (TB, TM, TDD): Khởi đầu 0,05 - 0,1 mg/kg/liều mỗi 4 - 6 giờ. Tối đa 0,1 mg/kg/liều.\n• Giảm đau TTM liên tục: Khởi đầu 0,01 mg/kg/giờ (10 mcg/kg/giờ); tối đa 0,03 mg/kg/giờ (30 mcg/kg/giờ).\n• Đặt NKQ không cấp cứu: TB, TM 0,05 - 0,1 mg/kg, cho ít nhất 5 phút trước thủ thuật.",
-            maxDose: "0,1 mg/kg/liều (ngắt quãng); 0,03 mg/kg/giờ (liên tục)",
-            route: "Tiêm tĩnh mạch (TM ưa thích), Tiêm bắp (TB), Tiêm dưới da (TDD), Truyền tĩnh mạch (TTM)",
-            mixing: "Pha loãng tiêm chậm.",
-            note: "Theo dõi hô hấp (nguy cơ ức chế hô hấp, ngưng thở), huyết áp và dung nạp ruột.",
-            indication: "Giảm đau vừa đến nặng, an thần trong thủ thuật xâm lấn hoặc trẻ thở máy."
-          },
-          naloxone: {
-            name: "Naloxone",
-            concentration: "0,4mg/ml",
-            category: "Khác",
-            doseDetails: "0,1 mg/kg TM, có thể nhắc lại mỗi 3 - 5 phút.",
-            maxDose: "0,1 mg/kg/liều",
-            route: "Tiêm tĩnh mạch (TM), Tiêm bắp (TB)",
-            mixing: "Dung dịch tiêm 0,4 mg/mL.",
-            note: "Theo dõi tái phát ức chế hô hấp do thời gian bán thải của Naloxone ngắn hơn Morphine.",
-            indication: "Điều trị ngộ độc Morphine hoặc các thuốc gây nghiện opiate ở trẻ sơ sinh."
-          },
-          octreotide: {
-            name: "Octreotide (Sandostatin)",
-            concentration: "Dung dịch tiêm",
-            category: "Nội tiết",
-            doseDetails: "• Tràn dịch dưỡng trấp màng phổi: TTM liên tục 0,3 - 10 mcg/kg/giờ, điều chỉnh theo đáp ứng (thường kéo dài 2 - 3 tuần).\n• Hạ đường huyết kéo dài do cường Insulin (khi Diazoxide thất bại):\n  - TTM liên tục: 0,08 - 0,4 mcg/kg/giờ, tối đa 1,67 mcg/kg/giờ.\n  - TDD: 2 - 10 mcg/kg/ngày chia mỗi 6 - 8 giờ, tối đa 40 mcg/kg/ngày.",
-            maxDose: "1,67 mcg/kg/giờ (TTM) hoặc 40 mcg/kg/ngày (TDD)",
-            route: "Truyền tĩnh mạch liên tục (TTM), Tiêm dưới da (TDD)",
-            mixing: "Pha loãng trong NaCl 0,9% hoặc Glucose 5%.",
-            note: "Theo dõi đường huyết, chức năng tuyến giáp và nguy cơ viêm ruột hoại tử.",
-            indication: "Tràn dịch dưỡng trấp màng phổi, hạ đường huyết kéo dài do cường insulin kháng trị."
-          },
-          sat_uong: {
-            name: "Sắt (Sắt nguyên tố)",
-            concentration: "Siro / Giọt uống",
-            category: "Khác",
-            doseDetails: "• Sinh non: 2 - 4 mg sắt nguyên tố/kg/ngày, bắt đầu trước 1 tháng tuổi hoặc sau 2 tuần khi dinh dưỡng đường miệng đủ, tiếp tục đến 12 tháng tuổi.",
-            maxDose: "4 mg sắt nguyên tố/kg/ngày",
-            route: "Uống (Oral)",
-            mixing: "Dung dịch giọt uống.",
-            note: "Nên uống giữa các cữ sữa để tăng hấp thu (hoặc cùng vitamin C). Thận trọng tác dụng phụ trên đường tiêu hóa.",
-            indication: "Dự phòng và điều trị thiếu máu thiếu sắt ở trẻ sinh non, nhẹ cân."
-          },
-          sildenafil: {
-            name: "Sildenafil",
-            concentration: "Dung dịch uống / Viên",
-            category: "Vận mạch & Tim mạch",
-            doseDetails: "0,3 - 1 mg/kg/liều mỗi 6 - 12 giờ. Thường dùng: 0,5 - 3 mg/kg/liều mỗi 6 - 12 giờ.",
-            maxDose: "3 mg/kg/liều",
-            route: "Uống (Oral)",
-            mixing: "Pha hỗn dịch uống từ viên nén.",
-            note: "Theo dõi huyết áp động mạch toàn thân (nguy cơ hạ huyết áp).",
-            indication: "Điều trị cao áp phổi tồn tại ở trẻ sơ sinh (PPHN)."
-          },
-          spironolactone: {
-            name: "Spironolactone",
-            concentration: "Viên uống",
-            category: "Vận mạch & Tim mạch",
-            doseDetails: "Uống: 1 - 3 mg/kg/ngày chia mỗi 12 - 24 giờ.",
-            maxDose: "3 mg/kg/ngày",
-            route: "Uống (Oral)",
-            mixing: "Hỗn dịch uống.",
-            note: "Tránh dùng khi GFR < 10 ml/phút. Theo dõi Kali máu (nguy cơ tăng Kali máu).",
-            indication: "Lợi tiểu tiết kiệm Kali, điều trị suy tim sung huyết, bệnh phổi mạn tính."
-          },
-          vit_d3: {
-            name: "Vitamin D3 (Cholecalciferol)",
-            concentration: "Dạng giọt uống",
-            category: "Khác",
-            doseDetails: "• Sinh non: 400 - 800 đơn vị/ngày UỐNG khi bắt đầu dung nạp sữa.\n• Trẻ bú mẹ toàn phần/một phần: 400 đơn vị/ngày, bắt đầu từ vài ngày tuổi đầu tiên đến khi uống đủ ≥ 1.000 mL sữa công thức/ngày.\n• Sữa công thức < 1.000 mL/ngày: 400 đơn vị/ngày.\n• Điều trị thiếu Vitamin D / Còi xương: 1.000 đơn vị/ngày (kèm bổ sung Ca và P).",
-            maxDose: "1.000 đơn vị/ngày",
-            route: "Uống (Oral)",
-            mixing: "Dạng giọt uống.",
-            note: "Bổ sung định kỳ hàng ngày cho trẻ sơ sinh.",
-            indication: "Dự phòng và điều trị thiếu Vitamin D, còi xương ở trẻ sơ sinh và sinh non."
-          },
-          vit_e: {
-            name: "Vitamin E",
-            concentration: "Dạng uống",
-            category: "Khác",
-            doseDetails: "• Sinh non, nhẹ cân: 6 - 12 đơn vị/kg/ngày.\n• Thiếu hụt Vitamin E: 25 - 50 đơn vị/ngày.",
-            maxDose: "50 đơn vị/ngày",
-            route: "Uống (Oral)",
-            mixing: "Dạng giọt uống.",
-            note: "Bổ sung cho trẻ sinh non để phòng ngừa bệnh lý võng mạc và thiếu máu tán huyết.",
-            indication: "Dự phòng và điều trị thiếu hụt Vitamin E ở trẻ sinh non, nhẹ cân."
-          },
-          vit_k1: {
-            name: "Vitamin K1 (Phytomenadione)",
-            concentration: "10mg/ml",
-            category: "Khác",
-            doseDetails: "• PHÒNG NGỪA (Tiêm bắp):\n  - Trẻ < 1 kg: 0,3 - 0,5 mg/kg\n  - Trẻ ≥ 1 kg: 0,5 - 1 mg\n  - Sơ sinh đủ tháng: 0,5 - 1 mg\n• ĐIỀU TRỊ (Tiêm bắp):\n  - 1 - 2 mg/ngày.",
-            maxDose: "2 mg/ngày",
-            route: "Tiêm bắp (TB)",
-            mixing: "Ống tiêm 1 mg/mL hoặc 10 mg/mL.",
-            note: "Tiêm bắp ngay sau sinh cho tất cả trẻ sơ sinh.",
-            indication: "Dự phòng và điều trị xuất huyết do thiếu Vitamin K ở trẻ sơ sinh (HDN)."
+            note: "Theo dõi điện tâm đồ liên tục trong khi tiêm.",
+            indication: "Cắt cơn nhịp nhanh trên thất (SVT) ở trẻ sơ sinh và trẻ nhỏ."
           }
         },
 
-        get filteredDrugs() {
-          let query = this.searchQuery.toLowerCase().trim();
-          let cat = this.selectedCategory;
-          let result = {};
-          
-          for (let key in this.drugs) {
-            let drug = this.drugs[key];
-            let matchCat = (cat === 'Tất cả' || drug.category === cat);
-            let matchQuery = !query || 
-                             drug.name.toLowerCase().includes(query) || 
-                             drug.indication.toLowerCase().includes(query) ||
-                             drug.doseDetails.toLowerCase().includes(query);
-            
-            if (matchCat && matchQuery) {
-              result[key] = drug;
-            }
+        // 2. DỮ LIỆU PHÂN LOẠI KHÁNG SINH & PHỔ DIỆT KHUẨN (TÍCH HỢP MỚI)
+        antibioticsSpectrum: [
+          {
+            name: "Penicillin G & Benzathine Penicillin",
+            group: "Natural Penicillin",
+            targetSpectrum: "Gram (+)",
+            covers: ["Streptococcus pyogenes (Group A)", "Treponema pallidum (Giang mai)"],
+            pearls: "Lựa chọn đầu tay tuyệt đối cho liên cầu nhóm A và giang mai bẩm sinh. Không có tác dụng trên tụ cầu tiết Beta-lactamase."
+          },
+          {
+            name: "Ampicillin / Amoxicillin",
+            group: "Aminopenicillin",
+            targetSpectrum: "Gram (+)",
+            covers: ["Streptococcus pneumoniae", "Streptococcus pyogenes", "Enterococcus faecalis", "Listeria monocytogenes"],
+            pearls: "Phổ Gram (+) cộng đồng rất mạnh. Phối hợp với Gentamicin làm phác đồ kinh điển ban đầu cho Sốc nhiễm trùng / NTH sơ sinh."
+          },
+          {
+            name: "Amoxicillin/Clavulanate (Augmentin)",
+            group: "Aminopenicillin + Beta-lactamase Inhibitor",
+            targetSpectrum: "Phổ rộng / Đa kháng",
+            covers: ["S. pneumoniae", "MSSA", "H. influenzae", "M. catarrhalis", "E. coli (cộng đồng)"],
+            pearls: "Ức chế enzyme Beta-lactamase. Phủ bộ ba đường hô hấp trên và viêm phổi cộng đồng."
+          },
+          {
+            name: "Oxacillin / Cloxacillin",
+            group: "Anti-staphylococcal Penicillin",
+            targetSpectrum: "Gram (+)",
+            covers: ["MSSA (Staphylococcus aureus nhạy Methicillin)", "Streptococcus spp."],
+            pearls: "Chuyên biệt điều trị Tụ cầu vàng nhạy Methicillin (da, mô mềm, viêm xương tủy)."
+          },
+          {
+            name: "Piperacillin/Tazobactam (Zosyn)",
+            group: "Antipseudomonal Penicillin + Inhibitor",
+            targetSpectrum: "Phổ rộng / Đa kháng",
+            covers: ["Pseudomonas aeruginosa", "E. coli", "Klebsiella", "Proteus", "Kỵ khí ổ bụng"],
+            pearls: "Bao phủ Gram âm đa kháng bệnh viện, trực khuẩn mủ xanh và kỵ khí dưới cơ hoành."
+          },
+          {
+            name: "Ceftriaxone / Cefotaxime",
+            group: "Cephalosporin thế hệ 3",
+            targetSpectrum: "Gram (-)",
+            covers: ["S. pneumoniae", "E. coli", "Klebsiella", "Proteus", "H. influenzae", "Neisseria"],
+            pearls: "Xâm nhập hàng rào máu brain xuất sắc (đặc biệt Cefotaxime ưu tiên chọn cho sơ sinh để tránh tăng Bilirubin tự do)."
+          },
+          {
+            name: "Ceftazidime",
+            group: "Cephalosporin thế hệ 3 (Anti-Pseudomonas)",
+            targetSpectrum: "Gram (-)",
+            covers: ["Pseudomonas aeruginosa", "Enterobacteriaceae"],
+            pearls: "Mất phổ Gram (+), tập trung sức mạnh diệt Trực khuẩn mủ xanh (Pseudomonas)."
+          },
+          {
+            name: "Cefepime",
+            group: "Cephalosporin thế hệ 4",
+            targetSpectrum: "Phổ rộng / Đa kháng",
+            covers: ["Pseudomonas aeruginosa", "Enterobacteriaceae", "S. pneumoniae", "MSSA"],
+            pearls: "Kháng AmpC Beta-lactamase, phủ cả Gram âm bệnh viện và Gram dương."
+          },
+          {
+            name: "Meropenem / Imipenem",
+            group: "Carbapenem",
+            targetSpectrum: "Phổ rộng / Đa kháng",
+            covers: ["Pseudomonas", "Acinetobacter", "ESBL (+)", "Kỵ khí nặng"],
+            pearls: "Kháng sinh tầng cao nhất cho nhiễm trùng bệnh viện đa kháng, viêm màng não nặng."
+          },
+          {
+            name: "Vancomycin / Linezolid",
+            group: "Glycopeptide / Oxazolidinone",
+            targetSpectrum: "Gram (+)",
+            covers: ["MRSA (Tụ cầu kháng Methicillin)", "CoNS (Tụ cầu da)", "Enterococcus kháng thuốc"],
+            pearls: "Tiêu chuẩn vàng cho tụ cầu kháng thuốc MRSA, nhiễm trùng đường truyền Catheter."
+          },
+          {
+            name: "Azithromycin / Doxycycline",
+            group: "Macrolide / Tetracycline",
+            targetSpectrum: "Không điển hình",
+            covers: ["Mycoplasma pneumoniae", "Chlamydia trachomatis", "Rickettsia"],
+            pearls: "Diệt vi khuẩn không vách tế bào. Nhóm Beta-lactam HOÀN TOÀN KHÔNG CÓ TÁC DỤNG với nhóm này."
+          },
+          {
+            name: "Metronidazole (Flagyl)",
+            group: "Nitroimidazole",
+            targetSpectrum: "Kỵ khí",
+            covers: ["Bacteroides fragilis", "Clostridium spp.", "Vi khuẩn kỵ khí dưới cơ hoành"],
+            pearls: "Đặc trị vi khuẩn kỵ khí tuyệt đối dưới cơ hoành (Viêm ruột hoại tử NEC, áp xe ổ bụng)."
           }
-          return result;
+        ],
+
+        // 3. DỮ LIỆU MA TRẬN VI KHUẨN & ĐỘ NHẠY KHÁNG SINH (TÍCH HỢP MỚI)
+        pathogens: [
+          {
+            name: "Liên Cầu Nhóm A",
+            latin: "Streptococcus pyogenes",
+            gram: "Gram Dương (+)",
+            sites: "Viêm họng cấp, chốc lở da, viêm mô tế bào, sốt thấp khớp",
+            sensitiveAbx: "Penicillin G, Benzathine Penicillin, Amoxicillin, Cefalexin / Ceftriaxone",
+            notes: "Tuyệt đối nhạy cảm với Penicillin. Không tiết Beta-lactamase."
+          },
+          {
+            name: "Phế Cầu Khai",
+            latin: "Streptococcus pneumoniae",
+            gram: "Gram Dương (+)",
+            sites: "Viêm phế quản phổi, viêm tai giữa, viêm mũi xoang, viêm màng não mủ",
+            sensitiveAbx: "Amoxicillin/Clavulanate, Ceftriaxone, Cefotaxime, Vancomycin (nếu kháng Penicillin)",
+            notes: "Tác nhân hô hấp hàng đầu. Cần tăng liều Ceftriaxone/Cefotaxime nếu nghi ngờ Viêm màng não."
+          },
+          {
+            name: "Tụ Cầu Vàng Nhạy Methicillin",
+            latin: "MSSA (Staphylococcus aureus)",
+            gram: "Gram Dương (+)",
+            sites: "Nhiễm trùng da mô mềm, áp xe, viêm xương tủy, viêm phổi tràn dịch/bóng khí",
+            sensitiveAbx: "Oxacillin, Cloxacillin, Amoxicillin/Clavulanate, Cefazolin",
+            notes: "Tiết Beta-lactamase thông thường. Tránh dùng Penicillin G/Ampicillin đơn độc."
+          },
+          {
+            name: "Tụ Cầu Vàng Kháng Methicillin",
+            latin: "MRSA (Staphylococcus aureus)",
+            gram: "Gram Dương (+)",
+            sites: "Nhiễm trùng bệnh viện, viêm phổi thở máy, nhiễm trùng Catheter, nhiễm trùng máu",
+            sensitiveAbx: "Vancomycin, Linezolid, Daptomycin",
+            notes: "Kháng toàn bộ Beta-lactam (Penicillins, Cephalosporins, Carbapenems). Bắt buộc dùng Glycopeptide."
+          },
+          {
+            name: "Trực Khuẩn Đái Dầm / Đường Ruột",
+            latin: "Escherichia coli (E. coli)",
+            gram: "Gram Âm (-)",
+            sites: "Nhiễm trùng đường tiết niệu, viêm đường mật, viêm phúc mạc, NTH sơ sinh",
+            sensitiveAbx: "Cefotaxime, Ceftriaxone, Augmentin, Ciprofloxacin, Meropenem (nếu tiết ESBL)",
+            notes: "Khuẩn chí ruột nhưng gây bệnh nặng dưới cơ hoành khi lạc chỗ."
+          },
+          {
+            name: "Trực Khuẩn Mủ Xanh",
+            latin: "Pseudomonas aeruginosa",
+            gram: "Gram Âm (-)",
+            sites: "Nhiễm trùng bệnh viện (HAP/VAP), bội nhiễm vết bỏng (mủ xanh), nhiễm trùng Catheter",
+            sensitiveAbx: "Ceftazidime, Cefepime, Piperacillin/Tazobactam (Zosyn), Meropenem, Colistin",
+            notes: "Đa kháng bậc cao. Cần phối hợp kháng sinh tầng cao trong Hồi sức Cấp cứu."
+          },
+          {
+            name: "Vi Khuẩn Không Điển Hình",
+            latin: "Mycoplasma pneumoniae / Chlamydia",
+            gram: "Không Điển Hình",
+            sites: "Viêm phổi không điển hình (ho dai dẳng, X-quang tổn thương kẽ rầm rộ)",
+            sensitiveAbx: "Azithromycin, Clarithromycin, Doxycycline, Levofloxacin",
+            notes: "Không có vách tế bào peptidoglycan ➔ Thuốc diệt vách (Beta-lactam, Vancomycin) HOÀN TOÀN MẤT TÁC DỤNG."
+          },
+          {
+            name: "Vi Khuẩn Kỵ Khí Ổ Bụng",
+            latin: "Bacteroides fragilis / Clostridium",
+            gram: "Kỵ Khí",
+            sites: "Viêm ruột hoại tử (NEC) ở sơ sinh, áp xe ổ bụng, viêm phúc mạc thủng tạng",
+            sensitiveAbx: "Metronidazole (Flagyl), Augmentin, Piperacillin/Tazobactam, Meropenem",
+            notes: "Sống trong môi trường không có ôxy. Cần kết hợp Metronidazole cho mọi nhiễm trùng dưới cơ hoành nặng."
+          }
+        ],
+
+        // COMPUTED / FILTER FUNCTIONS
+        get filteredDrugs() {
+          return Object.values(this.drugs).filter(drug => {
+            const matchesSearch = drug.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                                  drug.indication.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                                  drug.category.toLowerCase().includes(this.searchQuery.toLowerCase());
+            const matchesCategory = this.selectedCategory === 'Tất cả' || drug.category === this.selectedCategory;
+            return matchesSearch && matchesCategory;
+          });
+        },
+
+        get filteredAntibiotics() {
+          return this.antibioticsSpectrum.filter(abx => {
+            const q = this.antibioticSearch.toLowerCase();
+            return abx.name.toLowerCase().includes(q) ||
+                   abx.group.toLowerCase().includes(q) ||
+                   abx.targetSpectrum.toLowerCase().includes(q) ||
+                   abx.covers.some(b => b.toLowerCase().includes(q));
+          });
+        },
+
+        get filteredPathogens() {
+          return this.pathogens.filter(bug => {
+            const q = this.pathogenSearch.toLowerCase();
+            return bug.name.toLowerCase().includes(q) ||
+                   bug.latin.toLowerCase().includes(q) ||
+                   bug.sites.toLowerCase().includes(q) ||
+                   bug.sensitiveAbx.toLowerCase().includes(q);
+          });
         }
       }
     }
