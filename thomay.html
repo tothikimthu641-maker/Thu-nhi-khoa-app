@@ -1,0 +1,126 @@
+# ==============================================================================
+# HỆ THỐNG HỖ TRỢ RA QUYẾT ĐỊNH & LẬP TRÌNH THỞ MÁY NHI KHOA (PEDIATRIC MECHANICAL VENTILATION)
+# Tác giả: Chuyên gia GitHub & Bác sĩ Hồi sức Cấp cứu Nhi khoa
+# Dựa trên tài liệu chuẩn hóa: THỞ MÁY TRONG BỆNH LÝ TRẺ EM (PGS.TS Phạm Văn Quang)
+# ==============================================================================
+
+class PediatricMechanicalVentilation:
+    def __init__(self, age_months: float, weight_kg: float, diagnosis: str):
+        self.age_months = age_months
+        self.weight_kg = weight_kg
+        self.diagnosis = diagnosis.upper()  # ARDS, HEN_PHUOT, THAN_KINH, etc.
+        
+    def danh_gia_benh_nhan(self):
+        """1. Đánh giá bệnh nhân trước và trong khi thở máy"""
+        print("=== 1. ĐÁNH GIÁ BỆNH NHÂN ===")
+        print(- Tuổi: f"{self.age_months} tháng | Cân nặng: {self.weight_kg} kg")
+        print(- Chỉ định giúp thở: Ngừng thở, Suy hô hấp thất bại (Oxy/NCPAP), Sốc nặng, Glasgow <= 8 / Tăng ALNS[cite: 1.2].")
+        print(- Lâm sàng: Sinh hiệu, tri giác, SpO2, phế âm 2 bên, X-quang phổi (đánh giá tổn thương, vị trí NKQ, tràn khí).")
+        
+    def chon_may_tho_va_phuong_thuc(self):
+        """2. Chọn máy thở và phương thức thở"""
+        print("\n=== 2. CHỌN MÁY THỎ VÀ PHƯƠNG THỨC THỎ ===")
+        if "ARDS" in self.diagnosis or "VIEM_PHOI" in self.diagnosis:
+            mode = "PCV (Pressure Control Ventilation) hoặc SIMV + PCSC"
+            note = "Ưu tiên kiểm soát áp lực để tránh tổn thương phổi do áp lực/thể tích cao (VILI)."
+        elif "HEN" in self.diagnosis or "TAC_NGHEN" in self.diagnosis:
+            mode = "ACV hoặc SIMV với thời gian thở ra dài (I/E kéo dài)"
+            note = "Tránh bẫy khí (auto-PEEP)."
+        else:
+            mode = "SIMV + PS (Pressure Support) hoặc VC/PC thông thường"
+            note = "Phù hợp cho bệnh lý thông thường hoặc thần kinh-cơ."
+        print(f"- Phương thức đề xuất: {mode}")
+        print(f"- Lưu ý: {note}")
+
+    def cai_dat_thong_so_ban_dau(self):
+        """3. Đặt thông số ban đầu và mức báo động"""
+        print("\n=== 3. CÀI ĐẶT THÔNG SỐ BAN ĐẦU & BÁO ĐỘNG ===")
+        
+        # Tần số thở (RR) theo tuổi
+        if self.age_months < 1:
+            rr = 40
+        elif self.age_months <= 24:
+            rr = 30
+        elif self.age_months <= 120:
+            rr = 22
+        else:
+            rr = 18
+        print(f"- Tần số thở (RR cài đặt): {rr} lần/phút")
+        
+        # Thể tích khí lưu thông (VT) hoặc Áp lực hít vào (Pi)
+        if "THAN_KINH" in self.diagnosis:
+            vt = self.weight_kg * 9  # 8-10 ml/kg
+            print(f"- Thể tích khí lưu thông (VT - Mode VC): {vt:.1f} ml (8-10 ml/kg do bệnh thần kinh/cơ)")
+        elif "ARDS" in self.diagnosis:
+            vt = self.weight_kg * 7  # 6-8 ml/kg
+            print(f"- Thể tích khí lưu thông (VT - Mode VC): {vt:.1f} ml (6-8 ml/kg bảo vệ phổi ARDS)")
+        else:
+            pi = 16  # Bắt đầu 12-14 cmH2O tăng dần đến 20 cmH2O cho đến khi lồng ngực nhô đều, VT 8-10 ml/kg
+            print(f"- Áp lực hít vào (Pi - Mode PC): {pi} cmH2O (Điều chỉnh để VT đạt 8-10 ml/kg)")
+
+        # PEEP
+        if "ARDS" in self.diagnosis:
+            peep = 8  # 6-10 cmH2O hoặc cao hơn tùy PaO2/FiO2[cite: 1.2]
+        elif "THAN_KINH" in self.diagnosis:
+            peep = 5  # 4-6 cmH2O[cite: 1.2]
+        else:
+            peep = 5
+        print(f"- PEEP: {peep} cmH2O[cite: 1.2]")
+
+        # FiO2[cite: 1.2]
+        fio2 = 60  # 40-60% hoặc bằng bóp bóng hiệu quả (trừ khi tím tái nặng đặt 100% rồi giảm dần giữ SpO2 94-96%)[cite: 1.2]
+        print(f"- FiO2 ban đầu: {fio2}% (Mục tiêu SpO2: 92-96% [Tổn thương phổi] hoặc 94-96% [Tổn thương não])[cite: 1.2]")
+
+        # Thời gian hít vào (Ti) & I/E[cite: 1.2]
+        if self.age_months < 1:
+            ti = 0.6
+        elif self.age_months <= 120:
+            ti = 0.9
+        else:
+            ti = 1.1
+        print(f"- Thời gian hít vào (Ti): {ti} giây (Tối thiểu 0.5s; trẻ sơ sinh 0.5-0.7s, trẻ em 0.8-1s, trẻ lớn 1-1.2s)[cite: 1.2]")
+        print(f"- Tỉ lệ I/E: 1/2 (Bình thường); Đảo ngược (1/1.5 - 1/1) nếu tổn thương phổi nặng[cite: 1.2]")
+
+        # Lưu lượng khí (Flow-rate)[cite: 1.2]
+        if self.age_months < 1:
+            flow = "4-6 L/phút"
+        elif self.age_months <= 24:
+            flow = "10-15 L/phút"
+        else:
+            flow = "30-40 L/phút"
+        print(f"- Flow-rate: {flow} (Gấp 3-4 lần thể tích phút)[cite: 1.2]")
+
+        print("- Cài đặt mức báo động: Giới hạn áp lực đỉnh (PIP max ~ 30-35 cmH2O), Giới hạn VT thấp/cao (±20%), Mất nguồn/ngừng thở, Tần số thở cao.")
+
+    def dieu_chinh_thong_so(self):
+        """4. Điều chỉnh thông số máy thở"""
+        print("\n=== 4. ĐIỀU CHỈNH THÔNG SỐ MÁY THỞ ===")
+        print(" dựa trên kết quả Khí máu động mạch (KMA):")
+        print(" [+] Cải thiện PaO2 / SpO2 (Thiếu oxy): Tăng FiO2 (đến < 0.6 an toàn) hoặc tăng PEEP (nếu ARDS).")
+        print(" [+] Cải thiện PaCO2 cao (Ứ CO2 / Toan hô hấp): Tăng Thể tích khí lưu thông (VT) hoặc Tăng Tần số thở (RR).")
+        print(" [+] Giảm PaCO2 thấp (Kiềm hô hấp): Giảm Tần số thở (RR) hoặc giảm VT.")
+
+    def theo_doi_benh_nhan(self):
+        """5. Theo dõi bệnh nhân sau thở máy"""
+        print("\n=== 5. THEO DÕI BỆNH NHÂN SAU THỞ MÁY ===")
+        print("- Lâm sàng liên tục: Mạch, huyết áp, nhịp thở, SpO2, ETCO2, màu sắc da, tri giác.")
+        print("- Đánh giá lồng ngực: Cân đối 2 bên, tiếng thở phổi đều rõ không rale lệch.")
+        print("- Kiểm tra vị trí ống NKQ định kỳ, hút đàm nhớt vô khuẩn khi có chỉ định.")
+        print("- Xét nghiệm: Khí máu động mạch sau thay đổi thông số 20-30 phút, X-quang phổi kiểm tra.")
+
+    def cai_may_tho(self):
+        """6. Cai máy thở"""
+        print("\n=== 6. CAI MÁY THỞ ===")
+        print("- Tiêu chuẩn cai máy: Nguyên nhân suy hô hấp cải thiện, huyết động ổn định, tri giác tốt, tự thở tốt, FiO2 <= 40%, PEEP <= 5 cmH2O.")
+        print("- Thử nghiệm tự thở (SBT) qua ống T-piece hoặc CPAP/PS thấp trong 30-120 phút.")
+        print("- Rút ống NKQ khi bệnh nhân tỉnh táo, phản xạ ho tốt, đàm nhớt ít.")
+
+# Ví dụ chạy mô phỏng cho trẻ viêm phổi nặng / ARDS 3 tuổi (36 tháng), nặng 14kg:
+if __name__ == "__main__":
+    patient = PediatricMechanicalVentilation(age_months=36, weight_kg=14.0, diagnosis="ARDS")
+    patient.danh_gia_benh_nhan()
+    patient.chon_may_tho_va_phuong_thuc()
+    patient.cai_dat_thong_so_ban_dau()
+    patient.dieu_chinh_thong_so()
+    patient.theo_doi_benh_nhan()
+    patient.cai_may_tho()
