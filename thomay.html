@@ -42,7 +42,6 @@
         .custom-shadow {
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
         }
-        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -66,7 +65,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-400/30 flex items-center justify-center text-teal-400 text-xl shadow-inner">
-                    <i class="fa-solid font-bold fa-stethosocpe fa-lungs"></i>
+                    <i class="fa-solid font-bold fa-stethoscope fa-lungs"></i>
                 </div>
                 <div>
                     <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-teal-300 via-cyan-200 to-white bg-clip-text text-transparent">
@@ -78,7 +77,7 @@
             <div class="flex items-center gap-2">
                 <span class="px-3 py-1 rounded-full text-xs font-semibold bg-teal-950 border border-teal-500/40 text-teal-300 shadow-sm flex items-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
-                    v5.1 PICU Standard
+                    v5.2 PICU Standard + Theory Review
                 </span>
             </div>
         </div>
@@ -87,7 +86,7 @@
     <!-- MAIN CONTAINER -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
 
-        <!-- SECTION 1: CÀI ĐẶT THÔNG SỐ BAN ĐẦU -->
+        <!-- SECTION 1: CÀI ĐẶT THÔNG SỐ BAN ĐẦU & TẦN SỐ SINH LÝ -->
         <section class="bg-cardBg border border-cardBorder rounded-2xl p-5 sm:p-6 custom-shadow">
             <div class="flex items-center gap-3 pb-4 mb-5 border-b border-slate-800">
                 <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
@@ -148,7 +147,7 @@
             <!-- KẾT QUẢ CÀI ĐẶT THÔNG SỐ -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
-                <!-- Cột trái: Thông số cài đặt -->
+                <!-- Cột trái: Thông số cài đặt chi tiết -->
                 <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800 space-y-3">
                     <div class="flex items-center justify-between border-b border-slate-800 pb-2">
                         <h3 class="text-sm font-bold text-teal-400 flex items-center gap-2">
@@ -167,39 +166,39 @@
                             <span id="resEttDepth" class="block text-[11px] text-slate-400">Sâu: 12 cm tại môi</span>
                         </div>
 
-                        <!-- Tần số RR -->
+                        <!-- Tần số RR & Sinh lý theo tuổi -->
                         <div class="bg-cardBg p-2.5 rounded-lg border border-slate-800">
-                            <span class="text-slate-400 block mb-0.5">Tần số thở (RR):</span>
+                            <span class="text-slate-400 block mb-0.5">Tần số thở (RR cài đặt):</span>
                             <span id="resRR" class="text-sm font-bold text-cyan-300">22 lần/phút</span>
-                            <span id="resTi" class="block text-[11px] text-slate-400">Ti: 0.8s | I/E: 1/2</span>
+                            <span id="resNormalRR" class="block text-[11px] text-slate-400">RR sinh lý: 20-30 lần/p</span>
+                        </div>
+
+                        <!-- Ti & Tỉ lệ I/E -->
+                        <div class="bg-cardBg p-2.5 rounded-lg border border-slate-800">
+                            <span class="text-slate-400 block mb-0.5">Thời gian hít vào (Ti) & I/E:</span>
+                            <span id="resTi" class="text-sm font-bold text-teal-300">Ti: 0.8s (0.8 - 1.0s)</span>
+                            <span id="resIE" class="block text-[11px] text-slate-400">Tỉ lệ I/E chuẩn: 1/2</span>
+                        </div>
+
+                        <!-- Trigger & Flow -->
+                        <div class="bg-cardBg p-2.5 rounded-lg border border-slate-800">
+                            <span class="text-slate-400 block mb-0.5">Độ nhạy Trigger & Flow:</span>
+                            <span id="resTrigger" class="text-sm font-bold text-indigo-300">Flow: 1-2 L/p | P: -1 đến -2</span>
+                            <span id="resFlow" class="block text-[11px] text-slate-400">Flow-rate: 15 L/p</span>
                         </div>
 
                         <!-- VT / Pressure -->
                         <div class="bg-cardBg p-2.5 rounded-lg border border-slate-800">
-                            <span class="text-slate-400 block mb-0.5">Thể tích khí $V_T$ / Áp lực $P_i$:</span>
+                            <span class="text-slate-400 block mb-0.5">Thể tích khí VT / Áp lực Pi:</span>
                             <span id="resVt" class="text-sm font-bold text-emerald-400">VT: 70 ml (7 ml/kg)</span>
                             <span id="resPi" class="block text-[11px] text-slate-400">Hoặc Pi: 14 - 18 cmH2O</span>
                         </div>
 
-                        <!-- PEEP -->
+                        <!-- PEEP & FiO2 -->
                         <div class="bg-cardBg p-2.5 rounded-lg border border-slate-800">
-                            <span class="text-slate-400 block mb-0.5">PEEP cài đặt:</span>
-                            <span id="resPeep" class="text-sm font-bold text-rose-400">6 - 8 cmH2O</span>
-                            <span class="block text-[11px] text-slate-400">Duy trì mở phế nang</span>
-                        </div>
-
-                        <!-- FiO2 & SpO2 -->
-                        <div class="bg-cardBg p-2.5 rounded-lg border border-slate-800">
-                            <span class="text-slate-400 block mb-0.5">FiO2 & Mục tiêu SpO2:</span>
-                            <span id="resFiO2" class="text-sm font-bold text-indigo-300">FiO2: 60%</span>
-                            <span id="resSpO2Target" class="block text-[11px] text-slate-400">SpO2 target: 92 - 96%</span>
-                        </div>
-
-                        <!-- Flow rate -->
-                        <div class="bg-cardBg p-2.5 rounded-lg border border-slate-800">
-                            <span class="text-slate-400 block mb-0.5">Lưu lượng khí (Flow):</span>
-                            <span id="resFlow" class="text-sm font-bold text-purple-300">15 - 20 L/phút</span>
-                            <span class="block text-[11px] text-slate-400">Gấp 3-4 lần thể tích phút</span>
+                            <span class="text-slate-400 block mb-0.5">PEEP & FiO2 Khởi đầu:</span>
+                            <span id="resPeep" class="text-sm font-bold text-rose-400">PEEP: 6 - 8 cmH2O</span>
+                            <span id="resFiO2" class="block text-[11px] text-slate-400">FiO2: 60% (SpO2: 92-96%)</span>
                         </div>
                     </div>
 
@@ -209,46 +208,46 @@
                     </div>
                 </div>
 
-                <!-- Cột phải: Mức Báo Động (Alarm Settings) -->
+                <!-- Cột phải: Mức Báo Động & Cài đặt Ngưng thở (Apnea Backup) -->
                 <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800 space-y-3 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
                             <h3 class="text-sm font-bold text-rose-400 flex items-center gap-2">
-                                <i class="fa-solid fa-bell"></i> MỨC CÀI ĐẶT BÁO ĐỘNG (ALARM LIMITS)
+                                <i class="fa-solid fa-bell"></i> BÁO ĐỘNG & NGƯNG THỞ (APNEA BACKUP)
                             </h3>
                             <span class="text-xs text-slate-400">An toàn PICU</span>
                         </div>
 
                         <div class="space-y-2.5 text-xs">
                             <div class="flex justify-between items-center p-2 rounded bg-cardBg border border-slate-800">
-                                <span class="text-slate-300 font-medium">1. Áp lực đỉnh tối đa (High PIP Alarm):</span>
+                                <span class="text-slate-300 font-medium">1. Cài đặt Thời gian Ngưng thở (Apnea Time):</span>
+                                <span class="font-bold text-amber-400 bg-amber-950/60 border border-amber-800/50 px-2 py-0.5 rounded">15 - 20 giây</span>
+                            </div>
+
+                            <div class="flex justify-between items-center p-2 rounded bg-cardBg border border-slate-800">
+                                <span class="text-slate-300 font-medium">2. Chế độ Dự phòng Ngưng thở (Apnea Backup):</span>
+                                <span class="font-bold text-teal-300 bg-teal-950/60 border border-teal-800/50 px-2 py-0.5 rounded">Mode PCV / VC + FiO2 100%</span>
+                            </div>
+
+                            <div class="flex justify-between items-center p-2 rounded bg-cardBg border border-slate-800">
+                                <span class="text-slate-300 font-medium">3. Áp lực đỉnh tối đa (High PIP Alarm):</span>
                                 <span id="alarmPipHigh" class="font-bold text-rose-400 bg-rose-950/60 border border-rose-800/50 px-2 py-0.5 rounded">30 - 35 cmH2O</span>
                             </div>
 
                             <div class="flex justify-between items-center p-2 rounded bg-cardBg border border-slate-800">
-                                <span class="text-slate-300 font-medium">2. Báo động Thể tích $V_T$ Thấp / Cao:</span>
+                                <span class="text-slate-300 font-medium">4. Báo động Thể tích VT Thấp / Cao:</span>
                                 <span id="alarmVtRange" class="font-bold text-amber-300 bg-amber-950/60 border border-amber-800/50 px-2 py-0.5 rounded">Low: 56 ml | High: 84 ml (±20%)</span>
                             </div>
 
                             <div class="flex justify-between items-center p-2 rounded bg-cardBg border border-slate-800">
-                                <span class="text-slate-300 font-medium">3. Báo động Tần số thở cao (High RR):</span>
+                                <span class="text-slate-300 font-medium">5. Báo động Tần số thở cao (High RR):</span>
                                 <span id="alarmRrHigh" class="font-bold text-cyan-300 bg-cyan-950/60 border border-cyan-800/50 px-2 py-0.5 rounded">35 - 40 lần/phút</span>
-                            </div>
-
-                            <div class="flex justify-between items-center p-2 rounded bg-cardBg border border-slate-800">
-                                <span class="text-slate-300 font-medium">4. Báo động PEEP Thấp (Low PEEP):</span>
-                                <span id="alarmPeepLow" class="font-bold text-purple-300 bg-purple-950/60 border border-purple-800/50 px-2 py-0.5 rounded">< 4 cmH2O</span>
-                            </div>
-
-                            <div class="flex justify-between items-center p-2 rounded bg-cardBg border border-slate-800">
-                                <span class="text-slate-300 font-medium">5. Thời gian báo ngưng thở (Apnea Time):</span>
-                                <span class="font-bold text-slate-200 bg-slate-800 px-2 py-0.5 rounded">10 - 15 giây</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
-                        <span><i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i> Luôn kiểm tra dây thở & bình làm ấm ẩm trước khi nối bệnh nhân</span>
+                        <span><i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i> Kiểm tra hệ thống báo động âm thanh hoạt động trước khi trực</span>
                     </div>
                 </div>
 
@@ -295,7 +294,7 @@
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-6">
                 <button onclick="selectAlarm('LOW_CO2')" id="btn_LOW_CO2" class="alarm-btn p-3 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-left transition">
                     <span class="text-xs font-bold text-emerald-400 block"><i class="fa-solid fa-wind mr-1"></i> Khí máu: Giảm CO2 (PaCO2 thấp)</span>
-                    <span class="text-[11px] text-slate-400">PaCO2 < 35 mmHg / Kiềm hô hấp</span>
+                    <span class="text-[11px] text-slate-400">PaCO2 &lt; 35 mmHg / Kiềm hô hấp</span>
                 </button>
 
                 <button onclick="selectAlarm('AUTO_PEEP')" id="btn_AUTO_PEEP" class="alarm-btn p-3 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-left transition">
@@ -314,6 +313,62 @@
                 <!-- Javascript will inject action plan here -->
             </div>
 
+        </section>
+
+        <!-- SECTION 3: MỤC TIÊU ÔN TẬP LÝ THUYẾT THỞ MÁY (PGS.TS PHẠM VĂN QUANG) -->
+        <section class="bg-cardBg border border-cardBorder rounded-2xl p-5 sm:p-6 custom-shadow">
+            <div class="flex items-center gap-3 pb-4 mb-5 border-b border-slate-800">
+                <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-book-medical text-lg"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-indigo-400">
+                        3. Mục Tiêu Ôn Tập Lý Thuyết Thở Máy Trẻ Em (PGS.TS Phạm Văn Quang)
+                    </h2>
+                    <p class="text-xs text-slate-400">Tổng hợp kiến thức cốt lõi ôn thi và lâm sàng Hồi sức Cấp cứu Nhi</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <!-- Thẻ 1 -->
+                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+                    <h3 class="font-bold text-teal-300 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-circle-dot text-xs text-teal-400"></i> Chỉ Định Giúp Thở
+                    </h3>
+                    <ul class="space-y-1.5 text-slate-300 pl-4 list-disc leading-relaxed">
+                        <li><strong>Ngừng thở</strong> hoặc cơn ngừng thở tái phát.</li>
+                        <li><strong>Suy hô hấp thất bại</strong> với thở oxy qua cannula hoặc NCPAP thất bại.</li>
+                        <li><strong>Sốc nặng</strong> (giảm công thở cho cơ tim và cơ quan).</li>
+                        <li><strong>Bệnh lý thần kinh trung ương:</strong> Glasgow &le; 8 điểm hoặc tăng áp lực nội sọ nặng.</li>
+                    </ul>
+                </div>
+
+                <!-- Thẻ 2 -->
+                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+                    <h3 class="font-bold text-cyan-300 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-circle-dot text-xs text-cyan-400"></i> Mục Tiêu Khí Máu & SpO2
+                    </h3>
+                    <ul class="space-y-1.5 text-slate-300 pl-4 list-disc leading-relaxed">
+                        <li><strong>Tổn thương phổi (ARDS):</strong><br>• PaO2: 70 - 100 mmHg<br>• SpO2: 92 - 96%<br>• PaCO2: 35 - 45 mmHg</li>
+                        <li><strong>Tổn thương não:</strong><br>• PaO2: 80 - 100 mmHg<br>• SpO2: 94 - 96%<br>• PaCO2: 30 - 40 mmHg</li>
+                    </ul>
+                </div>
+
+                <!-- Thẻ 3 -->
+                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 space-y-2">
+                    <h3 class="font-bold text-amber-300 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-circle-dot text-xs text-amber-400"></i> 6 Bước Thở Máy Chuẩn
+                    </h3>
+                    <ol class="space-y-1.5 text-slate-300 pl-4 list-decimal leading-relaxed">
+                        <li><strong>Đánh giá bệnh nhân:</strong> Tuổi, cân nặng, bệnh lý, khí máu, X-quang phổi.</li>
+                        <li><strong>Chọn máy thở & phương thức:</strong> PCV, VCV, SIMV+PS, ACV.</li>
+                        <li><strong>Cài đặt thông số ban đầu & báo động.</strong></li>
+                        <li><strong>Điều chỉnh thông số</strong> dựa vào kết quả KMA.</li>
+                        <li><strong>Theo dõi bệnh nhân</strong> liên tục & hút đàm.</li>
+                        <li><strong>Cai máy thở & rút ống NKQ.</strong></li>
+                    </ol>
+                </div>
+            </div>
         </section>
 
     </main>
@@ -362,7 +417,7 @@
                     { title: 'Nguyên tắc: Tăng Thể Tích Phút (Minute Ventilation = VT x RR)', detail: 'Để đào thải CO2 ra khỏi cơ thể, cần tăng thông khí phút bằng cách:' },
                     { title: 'Bước 1: Tăng Tần số thở cài đặt (RR)', detail: 'Tăng tần số thở RR lên 2 - 5 lần/phút (lưu ý không tăng quá cao gây bẫy khí Auto-PEEP).' },
                     { title: 'Bước 2: Tăng Thể tích khí lưu thông (VT) hoặc Áp lực Pi', detail: '• Trong Mode PC: Tăng áp lực hít vào Pi thêm 2 - 4 cmH2O để đạt VT cao hơn.<br>• Trong Mode VC: Tăng VT thêm 1 - 2 ml/kg (chú ý không vượt quá áp lực đỉnh an toàn PIP < 30 cmH2O).' },
-                    { title: 'Lưu ý ARDS (Permissive Hypercapnia)', detail: 'Nếu bệnh nhân ARDS nặng, chấp nhận ức CO2 vừa phải (PaCO2 45-60 mmHg) miễn là pH > 7.25 để bảo vệ phổi tránh tổn thương do áp lực (VILI).' }
+                    { title: 'Lưu ý ARDS (Permissive Hypercapnia)', detail: 'Nếu bệnh nhân ARDS nặng, chấp nhận ứ CO2 vừa phải (PaCO2 45-60 mmHg) miễn là pH > 7.25 để bảo vệ phổi tránh tổn thương do áp lực (VILI).' }
                 ]
             },
             'LOW_CO2': {
@@ -388,14 +443,14 @@
                 title: 'QUY TRÌNH CAI MÁY THỞ VÀ RÚT ỐNG NỘI KHÍ QUẢN (PICU PROTOCOL)',
                 badgeColor: 'bg-teal-950 text-teal-300 border-teal-800',
                 steps: [
-                    { title: '1. Tiêu chuẩn bắt đầu Cai máy thở:', detail: '• Bệnh lý nguyên phát gây suy hô hấp đã cải thiện rõ rệt.<br>• Huyết động ổn định (Không dùng hoặc dùng vận mạch liều rất thấp).<br>• Cài đặt máy thở thấp: FiO2 <= 40%, PEEP <= 5 cmH2O.<br>• Bệnh nhân có nhịp tự thở tốt, phản xạ ho/nuốt tốt, tri giác tỉnh táo.' },
+                    { title: '1. Tiêu chuẩn bắt đầu Cai máy thở:', detail: '• Bệnh lý nguyên phát gây suy hô hấp đã cải thiện rõ rệt.<br>• Huyết động ổn định (Không dùng hoặc dùng vận mạch liều rất thấp).<br>• Cài đặt máy thở thấp: FiO2 &le; 40%, PEEP &le; 5 cmH2O.<br>• Bệnh nhân có nhịp tự thở tốt, phản xạ ho/nuốt tốt, tri giác tỉnh táo.' },
                     { title: '2. Thử nghiệm tự thở (SBT - Spontaneous Breathing Trial):', detail: '• Chuyển sang mode CPAP + PS (PS 5-8 cmH2O, PEEP 4-5 cmH2O) hoặc thở T-piece trong 30 - 120 phút.<br>• Đánh giá sự dung nạp: Nhịp thở bình thường, SpO2 > 95%, không co kéo cơ hô hấp phụ, huyết động ổn định.' },
                     { title: '3. Tiến hành Rút ống NKQ:', detail: '• Hút sạch đàm nhớt khoang miệng và ống NKQ.<br>• Cho bệnh nhân thở Oxy qua Canula hoặc NCPAP ngay sau khi rút ống.' }
                 ]
             }
         };
 
-        // Hàm tính toán thông số thở máy
+        // Hàm tính toán thông số thở máy tự động theo tuổi, cân nặng và bệnh lý
         function calculateVentilation() {
             const weight = parseFloat(document.getElementById('weightInput').value) || 10;
             let ageNum = parseFloat(document.getElementById('ageInput').value) || 24;
@@ -420,24 +475,29 @@
             document.getElementById('resEtt').innerText = ettText;
             document.getElementById('resEttDepth').innerText = `Sâu khoảng: ${ettDepth.toFixed(1)} cm tại vạch môi`;
 
-            // 2. Tần số thở (RR)
+            // 2. Tần số thở (RR) cài đặt & Tần số sinh lý bình thường theo tuổi
             let rr = 20;
+            let normalRR = "20 - 30 lần/p";
             let ti = 0.8;
             let flow = "15 - 20 L/phút";
+            let flowTrigger = "1 - 2 L/phút";
+            let pressureTrigger = "-1 đến -2 cmH2O";
 
             if (ageMonths < 1) {
-                rr = 35; ti = 0.6; flow = "4 - 8 L/phút";
+                rr = 35; normalRR = "30 - 40 lần/p (Sơ sinh)"; ti = 0.6; flow = "4 - 8 L/phút";
             } else if (ageMonths <= 24) {
-                rr = 28; ti = 0.8; flow = "10 - 15 L/phút";
+                rr = 28; normalRR = "25 - 35 lần/p (Nhũ nhi)"; ti = 0.8; flow = "10 - 15 L/phút";
             } else if (ageMonths <= 120) {
-                rr = 22; ti = 0.9; flow = "20 - 30 L/phút";
+                rr = 22; normalRR = "20 - 25 lần/p (Trẻ em)"; ti = 0.9; flow = "20 - 30 L/phút";
             } else {
-                rr = 18; ti = 1.0; flow = "30 - 45 L/phút";
+                rr = 18; normalRR = "15 - 20 lần/p (Trẻ lớn)"; ti = 1.0; flow = "30 - 45 L/phút";
             }
 
             document.getElementById('resRR').innerText = `${rr} lần/phút`;
-            document.getElementById('resTi').innerText = `Ti: ${ti}s | I/E chuẩn: 1/2`;
-            document.getElementById('resFlow').innerText = flow;
+            document.getElementById('resNormalRR').innerText = `RR sinh lý bình thường: ${normalRR}`;
+            document.getElementById('resTi').innerText = `Ti: ${ti}s (Chuẩn: 0.8 - 1.0s)`;
+            document.getElementById('resTrigger').innerText = `Flow Trg: ${flowTrigger} | P Trg: ${pressureTrigger}`;
+            document.getElementById('resFlow').innerText = `Flow-rate: ${flow}`;
 
             // 3. VT, Pi, PEEP, FiO2 theo bệnh lý
             let vtPerKg = 8;
@@ -448,7 +508,7 @@
             let noteText = "";
 
             if (diagnosis === 'ARDS') {
-                vtPerKg = 7; // 6-8 ml/kg
+                vtPerKg = 7; 
                 peepText = "6 - 10 cmH2O (ARDS)";
                 fio2Text = "60 - 100% (Giảm dần)";
                 spo2Target = "92 - 96% (Phổi)";
@@ -462,7 +522,7 @@
                 modeText = "ACV / SIMV (Thời gian thở ra dài)";
                 noteText = "<strong class='text-amber-400'>Lưu ý Tắc nghẽn / Hen:</strong> Cần thời gian thở ra dài (Tỉ lệ I/E = 1/3 đến 1/4) để tránh Auto-PEEP. Tần số thở RR đặt thấp hơn bình thường.";
             } else if (diagnosis === 'NEURO') {
-                vtPerKg = 9; // 8-10 ml/kg
+                vtPerKg = 9; 
                 peepText = "4 - 5 cmH2O";
                 fio2Text = "40 - 50%";
                 spo2Target = "95 - 98% (Tránh thiếu oxy não)";
@@ -482,68 +542,62 @@
 
             document.getElementById('resVt').innerText = `VT: ${totalVt.toFixed(0)} ml (${vtPerKg} ml/kg)`;
             document.getElementById('resPi').innerText = `Hoặc Áp lực Pi: ${piEst} - ${piEst + 4} cmH2O`;
-            document.getElementById('resPeep').innerText = peepText;
-            document.getElementById('resFiO2').innerText = `FiO2 khởi đầu: ${fio2Text}`;
-            document.getElementById('resSpO2Target').innerText = `Mục tiêu SpO2: ${spo2Target}`;
+            document.getElementById('resPeep').innerText = `PEEP: ${peepText}`;
+            document.getElementById('resFiO2').innerText = `FiO2: ${fio2Text} (SpO2: ${spo2Target})`;
             document.getElementById('displayMode').innerText = `Mode: ${modeText}`;
             document.getElementById('resClinicalNote').innerHTML = noteText;
 
-            // 4. Mức cài đặt Báo động (Alarm Limits)
-            let pipHigh = diagnosis === 'ARDS' ? 32 : 30;
-            let vtLow = (totalVt * 0.8).toFixed(0);
-            let vtHigh = (totalVt * 1.2).toFixed(0);
-            let rrHigh = rr + 12;
-
-            document.getElementById('alarmPipHigh').innerText = `${pipHigh} - 35 cmH2O`;
-            document.getElementById('alarmVtRange').innerText = `Low: ${vtLow} ml | High: ${vtHigh} ml (±20%)`;
-            document.getElementById('alarmRrHigh').innerText = `${rrHigh} lần/phút`;
-            document.getElementById('alarmPeepLow').innerText = `< 3 - 4 cmH2O`;
+            // Cập nhật tự động thông số Báo động
+            let lowVt = Math.round(totalVt * 0.8);
+            let highVt = Math.round(totalVt * 1.2);
+            document.getElementById('alarmVtRange').innerText = `Low: ${lowVt} ml | High: ${highVt} ml (±20%)`;
+            document.getElementById('alarmRrHigh').innerText = `${rr + 12} lần/phút`;
         }
 
-        // Hàm chọn và hiển thị xử trí báo động
-        function selectAlarm(key) {
-            // Remove active highlight from all buttons
+        // Hàm xử lý khi bấm vào các nút Tình huống / Báo động
+        function selectAlarm(alarmType) {
             document.querySelectorAll('.alarm-btn').forEach(btn => {
-                btn.classList.remove('ring-2', 'ring-teal-400', 'bg-slate-800');
+                btn.classList.remove('border-teal-400', 'bg-slate-800', 'shadow-md');
+                btn.classList.add('border-slate-700', 'bg-slate-900');
             });
 
-            // Add active ring to clicked button
-            const activeBtn = document.getElementById(`btn_${key}`);
-            if(activeBtn) {
-                activeBtn.classList.add('ring-2', 'ring-teal-400', 'bg-slate-800');
+            const selectedBtn = document.getElementById('btn_' + alarmType);
+            if (selectedBtn) {
+                selectedBtn.classList.remove('border-slate-700', 'bg-slate-900');
+                selectedBtn.classList.add('border-teal-400', 'bg-slate-800', 'shadow-md');
             }
 
-            const alarm = alarmDatabase[key];
-            if (!alarm) return;
+            const data = alarmDatabase[alarmType];
+            const box = document.getElementById('alarmTreatmentBox');
+            if (!data) return;
 
             let html = `
                 <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-shield-halved text-teal-400"></i> ${alarm.title}
+                    <h3 class="text-sm font-bold flex items-center gap-2">
+                        <span class="px-2.5 py-1 rounded text-xs border ${data.badgeColor}">${data.title}</span>
                     </h3>
-                    <span class="px-2.5 py-1 rounded text-xs font-bold border ${alarm.badgeColor}">
-                        Xử trí Chuẩn PICU
-                    </span>
+                    <span class="text-xs text-slate-400 font-semibold"><i class="fa-solid fa-notes-medical text-teal-400 mr-1"></i> Xử trí chuẩn PICU</span>
                 </div>
-                <div class="space-y-3.5 pt-2">
+                <div class="space-y-3 pt-1">
             `;
 
-            alarm.steps.forEach(step => {
+            data.steps.forEach((step, index) => {
                 html += `
-                    <div class="bg-cardBg p-3.5 rounded-xl border border-slate-800/80">
-                        <h4 class="text-xs font-bold text-amber-300 mb-1 flex items-center gap-1.5">
-                            <i class="fa-solid fa-chevron-right text-[10px] text-teal-400"></i> ${step.title}
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-lg p-3">
+                        <h4 class="text-xs font-bold text-teal-300 mb-1 flex items-center gap-1.5">
+                            <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-[10px]">${index + 1}</span>
+                            ${step.title}
                         </h4>
-                        <p class="text-xs text-slate-300 leading-relaxed pl-4">${step.detail}</p>
+                        <p class="text-xs text-slate-300 pl-6 leading-relaxed">${step.detail}</p>
                     </div>
                 `;
             });
 
             html += `</div>`;
-            document.getElementById('alarmTreatmentBox').innerHTML = html;
+            box.innerHTML = html;
         }
 
-        // Chạy lần đầu tiên khi tải trang
+        // Khởi chạy khi tải trang lần đầu
         window.onload = function() {
             calculateVentilation();
             selectAlarm('HIGH_PIP');
